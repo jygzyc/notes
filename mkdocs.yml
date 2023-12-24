@@ -88,7 +88,7 @@ markdown_extensions:
   - pymdownx.highlight:
       linenums: true
       use_pygments: true
-      line_spans: __span
+      # line_spans: __span
       pygments_lang_class: true
   - pymdownx.keys
   - pymdownx.tasklist:
@@ -106,8 +106,6 @@ extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
-  - javascripts/mathjax.js
-  - assets/extra.js
 extra_css:
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
   - assets/extra.css
@@ -120,7 +118,7 @@ nav:
     - android/内核编译与KernelSU集成.md
     # - Android/Android定制化ART与逆向.md
     - Android自定义ROM:
-      - android/Android_self_rom/源码编译.md
+      - android/android_self_rom/源码编译.md
       
   - Tools:
     - Frida:
