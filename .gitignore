@@ -1,0 +1,6 @@
+site/
+desktop.ini
+
+# vscode config
+.vscode/
+*.code-workspace

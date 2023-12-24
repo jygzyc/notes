@@ -1,0 +1,145 @@
+site_name: Ecool Notes
+site_author: Ecool
+
+repo_name: Ecool Notes
+repo_url: https://github.com/jygzyc/Notes
+
+# Configuration
+theme: 
+  name: material
+  language: zh
+  custom_dir: overrides
+  favicon: assets/favicon.ico
+  palette: 
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+    - navigation.tabs
+    - navigation.tabs.sticky
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/
+    - navigation.footer
+    - navigation.top
+    - navigation.sections
+    # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
+    - search.suggest
+    - search.highlight
+    # When section index pages are enabled, documents can be directly attached to sections, which is particularly useful for providing overview pages
+    - navigation.indexes
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+
+# Copyright
+copyright: This website follows CC BY-SA 4.0
+
+# Plugins
+plugins: 
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+      lang:
+        - en
+        - zh
+  - glightbox
+  - minify:
+      minify_html: true
+  - blog:
+      blog_dir: blog
+      post_url_date_format: yyyy/MM
+      post_url_format: "{date}/{file}"
+      archive: true
+      categories: true
+
+
+# Extensions
+# https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      linenums: true
+      use_pygments: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.keys
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - footnotes
+  - def_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+# Additional configuration
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
+  - javascripts/mathjax.js
+  - assets/extra.js
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
+  - assets/extra.css
+
+
+# Page tree
+nav:
+  - Home: index.md
+  - Android:
+    - android/内核编译与KernelSU集成.md
+    # - Android/Android定制化ART与逆向.md
+    - Android自定义ROM:
+      - android/Android_self_rom/源码编译.md
+      
+  - Tools:
+    - Frida:
+      - tools/Frida/Frida编译与patch.md
+    - Ghidra:
+      - tools/Ghidra/Introduction.md
+
+  - ProgramLanguage:
+    - rust:
+      - program_language/rust/a_half_hour_to_learn_Rust.md
+    # - ProgramLanguage/c/cplusplus_name_mangling.md
+
+  - StaticProgramAnalysis:
+    - static_program_analysis/note.md
+  
+  - Something:
+    - something/memo.md
+
+  - Blog:
+    - blog/index.md
+  
+  
