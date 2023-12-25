@@ -1,5 +1,5 @@
-.root {
+:root > * {
     --md-tooltip-width: 600px;
     --md-code-hl-color: #ff0000;
-    --md-code-hl-color--light: #ffcece;
+    --md-code-hl-color--light: #ffebeb;
 }

@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+    mkdocs:
+        build: .
+        ports:
+            - '80:8000'
+        volumes:
+            - '.:/app'
+        container_name: mkdocs-app
+        restart: always
+        image: mkdocs

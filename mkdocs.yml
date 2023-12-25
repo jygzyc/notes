@@ -9,7 +9,7 @@ theme:
   name: material
   language: zh
   custom_dir: overrides
-  favicon: assets/favicon.ico
+  favicon: custom/assets/favicon.ico
   palette: 
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
@@ -45,29 +45,12 @@ theme:
     # When section index pages are enabled, documents can be directly attached to sections, which is particularly useful for providing overview pages
     - navigation.indexes
     - navigation.instant
+    - navigation.instant.progress
     - navigation.tracking
     - toc.follow
 
 # Copyright
 copyright: This website follows CC BY-SA 4.0
-
-# Plugins
-plugins: 
-  - search:
-      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-      lang:
-        - en
-        - zh
-  - glightbox
-  - minify:
-      minify_html: true
-  - blog:
-      blog_dir: blog
-      post_url_date_format: yyyy/MM
-      post_url_format: "{date}/{file}"
-      archive: true
-      categories: true
-
 
 # Extensions
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions
@@ -88,8 +71,10 @@ markdown_extensions:
   - pymdownx.highlight:
       linenums: true
       use_pygments: true
-      # line_spans: __span
+      auto_title: true
+      line_spans: __span
       pygments_lang_class: true
+  - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.tasklist:
       custom_checkbox: true
@@ -103,22 +88,42 @@ markdown_extensions:
 
 # Additional configuration
 extra_javascript:
+  - custom/javascripts/extra.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
 extra_css:
+  - custom/stylesheets/extra.css
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
-  - assets/extra.css
+
+# Plugins
+plugins: 
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+      lang:
+        - en
+        - zh
+  - glightbox
+  - minify:
+      minify_html: true
+  - blog:
+      blog_dir: blog
+      post_url_date_format: yyyy/MM
+      post_url_format: "{date}/{file}"
+      archive: true
+      categories: true
 
 
 # Page tree
 nav:
-  - Home: index.md
+  - Home: 
+    - index.md
   - Android:
-    - android/内核编译与KernelSU集成.md
+    - android/index.md
     # - Android/Android定制化ART与逆向.md
     - Android自定义ROM:
-      - android/android_self_rom/源码编译.md
+      - android/android_self_rom/android_source_compile.md
+      - android/android_self_rom/android_kernel_compile_and_kernelsu.md
       
   - Tools:
     - Frida:
