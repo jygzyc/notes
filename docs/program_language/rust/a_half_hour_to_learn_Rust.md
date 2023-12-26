@@ -1,11 +1,8 @@
-# 半小时学习Rust
-
-> 翻译自 [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust)
+# 半小时学习Rust翻译与笔记
 
 为了提高编程语言的流畅性，人们必须阅读大量编程语言的相关知识。但如果你不知道它的含义，你怎么能读这么多呢？
 在本文中，我不会专注于一两个概念，而是尝试尽可能多地浏览 Rust 片段，并解释它们包含的关键字和符号的含义。
-准备好了吗？冲！
-
+准备好了吗？冲！[^1] [^2]
 
 `let`引入了一个变量绑定：
 
@@ -499,7 +496,7 @@ trait Signed {
 - 为你的类型实现任意类型的trait
 - 不允许为别人的类型实现别人的trait
 
-这些被称为“孤立规则”。
+这些被称为“孤立规则”(orphan rules)。
 
 下面是自定义trait在自定义类型上的实现：
 
@@ -650,7 +647,7 @@ fn main() {
 }
 ```
 
-Trait方法中的`self`参数可以使用引用，也可以使用不可变引用
+Trait 方法中的`self`参数可以使用引用，也可以使用不可变引用
 
 ```rust
 impl std::clone::Clone for Number {
@@ -658,3 +655,6 @@ impl std::clone::Clone for Number {
         Self { ..*self }
     }
 ```
+
+[^1]: [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust)
+[^2]: [Rust半小时教程](https://colobu.com/2020/03/05/A-half-hour-to-learn-Rust/)

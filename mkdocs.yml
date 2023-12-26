@@ -135,6 +135,8 @@ nav:
     - rust:
       - program_language/rust/a_half_hour_to_learn_Rust.md
     # - ProgramLanguage/c/cplusplus_name_mangling.md
+    - c/c++:
+      - program_language/c/summary_of_c_plus_plus_string_methods.md
 
   - StaticProgramAnalysis:
     - static_program_analysis/note.md
