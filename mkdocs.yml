@@ -98,6 +98,8 @@ extra_css:
 
 # Plugins
 plugins: 
+  - awesome-pages:
+      strict: false
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
       lang:
@@ -112,39 +114,4 @@ plugins:
       post_url_format: "{date}/{file}"
       archive: true
       categories: true
-
-
-# Page tree
-nav:
-  - Home: 
-    - index.md
-  - Android:
-    - android/index.md
-    # - Android/Android定制化ART与逆向.md
-    - Android自定义ROM:
-      - android/android_self_rom/android_source_compile.md
-      - android/android_self_rom/android_kernel_compile_and_kernelsu.md
-      
-  - Tools:
-    - Frida:
-      - tools/Frida/Frida编译与patch.md
-    - Ghidra:
-      - tools/Ghidra/Introduction.md
-
-  - ProgramLanguage:
-    - rust:
-      - program_language/rust/a_half_hour_to_learn_Rust.md
-    # - ProgramLanguage/c/cplusplus_name_mangling.md
-    - c/c++:
-      - program_language/c/summary_of_c_plus_plus_string_methods.md
-
-  - StaticProgramAnalysis:
-    - static_program_analysis/note.md
-  
-  - Something:
-    - something/memo.md
-
-  - Blog:
-    - blog/index.md
-  
   

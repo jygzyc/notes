@@ -1,13 +1,4 @@
----
-date: 2023-11-30
-authors: [ecool]
-categories:
-  - android
-  - note
-  - vulnerability discovery
----
-
-# Note of *Bringing Balance to the Force Dynamic Analysis of the Android Application Framework*
+# *Bringing Balance to the Force Dynamic Analysis of the Android Application Framework* 笔记
 
 《Bringing Balance to the Force Dynamic Analysis of the Android Application Framework》讨论了静态代码分析在解决 Android 应用框架安全问题上的局限，并说明了动态分析对于 Android 应用框架问题检测的可行性，提出了 DYNAMO 的解决方案。[^1] [^2]
 

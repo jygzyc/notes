@@ -24,7 +24,7 @@ For full documentation of the theme visit [mkdocs-material](https://squidfunk.gi
 
 ### Commands
 
-* `pip install --upgrade pymdown-extensions mkdocs mkdocs-material mkdocs-glightbox mkdocs-minify-plugin mkdocs-redirects` - Install Mkdocs, the theme and plugins
+* `pip install --upgrade pymdown-extensions mkdocs mkdocs-material mkdocs-glightbox mkdocs-minify-plugin mkdocs-redirects mkdocs-awesome-pages-plugin` - Install Mkdocs, the theme and plugins
 
 
 

@@ -1,0 +1,4 @@
+title: "Frida"
+
+nav:
+    - frida_compile_and_patch.md

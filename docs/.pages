@@ -1,0 +1,10 @@
+nav:
+  - Home: index.md
+  - memo.md
+  - android
+  - tools
+  - program_language
+  - static_program_analysis
+  - blog
+
+collapse_single_pages: true

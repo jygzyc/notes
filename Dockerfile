@@ -10,7 +10,8 @@ RUN pip install --no-cache-dir --upgrade \
     mkdocs mkdocs-material \
     mkdocs-glightbox \
     mkdocs-minify-plugin \
-    mkdocs-redirects
+    mkdocs-redirects \
+    mkdocs-awesome-pages-plugin
 
 # ------------------------------------------------------
 # --- Workdir Config

@@ -1,8 +1,10 @@
-# 备忘录笔记
+# Gist
 
 ## Docker
 
-### Docker缓存清理
+### Docker缓存清理 
+
+> 参考[Docker Build Cache 缓存清理 ](https://blog.51cto.com/u_1472521/5981360)
 
 `docker system df`​​ 命令，类似于 Linux上的 df 命令，用于查看 Docker 的磁盘使用情况
 
@@ -32,7 +34,10 @@ docker builder prune
 
 另外，命令 `​​docker system prune`​​ 可以用于清理磁盘，删除关闭的容器、无用的数据卷和网络，以及dangling镜像（即无tag的镜像）
 
+
 ### Podman 
+
+> 参考[如何在 Ubuntu 22.04 上安装 Podman](https://cn.linux-console.net/?p=3521)
 
 在 Ubuntu 22.04 上安装 Podman,默认情况下，Podman 包包含在 Ubuntu 默认存储库中。您只需运行以下命令即可安装它：
 
@@ -60,7 +65,6 @@ registries=["registry.access.redhat.com", "registry.fedoraproject.org", "docker.
 
 ## Others
 
-## 参考文档
 
-[Docker Build Cache 缓存清理 ](https://blog.51cto.com/u_1472521/5981360)
-[如何在 Ubuntu 22.04 上安装 Podman](https://cn.linux-console.net/?p=3521)
+
+
