@@ -1,30 +1,33 @@
 # Welcome to Ecool Note
 
-## Mkdoc usage
+!!! note "Mkdocs"
+    本站点使用Mkdocs进行部署，详细的文档请参考[mkdocs.org](https://www.mkdocs.org)
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-
-### Commands
+:material-key-outline:{ .keyword} 命令
 
 * `mkdocs new [dir-name]` - Create a new project.
 * `mkdocs serve` - Start the live-reloading docs server.
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
 
-### Project layout
+:material-key-outline:{ .keyword} 项目结构
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+`doc`目录中为文章所在目录，其中`Custom`可以存放自定义配置
+`mkdoc.yml`为主配置项，此处使用了[mkdocs-material](https://squidfunk.github.io/mkdocs-material/)主题
 
-## Project dependencies
+```bash title="Project Layout"
+.
+├── Dockerfile
+├── docker-compose.yml # Docker deploying file
+├── docs
+│   ├── custom # Custom configuration files
+│   ├── index.md # The documentation homepage
+│   └── ... # Other markdown pages, images and other files
+├── mkdocs.yml # The configuration file
+├── overrides # The theme custom configuration files
+└── .gitignore
+```
 
-For full documentation of the theme visit [mkdocs-material](https://squidfunk.github.io/mkdocs-material/)
-
-### Commands
-
-* `pip install --upgrade pymdown-extensions mkdocs mkdocs-material mkdocs-glightbox mkdocs-minify-plugin mkdocs-redirects mkdocs-awesome-pages-plugin` - Install Mkdocs, the theme and plugins
 
 
 

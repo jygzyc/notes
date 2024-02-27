@@ -1,8 +1,6 @@
-# Gist
+# 随手小记
 
-## Docker
-
-### Docker缓存清理 
+## :material-key-outline:{ .keyword} Docker缓存清理 
 
 > 参考[Docker Build Cache 缓存清理 ](https://blog.51cto.com/u_1472521/5981360)
 
@@ -34,8 +32,7 @@ docker builder prune
 
 另外，命令 `​​docker system prune`​​ 可以用于清理磁盘，删除关闭的容器、无用的数据卷和网络，以及dangling镜像（即无tag的镜像）
 
-
-### Podman 
+## :material-key-outline:{ .keyword} Podman安装
 
 > 参考[如何在 Ubuntu 22.04 上安装 Podman](https://cn.linux-console.net/?p=3521)
 
@@ -56,14 +53,7 @@ registries=["registry.access.redhat.com", "registry.fedoraproject.org", "docker.
 
 完成后保存并关闭文件。
 
-## Android
 
-
-## Linux
-
-
-
-## Others
 
 
 
