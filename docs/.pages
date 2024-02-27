@@ -1,10 +1,9 @@
 nav:
   - Home: index.md
-  - memo.md
-  - android
+  - applications
+  - life
   - tools
-  - program_language
-  - static_program_analysis
+  - telenology
   - blog
 
 collapse_single_pages: true

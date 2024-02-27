@@ -3,3 +3,7 @@
     --md-code-hl-color: #ff0000;
     --md-code-hl-color--light: #ffebeb;
 }
+
+.keyword {
+    color: #EE0F0F;
+}

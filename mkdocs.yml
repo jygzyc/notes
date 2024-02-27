@@ -11,6 +11,7 @@ theme:
   custom_dir: overrides
   favicon: custom/assets/favicon.ico
   palette: 
+    primary: light green
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -33,7 +34,7 @@ theme:
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/
     - navigation.footer
     - navigation.top
-    - navigation.sections
+    - navigation.path
     # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/
     - content.action.edit
     - content.action.view
@@ -42,11 +43,13 @@ theme:
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/
     - search.suggest
     - search.highlight
+    - search.share
     # When section index pages are enabled, documents can be directly attached to sections, which is particularly useful for providing overview pages
     - navigation.indexes
     - navigation.instant
     - navigation.instant.progress
     - navigation.tracking
+    - navigation.prune
     - toc.follow
 
 # Copyright
