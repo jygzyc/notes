@@ -1,9 +1,10 @@
 nav:
   - Home: index.md
   - applications
-  - life
   - tools
   - telenology
+  - life
+  - article
   - blog
 
 collapse_single_pages: true
