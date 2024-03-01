@@ -56,5 +56,3 @@ registries=["registry.access.redhat.com", "registry.fedoraproject.org", "docker.
 
 
 
-
-
