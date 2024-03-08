@@ -53,6 +53,12 @@ registries=["registry.access.redhat.com", "registry.fedoraproject.org", "docker.
 
 完成后保存并关闭文件。
 
+## :material-key-outline:{ .keyword} Python文件服务器
 
+切换到存储文件的目录，使用如下命令启动一个服务器
+
+```bash
+python -m http.server
+```
 
 
