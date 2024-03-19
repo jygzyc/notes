@@ -2,7 +2,7 @@
 
 编译Android系统的时候遇到了环境不同，稳定性不同的问题，选择docker解决问题
 
-> 以编译Google Pixel 3，lineageOS 20.0为例
+> 以编译Google Pixel 3，lineageOS 21.0为例
 
 ## 下载源码
 
@@ -31,7 +31,7 @@ git lfs install # apt install git-lfs
 第三步，初始化LineageOS存储库
 
 ```bash
-repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --git-lfs
+repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --git-lfs
 ```
 
 第四步，同步源码并准备，这里可以先参考[清华lineageOS 源代码镜像使用帮助](https://mirrors.tuna.tsinghua.edu.cn/help/lineageOS/)，先使用清华源同步，但是最后还是需要切回github同步一下，不然指定机型编译后会报错
@@ -67,11 +67,13 @@ $ sudo systemctl enable docker
 $ sudo systemctl start docker
 ```
 
-默认情况下，docker 命令会使用 Unix socket 与 Docker 引擎通讯。而只有 root 用户和 docker 组的用户才可以访问 Docker 引擎的 Unix socket。出于安全考虑，一般 Linux 系统上不会直接使用 root 用户。因此，更好地做法是将需要使用 docker 的用户加入 docker 用户组
+默认情况下，docker 命令会使用 Unix socket 与 Docker 引擎通讯。而只有 root 用户和 docker 组的用户才可以访问 Docker 引擎的 Unix socket。出于安全考虑，一般 Linux 系统上不会直接使用 root 用户。因此，更好地做法是将需要使用 docker 的用户加入 docker 用户组，或者安装rootless的docker
 
 ```bash
 $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
+# 或者使用脚本变为rootless模式
+$ dockerd-rootless.sh
 ```
 
 新建终端测试
@@ -108,11 +110,58 @@ For more examples and ideas, visit:
 
 ## 定制镜像
 
-执行`git clone https://github.com/jygzyc/PersonalDocker.git`，在`android/`目录下执行`docker buildx build . -t android:v1`
+`Dockerfile`文件如下
 
-> 需要说明的是，docker中不推荐使用ccache，因为ccache会访问主机的部分目录，这时候可能会出现权限拒绝的问题，在资源足够的情况下不需要使用ccache
+```dockerfile
+FROM ubuntu:22.04
 
-构建完成后按照`README.md`即可执行bash
+# Modify the sources.list for improving download speed 
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+
+# Create environment
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get -qq update
+RUN apt-get -y install bc bison build-essential ccache cpio curl flex g++-multilib gcc-multilib 
+RUN apt-get -y install git git-lfs gnupg gperf imagemagick libc6-dev libelf-dev libgl1-mesa-dev liblz4-tool
+RUN apt-get -y install libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libx11-dev libxml2 libxml2-utils 
+RUN apt-get -y install lzop lzip m4 make ncurses-dev patch pngcrush python3 python3-pip rsync schedtool 
+RUN apt-get -y install squashfs-tools unzip x11proto-core-dev xsltproc zip zlib1g-dev openjdk-11-jdk
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+# Install repo
+RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
+
+# Turn on caching
+ENV USE_CCACHE 1
+ENV CCACHE_EXEC /usr/bin/ccache
+ENV CCACHE_DIR=/ccache
+RUN ccache -M 50G
+
+# Mount source code directory
+VOLUME /source
+ENV WORKDIR /source
+WORKDIR $WORKDIR
+```
+
+`docker-compose.yml`配置如下
+
+```yml
+version: "3"
+services:
+  android_builder:
+    build: .
+    command: /bin/bash
+    tty: true
+    stdin_open: true
+    volumes:
+      - /home/${USER}/android/lineage/:/source # SourceCode Directory
+      - /home/${USER}/.ccache:/ccache # ccache directory
+```
+
+在执行前先配置好`ccache`的目录和源码目录，再使用``docker compose run --rm android_builder bash`启动
+
+!!! reference "参考"
+    上面的文件已建立项目[dockers](https://github.com/jygzyc/dockers/tree/main/android)
 
 ## 执行编译
 
