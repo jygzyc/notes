@@ -1,0 +1,39 @@
+/* Global Color Settings */
+[data-md-color-scheme="default"] {
+    --md-code-bg-color: #f5f5f5;
+}
+
+/* Grid background */
+.md-main {
+    background-image: linear-gradient(rgba(50,0,0,0.05) 1px,transparent 0),linear-gradient(90deg,rgba(50,0,0,0.05) 1px,transparent 0);
+    background-size: 15px 15px;
+}
+
+/* Code Highlight */
+:root > * {
+    --md-tooltip-width: 600px;
+    --md-code-hl-color: #ff7d7d;
+    --md-code-hl-color--light: #ffeaea;
+}
+
+.keyword {
+    color: #EE0F0F;
+}
+
+/* Content width */
+.md-grid {
+    max-width: 1440px; 
+}
+
+/* Font Settings */
+.md-typeset{font-size:.8rem;}
+.md-typeset h1{font-weight: 500;}
+.md-typeset h2{font-weight: 600;}
+nav.md-nav.md-nav--secondary a.md-nav__link{white-space:normal;}
+
+/* Change admonition type */
+.md-typeset .admonition,
+.md-typeset details {
+  border-width: 0;
+  border-left-width: 4px;
+}
