@@ -6,11 +6,13 @@ ENV PACKAGES=/usr/local/lib/python3.11/site-packages
 # ------------------------------------------------------
 # --- mkdocs
 RUN pip install --no-cache-dir --upgrade \
+    mkdocs \
+    mkdocs-material \
     pymdown-extensions \
-    mkdocs mkdocs-material \
     mkdocs-glightbox \
     mkdocs-minify-plugin \
     mkdocs-redirects \
+    jieba \
     mkdocs-awesome-pages-plugin
 
 # ------------------------------------------------------

@@ -1,7 +1,7 @@
-site_name: Ecool Notes
+site_name: Ecool的知识花园
 site_author: Ecool
 
-repo_name: Ecool Notes
+repo_name: Ecool的知识花园
 repo_url: https://github.com/jygzyc/Notes
 
 # Configuration
@@ -9,23 +9,32 @@ theme:
   name: material
   language: zh
   custom_dir: overrides
-  favicon: custom/assets/favicon.ico
+  favicon: assets/favicon.ico
   palette: 
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
+      primary: indigo
       toggle:
         icon: material/brightness-7
-        name: Dark mode
+        name: Switch to dark mode
+
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: blue grey
       toggle:
         icon: material/brightness-4
-        name: Light mode
+        name: Switch to system preference
   font:
-    text: Roboto
-    code: Roboto Mono
+    text: "Microsoft Yahei"
+    code: "JetBrains Mono"
   features:
     # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
     - navigation.tabs
@@ -53,7 +62,7 @@ theme:
     - toc.follow
 
 # Copyright
-copyright: This website follows CC BY-SA 4.0
+copyright: 版权所有
 
 # Extensions
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions
@@ -74,9 +83,7 @@ markdown_extensions:
   - pymdownx.highlight:
       linenums: true
       use_pygments: true
-      auto_title: true
       line_spans: __span
-      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.tasklist:
@@ -91,12 +98,12 @@ markdown_extensions:
 
 # Additional configuration
 extra_javascript:
-  - custom/javascripts/extra.js
+  - js/extra.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
 extra_css:
-  - custom/stylesheets/extra.css
+  - css/extra.css
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
 
 # Plugins
@@ -104,11 +111,14 @@ plugins:
   - awesome-pages:
       strict: false
   - search:
-      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
       lang:
         - en
+        - ja
         - zh
-  - glightbox
+      separator: '[\s\u200b\-]'
+  - glightbox:
+      auto_caption: false
+      caption_position: bottom
   - minify:
       minify_html: true
   - blog:
@@ -118,3 +128,5 @@ plugins:
       archive: true
       categories: true
   
+hooks:
+  - hook.py

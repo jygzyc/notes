@@ -1,4 +1,7 @@
-# Welcome to Ecool Note
+---
+title: Ecool的知识花园
+template: home.html
+---
 
 !!! note "Mkdocs"
     本站点使用Mkdocs进行部署，详细的文档请参考[mkdocs.org](https://www.mkdocs.org)

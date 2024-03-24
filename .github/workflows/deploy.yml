@@ -21,18 +21,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version: [3.11]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.11
+      - run: pip install mkdocs
       - run: pip install mkdocs-material
       - run: pip install mkdocs-glightbox
       - run: pip install pymdown-extensions
       - run: pip install mkdocs-minify-plugin
+      - run: pip install jieba
       - run: pip install mkdocs-redirects
       - run: pip install mkdocs-awesome-pages-plugin
       - run: mkdocs gh-deploy --force
