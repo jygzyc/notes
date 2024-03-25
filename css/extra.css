@@ -5,8 +5,8 @@
 
 /* Grid background */
 .md-main {
-    background-image: linear-gradient(rgba(50,0,0,0.05) 1px,transparent 0),linear-gradient(90deg,rgba(50,0,0,0.05) 1px,transparent 0);
-    background-size: 15px 15px;
+    background-image: linear-gradient(rgba(50,0,0,0.03) 1px,transparent 0),linear-gradient(90deg,rgba(50,0,0,0.03) 1px,transparent 0);
+    background-size: 20px 20px;
 }
 
 /* Code Highlight */
@@ -22,7 +22,7 @@
 
 /* Content width */
 .md-grid {
-    max-width: 1440px; 
+    max-width: 1200px; 
 }
 
 /* Font Settings */
