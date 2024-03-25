@@ -13,7 +13,8 @@ RUN pip install --no-cache-dir --upgrade \
     mkdocs-minify-plugin \
     mkdocs-redirects \
     jieba \
-    mkdocs-awesome-pages-plugin
+    mkdocs-awesome-pages-plugin \
+    mkdocs-git-revision-date-localized-plugin
 
 # ------------------------------------------------------
 # --- Workdir Config
