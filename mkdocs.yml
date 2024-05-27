@@ -116,15 +116,15 @@ hooks:
 plugins: 
   - awesome-pages:
       strict: false
-  - git-revision-date-localized:
-      locale: zh
-      type: date
-      timezone: Asia/Shanghai
-      enable_creation_date: true
-      exclude:
-        - blog/archive/*
-        - blog/category/*
-        - index.md
+  # - git-revision-date-localized:
+  #     locale: zh
+  #     type: date
+  #     timezone: Asia/Shanghai
+  #     enable_creation_date: true
+  #     exclude:
+  #       - blog/archive/*
+  #       - blog/category/*
+  #       - index.md
   - search:
       lang:
         - en
