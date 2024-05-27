@@ -108,6 +108,10 @@ extra_css:
   - css/extra.css
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
 
+hooks:
+  - scripts/hook_copyright.py
+  - scripts/hook_meta_slug.py
+
 # Plugins
 plugins: 
   - awesome-pages:
@@ -139,6 +143,3 @@ plugins:
       archive: true
       categories: true
 
-  
-hooks:
-  - hook.py

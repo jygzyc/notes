@@ -1,9 +1,9 @@
 nav:
   - 主页: index.md
-  - applications
-  - technology
-  - life
-  - article
-  - blog
+  - 留言板: site-message.md
+  - 生活: life
+  - 随笔: essay
+  - 技术: technology
+  - 博客: blog
 
 collapse_single_pages: true

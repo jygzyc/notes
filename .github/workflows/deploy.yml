@@ -1,39 +1,64 @@
 name: deploy 
 on:
   push:
-    branches: [ main ]
-
-permissions:
-    contents: write
+    branches:
+      - main
+  schedule:
+    - cron: '0 19 * * *'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     python-version: [3.11]
+
     steps:
-      - uses: actions/checkout@v4
-        with: 
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - name: Check branch
+        uses: actions/checkout@v4
+      
+      - name: Git config
+        run: |
+          git config --global user.name "jygzyc"
+          git config --global user.email "jyg.zyc@outlook.com"
+      - name: Git pull
+        run: git pull
+
+      - name: Setup python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.x
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
-      - uses: actions/cache@v3
+          python-version: '3.11'
+    
+      - name: Install requirements
+        run: pip install requests python-slugify pytz
+
+      - name: Get all discussions
+        run: python script/queryDiscussions.py -r jygzyc/notes -t ${ secrets.PERSONAL_ACCESS_TOKEN } -o discussions
+      
+      - name: Generate pages navigation
+        run: python script/nav2pages.py -n nav.json -o docs
+
+      - name: Generate markdown posts
+        run: python script/discussionFileConverter.py -i discussions -o docs -n nav.json -f 0
+    
+      - name: Commit files
+        run: |
+          current="`TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S'`"
+          message="Add Changes By GitHub Actions: $current (CST/UTC-8)"
+          echo "$message" > update.log          
+          git add --all
+          git commit -a -m "$message"
+        
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with: 
+            github_token: ${ secrets.PERSONAL_ACCESS_TOKEN }
+            branch: main
+
+      - uses: actions/cache@v4
         with:
           key: mkdocs-material-${ env.cache_id }
           path: .cache
           restore-keys: |
             mkdocs-material-
 
-      - run: pip install mkdocs-git-revision-date-localized-plugin
-      - run: pip install mkdocs-glightbox
-      - run: pip install mkdocs-minify-plugin
-      - run: pip install jieba 
-      - run: pip install mkdocs-redirects
-      - run: pip install mkdocs-awesome-pages-plugin
-
-      - run: pip install --upgrade mkdocs-material
+      - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force
 
