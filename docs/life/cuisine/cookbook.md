@@ -54,7 +54,8 @@ comments: true
 
 ## 素菜
 
-> TODO<script src="https://giscus.app/client.js"
+> TODO  
+<script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
     data-repo-id="R_kgDOJrOxMQ"
     data-mapping="number"

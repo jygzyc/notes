@@ -155,7 +155,8 @@ DYNAMO 是一种灰盒测试解决方案，分为两个阶段来构建 API 的�
 
 [^2]: [论文笔记:《Bringing Balance to the Force Dynamic Analysis of the Android Application Framework》](https://ashenone66.cn/2022/03/03/lun-wen-bi-ji-bringing-balance-to-the-force-dynamic-analysis-of-the-android-application-framework/)
 
-[^3]: [Github - abdawoud/Dynamo](https://github.com/abdawoud/Dynamo)<script src="https://giscus.app/client.js"
+[^3]: [Github - abdawoud/Dynamo](https://github.com/abdawoud/Dynamo)  
+<script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
     data-repo-id="R_kgDOJrOxMQ"
     data-mapping="number"

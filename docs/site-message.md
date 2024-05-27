@@ -9,6 +9,7 @@ comment: true
 ---
 
 搞一个留言板方便交流
+  
 <script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
     data-repo-id="R_kgDOJrOxMQ"
