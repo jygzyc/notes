@@ -216,6 +216,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
     - discussion (dict): A dictionary representing a discussion object which includes
                          details like 'title', 'url', etc.
     - md_name
+    - md_path
     
     Returns:
     - str: A string of markdown formatted metadata.
@@ -233,7 +234,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'url: {discussion["url"]}\n'
-                    f'slug: {md_name + "/"}\n'
+                    f'slug: {"{}/".format(md_name)}\n'
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
@@ -256,7 +257,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'---\n\n')
     else:
         # common pages
-        slug = "{0}discussion-{1}".format(md_path, discussion["number"])
+        slug = Path(md_path).joinpath("discussion-{0}".format(discussion["number"]))
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'slug: {slug}/\n'
