@@ -295,4 +295,17 @@ function doGet() {
 doGet();
 ```
 
-因此，定义异步任务时，使用async function比Promise简单，调用异步任务时，使用await比Promise简单，捕获错误时，按传统的`try...catch`写法，也比Promise简单。只要浏览器支持，完全可以用`async`简洁地实现异步操作。
+因此，定义异步任务时，使用async function比Promise简单，调用异步任务时，使用await比Promise简单，捕获错误时，按传统的`try...catch`写法，也比Promise简单。只要浏览器支持，完全可以用`async`简洁地实现异步操作。<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="7"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>

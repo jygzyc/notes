@@ -139,4 +139,17 @@ systemctl enable mihomo
 ```
 
 [^1]: [虤虤豆的博客](https://tiger.fail/archives/ubuntu-rw-windows-files.html)
-[^2]: [虚空终端 Docs](https://wiki.metacubex.one/)
+[^2]: [虚空终端 Docs](https://wiki.metacubex.one/)<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="11"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>

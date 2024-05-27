@@ -109,4 +109,17 @@ comments: true
 
 我一直，都是沉潜于水下的人。
 
-于2016年8月29日
+于2016年8月29日<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="5"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>

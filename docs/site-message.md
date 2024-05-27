@@ -9,3 +9,17 @@ comment: true
 ---
 
 搞一个留言板方便交流
+<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="9"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>

@@ -186,3 +186,17 @@ brunch blueline
 
 - [Docker - 从入门到实践](https://yeasy.gitbook.io/docker_practice)
 - [Build LineageOS for Google Pixel 3](https://wiki.lineageos.org/devices/blueline/build)
+<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="4"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
