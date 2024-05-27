@@ -284,9 +284,8 @@ def converter(discussions_data, nav_data, out_dir):
             md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
 
             category_num = discussion['category']['name'][:2]
-            # site and blog pages
-            if int(category_num) == 0:
-                md_filename = _md_filename_generator(discussion, MdType.PRESET)
+            if int(category_num) == 0: # site pages
+                md_filename = _md_filename_generator(discussion, MdType.SPECIFIC)
             else:
                 md_filename = _md_filename_generator(discussion, MdType.PRESET)
             
