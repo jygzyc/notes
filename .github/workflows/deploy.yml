@@ -36,7 +36,7 @@ jobs:
         run: python scripts/nav2pages.py -n nav.json -o docs
 
       - name: Generate markdown posts
-        run: python scripts/discussionFileConverter.py -i discussions -o docs -n nav.json -f 0
+        run: python scripts/discussionFileConverter.py -i discussions -o docs -n nav.json
     
       - name: Commit files
         run: |
