@@ -10,6 +10,61 @@ import json
 import re
 import os
 
+# def convert_site_pages(discussion, nav_data, out_dir):
+#     md_filename = _md_filename_generator(discussion=discussion, flag=MdType.SPECIFIC)
+#     md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
+#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
+#     discussion_body = discussion["body"]
+    
+#     saved_dir = Path(out_dir).joinpath(md_path)
+#     if saved_dir.exists():
+#         for i in saved_dir.glob(md_filename):
+#             i.unlink()
+#     else:
+#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
+
+#     saved_filepath = Path(saved_dir).joinpath(md_filename)
+#     print("[*] Path: {}".format(saved_filepath))
+#     with open(saved_filepath, "w") as md_file:
+#         md_file.write(md_metadata)
+#         md_file.write(discussion_body)
+
+# def convert_blog_pages(discussion, nav_data, out_dir):
+#     md_filename =  _md_filename_generator(discussion, MdType.PRESET)
+#     md_path = _md_directory_generator(discussion, nav_data)
+#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
+#     discussion_body = discussion["body"]
+#     saved_dir = Path(out_dir).joinpath(md_path)
+#     if saved_dir.exists():
+#         for i in saved_dir.glob(md_filename):
+#             i.unlink()
+#     else:
+#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
+
+#     saved_filepath = Path(saved_dir).joinpath(md_filename)
+#     print("[*] Path: {}".format(saved_filepath))
+#     with open(saved_filepath, "w") as md_file:
+#         md_file.write(md_metadata)
+#         md_file.write(discussion_body)     
+
+# def convert_common_pages(discussion, nav_data, out_dir):
+#     md_filename = _md_filename_generator(discussion, MdType.PRESET)
+#     md_path = _md_directory_generator(discussion, nav_data)
+#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
+#     discussion_body = discussion["body"]
+#     saved_dir = Path(out_dir).joinpath(md_path)
+#     if saved_dir.exists():
+#         for i in saved_dir.glob(md_filename):
+#             i.unlink()
+#     else:
+#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
+
+#     saved_filepath = Path(saved_dir).joinpath(md_filename)
+#     print("[*] Path: {}".format(saved_filepath))
+#     with open(saved_filepath, "w") as md_file:
+#         md_file.write(md_metadata)
+#         md_file.write(discussion_body) 
+
 class FileException(Exception):
     def __init__(self, message):
         super.__init__(message)
@@ -88,27 +143,6 @@ class TestConverterMethods(unittest.TestCase):
                     print(_md_meta_generator(discussion, 
                                              _md_filename_generator(discussion, flag=MdType.PRESET),
                                              _md_directory_generator(discussion, self.nav_data))) 
-    # @unittest.skip("temp")
-    def test_convert_site_pages(self):
-        if 'nodes' in self.discussions_data.keys():
-            discussions_list = self.discussions_data['nodes']
-            for discussion in discussions_list:
-                if not discussion:
-                    continue
-                discussion_title = discussion['title']
-                if discussion_title == "留言板": # site test
-                    convert_site_pages(discussion=discussion, nav_data=self.nav_data, out_dir="test")
-
-    # @unittest.skip("temp")
-    def test_convert_common_pages(self):
-        if 'nodes' in self.discussions_data.keys():
-            discussions_list = self.discussions_data['nodes']
-            for discussion in discussions_list:
-                if not discussion:
-                    continue
-                discussion_title = discussion['title']
-                if discussion_title == "JavaScript基础": # site test
-                    convert_common_pages(discussion=discussion, nav_data=self.nav_data, out_dir="test")
 
 def _md_filename_generator(discussion, flag):
     """
@@ -132,14 +166,14 @@ def _md_filename_generator(discussion, flag):
             filename = match.group(1) if match else None
             return f'{slugify(filename, allow_unicode=False, lowercase=False)}.md' \
                 if filename != None \
-                    else f'{slugify(discussion["title"], allow_unicode=True, lowercase=False)}.md'
+                    else f'{slugify(discussion["title"])}.md'
         case MdType.SPECIFIC:
             discussion_labels = [label['name'] for label in discussion['labels']['nodes']] if discussion['labels']['nodes'] else None
             return f'{slugify(discussion_labels[0], allow_unicode=False, lowercase=False)}.md' \
                 if discussion_labels != None \
                 else f'{slugify(discussion["title"], allow_unicode=True, lowercase=False)}.md'
         case _:
-            return f'{slugify(discussion["title"], allow_unicode=True, lowercase=False)}.md'
+            return f'{slugify(discussion["title"])}.md'
 
 def _md_directory_generator(discussion, nav):
     """
@@ -160,20 +194,19 @@ def _md_directory_generator(discussion, nav):
     numerical prefixes and then looks up the corresponding directory path in the
     provided navigation dictionary.
     """
-    category_num = discussion['category']['name'][:2]
-    discussion_label = (
-        [label['name'] for label in discussion['labels']['nodes']] 
-        if discussion['labels']['nodes'] else []
-    )
-    
-    # site and blog pages
-    if int(category_num) == 0:
-        return "."
-    elif int(category_num) == 9:
-        return "blog/posts/"
+    category_num, _ = discussion['category']['name'].split("-")
+    category = discussion['category']['name']
+    if int(category_num) < 100:
+        if int(category_num[:2]) == 0:
+            return "."
+        else:
+            return nav[category]
     else:
-        # common pages
-        return nav[category_num].get(discussion_label[0], nav[category_num])
+        discussion_label = (
+            [label['name'] for label in discussion['labels']['nodes']] 
+            if discussion['labels']['nodes'] else []
+        )
+        return nav[category_num[:2]][discussion_label[0]] if discussion_label != [] else nav[category_num[:2]][category]
 
 def _md_meta_generator(discussion: dict, md_name, md_path):
     """
@@ -192,11 +225,11 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
     It constructs the metadata based on the category number of the discussion. The category
     number determines the structure and content of the metadata.
     """
-    category_num = discussion['category']['name'][:2]
+    category_num_prefix = discussion['category']['name'][:2]
     md_name, _ = os.path.splitext(os.path.basename(md_name)) #if md_name[-3:] == ".md" else md_name
     
     # site and blog pages
-    if int(category_num) == 0:
+    if int(category_num_prefix) == 0:
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'url: {discussion["url"]}\n'
@@ -206,7 +239,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'  - {discussion["category"]["name"]}\n'
                     f'comment: true\n'
                     f'---\n\n')
-    elif int(category_num) == 9:
+    elif int(category_num_prefix) == 9:
         slug = "blog/discussion-{0}".format(discussion["number"])
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
@@ -237,62 +270,9 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'---\n\n')
     return metadata
 
-def convert_site_pages(discussion, nav_data, out_dir):
-    md_filename = _md_filename_generator(discussion=discussion, flag=MdType.SPECIFIC)
-    md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
-    md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-    discussion_body = discussion["body"]
-    
-    saved_dir = Path(out_dir).joinpath(md_path)
-    if saved_dir.exists():
-        for i in saved_dir.glob(md_filename):
-            i.unlink()
-    else:
-        Path(saved_dir).mkdir(parents=True, exist_ok=True)
 
-    saved_filepath = Path(saved_dir).joinpath(md_filename)
-    print("[*] Path: {}".format(saved_filepath))
-    with open(saved_filepath, "w") as md_file:
-        md_file.write(md_metadata)
-        md_file.write(discussion_body)
 
-def convert_blog_pages(discussion, nav_data, out_dir):
-    md_filename =  _md_filename_generator(discussion, MdType.PRESET)
-    md_path = _md_directory_generator(discussion, nav_data)
-    md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-    discussion_body = discussion["body"]
-    saved_dir = Path(out_dir).joinpath(md_path)
-    if saved_dir.exists():
-        for i in saved_dir.glob(md_filename):
-            i.unlink()
-    else:
-        Path(saved_dir).mkdir(parents=True, exist_ok=True)
-
-    saved_filepath = Path(saved_dir).joinpath(md_filename)
-    print("[*] Path: {}".format(saved_filepath))
-    with open(saved_filepath, "w") as md_file:
-        md_file.write(md_metadata)
-        md_file.write(discussion_body)     
-
-def convert_common_pages(discussion, nav_data, out_dir):
-    md_filename = _md_filename_generator(discussion, MdType.PRESET)
-    md_path = _md_directory_generator(discussion, nav_data)
-    md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-    discussion_body = discussion["body"]
-    saved_dir = Path(out_dir).joinpath(md_path)
-    if saved_dir.exists():
-        for i in saved_dir.glob(md_filename):
-            i.unlink()
-    else:
-        Path(saved_dir).mkdir(parents=True, exist_ok=True)
-
-    saved_filepath = Path(saved_dir).joinpath(md_filename)
-    print("[*] Path: {}".format(saved_filepath))
-    with open(saved_filepath, "w") as md_file:
-        md_file.write(md_metadata)
-        md_file.write(discussion_body) 
-
-def converter(discussions_data, nav_data, out_dir, flag):
+def converter(discussions_data, nav_data, out_dir):
     # 处理所有的 discussions
     if 'nodes' in discussions_data.keys():
         discussions_list = discussions_data['nodes']
@@ -300,24 +280,30 @@ def converter(discussions_data, nav_data, out_dir, flag):
             if not discussion:
                 print("Null discussion!")
                 continue
+            
+            md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
 
-            match flag:
-                case 0:
-                    print("[*] Handle all categories")
-                    convert_site_pages(discussion, nav_data, out_dir)
-                    convert_blog_pages(discussion, nav_data, out_dir)
-                    convert_common_pages(discussion, nav_data, out_dir)
-                case 1:
-                    print("[*] Handle site pages")
-                    convert_site_pages(discussion, nav_data, out_dir)
-                case 2:
-                    print("[*] Handle blog pages")
-                    convert_blog_pages(discussion, nav_data, out_dir)
-                case 3:
-                    print("[*] Handle common pages")
-                    convert_common_pages(discussion, nav_data, out_dir)
-                case _:
-                    return None
+            category_num = discussion['category']['name'][:2]
+            # site and blog pages
+            if int(category_num) == 0:
+                md_filename = _md_filename_generator(discussion, MdType.PRESET)
+            else:
+                md_filename = _md_filename_generator(discussion, MdType.PRESET)
+            
+            md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
+            discussion_body = discussion["body"]
+            saved_dir = Path(out_dir).joinpath(md_path)
+            if saved_dir.exists():
+                for i in saved_dir.glob(md_filename):
+                    i.unlink()
+            else:
+                Path(saved_dir).mkdir(parents=True, exist_ok=True)
+
+            saved_filepath = Path(saved_dir).joinpath(md_filename)
+            print("[*] Path: {}".format(saved_filepath))
+            with open(saved_filepath, "w") as md_file:
+                md_file.write(md_metadata)
+                md_file.write(discussion_body) 
 
 def _main():
     parser = argparse.ArgumentParser()
@@ -325,18 +311,11 @@ def _main():
     parser.add_argument("-i", "--input", help="Discussions input file", dest="input", default="discussions")
     parser.add_argument("-o", "--output", help="Markdown files directory", dest="output", required=True)
     parser.add_argument("-n", "--navigation", help="Navigation file", dest="navigation", required=True)
-    parser.add_argument("-f", "--flag", help="""Convert to the identifier of a specific page
-                        0: Convert all pages 
-                        1: Convert site pages
-                        2: Convert blog pages
-                        3: Convert common pages""",
-                        dest="flag", default=0)
     args = parser.parse_args()
 
     input_file = args.input
     nav_file_path = args.navigation
     out_dir = args.output
-    flag = args.flag
     
     with open(nav_file_path, "r", encoding="utf-8") as f:
         nav_data = json.load(f)
@@ -347,7 +326,7 @@ def _main():
     if nav_data is None or discussions_data is None:
         raise FileException("Navigation file or disscussions file null")
     
-    converter(discussions_data=discussions_data, nav_data=nav_data, out_dir=out_dir, flag=flag)
+    converter(discussions_data=discussions_data, nav_data=nav_data, out_dir=out_dir)
 
 
 if __name__ == "__main__":
