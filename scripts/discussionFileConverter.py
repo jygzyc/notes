@@ -251,6 +251,7 @@ def convert_site_pages(discussion, nav_data, out_dir):
         Path(saved_dir).mkdir(parents=True, exist_ok=True)
 
     saved_filepath = Path(saved_dir).joinpath(md_filename)
+    print("[*] Path: {}".format(saved_filepath))
     with open(saved_filepath, "w") as md_file:
         md_file.write(md_metadata)
         md_file.write(discussion_body)
@@ -268,6 +269,7 @@ def convert_blog_pages(discussion, nav_data, out_dir):
         Path(saved_dir).mkdir(parents=True, exist_ok=True)
 
     saved_filepath = Path(saved_dir).joinpath(md_filename)
+    print("[*] Path: {}".format(saved_filepath))
     with open(saved_filepath, "w") as md_file:
         md_file.write(md_metadata)
         md_file.write(discussion_body)     
@@ -285,6 +287,7 @@ def convert_common_pages(discussion, nav_data, out_dir):
         Path(saved_dir).mkdir(parents=True, exist_ok=True)
 
     saved_filepath = Path(saved_dir).joinpath(md_filename)
+    print("[*] Path: {}".format(saved_filepath))
     with open(saved_filepath, "w") as md_file:
         md_file.write(md_metadata)
         md_file.write(discussion_body) 
