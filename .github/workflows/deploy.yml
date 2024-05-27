@@ -30,13 +30,13 @@ jobs:
         run: pip install requests python-slugify pytz
 
       - name: Get all discussions
-        run: python script/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_ACCESS_TOKEN }} -o discussions
+        run: python scripts/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_ACCESS_TOKEN }} -o discussions
       
       - name: Generate pages navigation
-        run: python script/nav2pages.py -n nav.json -o docs
+        run: python scripts/nav2pages.py -n nav.json -o docs
 
       - name: Generate markdown posts
-        run: python script/discussionFileConverter.py -i discussions -o docs -n nav.json -f 0
+        run: python scripts/discussionFileConverter.py -i discussions -o docs -n nav.json -f 0
     
       - name: Commit files
         run: |
