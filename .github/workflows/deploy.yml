@@ -30,7 +30,7 @@ jobs:
         run: pip install requests python-slugify pytz
 
       - name: Get all discussions
-        run: python script/queryDiscussions.py -r jygzyc/notes -t ${ secrets.PERSONAL_ACCESS_TOKEN } -o discussions
+        run: python script/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_ACCESS_TOKEN }} -o discussions
       
       - name: Generate pages navigation
         run: python script/nav2pages.py -n nav.json -o docs
@@ -49,12 +49,12 @@ jobs:
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with: 
-            github_token: ${ secrets.PERSONAL_ACCESS_TOKEN }
+            github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
             branch: main
 
       - uses: actions/cache@v4
         with:
-          key: mkdocs-material-${ env.cache_id }
+          key: mkdocs-material-${{ env.cache_id }}
           path: .cache
           restore-keys: |
             mkdocs-material-
