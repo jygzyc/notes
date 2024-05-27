@@ -348,6 +348,6 @@ def _main():
 
 
 if __name__ == "__main__":
-    unittest.main()
-    # _main()
+    # unittest.main()
+    _main()
     
