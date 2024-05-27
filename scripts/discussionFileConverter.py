@@ -272,7 +272,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
 
 def _md_comment_generator(discussion:dict):
     discussion_num = discussion["number"]
-    comment_js_data = (f'  \n'
+    comment_js_data = (f'\n  \n'
                     f'<script src="https://giscus.app/client.js"\n'
                     f'    data-repo="jygzyc/notes"\n'
                     f'    data-repo-id="R_kgDOJrOxMQ"\n'
