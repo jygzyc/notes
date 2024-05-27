@@ -301,4 +301,17 @@ if __name__ == "__main__":
 
 - [MegatronKing/StringFog: 一款自动对字节码中的字符串进行加密Android插件工具 (github.com)](https://github.com/MegatronKing/StringFog)
 - [frida/frida: Clone this repo to build Frida (github.com)](https://github.com/frida/frida)
-- [skylot/jadx: Dex to Java decompiler (github.com)](https://github.com/skylot/jadx)
+- [skylot/jadx: Dex to Java decompiler (github.com)](https://github.com/skylot/jadx)<script src="https://giscus.app/client.js"
+    data-repo="jygzyc/notes"
+    data-repo-id="R_kgDOJrOxMQ"
+    data-mapping="number"
+    data-term="12"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+</script>
