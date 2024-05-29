@@ -7,7 +7,7 @@
         "010101-ROM定制": "technology/android/rom/",
         "010102-Framework安全": "technology/android/framework_security/",
         "010103-逆向分析": "technology/android/reverse/",
-        "010104-eBPF": "technology/android/ebpf/",
+        "010104-Kernel": "technology/android/kernel/",
         "0102-编程": "technology/program/",
         "010201-JavaScript": "technology/program/js/",
         "010202-C": "technology/program/c/",
