@@ -138,6 +138,12 @@ systemctl daemon-reload
 systemctl enable mihomo
 ```
 
+## grub theme
+
+可以使用开源项目[grub2-themes](https://github.com/vinceliuice/grub2-themes)
+
+
+
 [^1]: [虤虤豆的博客](https://tiger.fail/archives/ubuntu-rw-windows-files.html)
 [^2]: [虚空终端 Docs](https://wiki.metacubex.one/)
   
