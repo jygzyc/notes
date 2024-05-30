@@ -249,7 +249,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'date:\n'
                     f'  created: {discussion["createdAt"][0:10]}\n'
                     f'  updated: {discussion["updatedAt"][0:10]}\n'
-                    f'authors: [{discussion["author"]["login"]}]\n'
+                    f'authors: [Ecool]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
