@@ -1,7 +1,7 @@
 ---
 title: Ecool的知识花园
 template: home.html
-comment: false
+comments: false
 ---
 
 本站点基于[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)进行部署，一部分文章来源于之前的博客。

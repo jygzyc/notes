@@ -238,7 +238,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
-                    f'comment: true\n'
+                    f'comments: true\n'
                     f'---\n\n')
     elif int(category_num_prefix) == 9:
         slug = "blog/discussion-{0}".format(discussion["number"])
