@@ -25,7 +25,8 @@
     "02": {
         "0201-饮食": "life/cuisine/",
         "0202-旅游": "life/travel/",
-        "0203-健康": "life/health/"
+        "0203-健康": "life/health/",
+        "0204-Tips": "life/tips/"
     },
     "03-随笔": "essay/",
     "03": {
