@@ -284,7 +284,6 @@ def _md_comment_generator(discussion:dict):
                     f'    data-input-position="top"\n'
                     f'    data-theme="preferred_color_scheme"\n'
                     f'    data-lang="zh-CN"\n'
-                    f'    data-loading="lazy"\n'
                     f'    crossorigin="anonymous"\n'
                     f'    async>\n'
                     f'</script>\n')
