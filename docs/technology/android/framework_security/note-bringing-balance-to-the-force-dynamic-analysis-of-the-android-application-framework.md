@@ -167,7 +167,6 @@ DYNAMO 是一种灰盒测试解决方案，分为两个阶段来构建 API 的�
     data-input-position="top"
     data-theme="preferred_color_scheme"
     data-lang="zh-CN"
-    data-loading="lazy"
     crossorigin="anonymous"
     async>
 </script>

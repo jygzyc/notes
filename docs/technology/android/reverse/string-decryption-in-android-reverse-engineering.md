@@ -313,7 +313,6 @@ if __name__ == "__main__":
     data-input-position="top"
     data-theme="preferred_color_scheme"
     data-lang="zh-CN"
-    data-loading="lazy"
     crossorigin="anonymous"
     async>
 </script>

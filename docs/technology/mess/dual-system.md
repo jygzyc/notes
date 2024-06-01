@@ -157,7 +157,6 @@ systemctl enable mihomo
     data-input-position="top"
     data-theme="preferred_color_scheme"
     data-lang="zh-CN"
-    data-loading="lazy"
     crossorigin="anonymous"
     async>
 </script>

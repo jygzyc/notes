@@ -20,6 +20,9 @@ comments: true
 - 采集: 根据内核提供给用户态的原始事件回调接口进行划分
 - 前端: 获取和解析监控事件数据的用户工具
 
+![note_linux_tracing_systems-2024-05-30-23-38-41](https://raw.githubusercontent.com/jygzyc/notes-images/main/blog/note_linux_tracing_systems-2024-05-30-23-38-41.png)
+
+
 
 
 
@@ -36,7 +39,6 @@ comments: true
     data-input-position="top"
     data-theme="preferred_color_scheme"
     data-lang="zh-CN"
-    data-loading="lazy"
     crossorigin="anonymous"
     async>
 </script>
