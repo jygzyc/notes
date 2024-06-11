@@ -10,61 +10,6 @@ import json
 import re
 import os
 
-# def convert_site_pages(discussion, nav_data, out_dir):
-#     md_filename = _md_filename_generator(discussion=discussion, flag=MdType.SPECIFIC)
-#     md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
-#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-#     discussion_body = discussion["body"]
-    
-#     saved_dir = Path(out_dir).joinpath(md_path)
-#     if saved_dir.exists():
-#         for i in saved_dir.glob(md_filename):
-#             i.unlink()
-#     else:
-#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
-
-#     saved_filepath = Path(saved_dir).joinpath(md_filename)
-#     print("[*] Path: {}".format(saved_filepath))
-#     with open(saved_filepath, "w") as md_file:
-#         md_file.write(md_metadata)
-#         md_file.write(discussion_body)
-
-# def convert_blog_pages(discussion, nav_data, out_dir):
-#     md_filename =  _md_filename_generator(discussion, MdType.PRESET)
-#     md_path = _md_directory_generator(discussion, nav_data)
-#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-#     discussion_body = discussion["body"]
-#     saved_dir = Path(out_dir).joinpath(md_path)
-#     if saved_dir.exists():
-#         for i in saved_dir.glob(md_filename):
-#             i.unlink()
-#     else:
-#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
-
-#     saved_filepath = Path(saved_dir).joinpath(md_filename)
-#     print("[*] Path: {}".format(saved_filepath))
-#     with open(saved_filepath, "w") as md_file:
-#         md_file.write(md_metadata)
-#         md_file.write(discussion_body)     
-
-# def convert_common_pages(discussion, nav_data, out_dir):
-#     md_filename = _md_filename_generator(discussion, MdType.PRESET)
-#     md_path = _md_directory_generator(discussion, nav_data)
-#     md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-#     discussion_body = discussion["body"]
-#     saved_dir = Path(out_dir).joinpath(md_path)
-#     if saved_dir.exists():
-#         for i in saved_dir.glob(md_filename):
-#             i.unlink()
-#     else:
-#         Path(saved_dir).mkdir(parents=True, exist_ok=True)
-
-#     saved_filepath = Path(saved_dir).joinpath(md_filename)
-#     print("[*] Path: {}".format(saved_filepath))
-#     with open(saved_filepath, "w") as md_file:
-#         md_file.write(md_metadata)
-#         md_file.write(discussion_body) 
-
 class FileException(Exception):
     def __init__(self, message):
         super.__init__(message)
