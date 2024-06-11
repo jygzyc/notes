@@ -22,7 +22,7 @@ comments: true
 - 采集机制: 根据内核提供给用户态的原始事件回调接口进行划分
 - 前端: 获取和解析监控事件数据的用户工具
 
-![Fig1](https://raw.githubusercontent.com/jygzyc/notes-images/main/blog/note_linux_tracing_systems-2024-05-30-23-38-41.png)
+![Fig1](https://raw.githubusercontent.com/jygzyc/notes-images/main/note_linux_tracing_systems-2024-05-30-23-38-41.png)
 
 在开始介绍之前，先来看看我们能在内核监控到什么？
 
@@ -173,6 +173,8 @@ MODULE_LICENSE("GPL");
 ```
 
 上述的案例中，每当系统中进程调用`kernel_clone()`，就会触发`handler`，从而在`dmesg`中输出堆栈和寄存器的信息。同时也可以看出，为了兼容不同的系统架构，这里的模块案例做了不同的处理。
+
+
 
 #### 原理
 

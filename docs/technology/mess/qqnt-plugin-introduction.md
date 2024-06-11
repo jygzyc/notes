@@ -24,7 +24,7 @@ comments: true
 
 ## 效果图
 
-![](https://raw.githubusercontent.com/jygzyc/notes-images/main/blog/qqnt_plugin_introduction-2024-05-30-01-24-25.png)
+![](https://raw.githubusercontent.com/jygzyc/notes-images/main/qqnt_plugin_introduction-2024-05-30-01-24-25.png)
   
 <script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
