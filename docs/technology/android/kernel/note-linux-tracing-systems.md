@@ -22,7 +22,7 @@ comments: true
 - 采集机制: 根据内核提供给用户态的原始事件回调接口进行划分
 - 前端: 获取和解析监控事件数据的用户工具
 
-![Fig1](https://raw.githubusercontent.com/jygzyc/notes-images/main/note_linux_tracing_systems-2024-05-30-23-38-41.png)
+![Fig1](https://bucket.lilac.fun/2024/06/note_linux_tracing_systems-01.png)
 
 在开始介绍之前，先来看看我们能在内核监控到什么？
 

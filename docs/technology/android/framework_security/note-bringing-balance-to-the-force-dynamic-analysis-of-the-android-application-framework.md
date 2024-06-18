@@ -100,7 +100,7 @@ DYNAMO 是一种灰盒测试解决方案，分为两个阶段来构建 API 的�
 
 *Testing Manager*（TM）的请求下还负责在运行时修改方法的行为。当前版本本质是 Frida Client，发送给TS进行API调用，并接收由IS中收集到的调用结果反馈，通过Analyser Module来分析覆盖率情况，控制当前的测试状态。
 
-![Fig.0](https://raw.githubusercontent.com/jygzyc/notes-images/main/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-2024-05-27-11-27-00.png)
+![note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-01.png](https://bucket.lilac.fun/2024/06/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-01.png)
 
 **Collecting Public APIs（RQ1）**
 
@@ -120,13 +120,13 @@ DYNAMO 是一种灰盒测试解决方案，分为两个阶段来构建 API 的�
 
 对于如何检测不同类型的权限检测的问题(RQ4)，作者预定义了多种测试策略，每种策略旨在发现不同类型的安全检测。工作流程大致如下：
 
-![Fig.1](https://raw.githubusercontent.com/jygzyc/notes-images/main/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-2024-05-27-11-18-00.png)
+![note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-02.png](https://bucket.lilac.fun/2024/06/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-02.png)
 
 > 例如，一种策略可以专注于发现权限，而另一种策略则检测对调用方UID和PID的检查。每个策略都从一个由预定义种子生成的输入集列表开始，所有策略都采用相同的列表。对于每种策略，DYNAMO都会执行每一个输入集，并在安全检查失败时进行检测。当报告安全检查时，它们会在同一输入集的下一次迭代中反馈，DYNAMO指示IS绕过失败的检查，以检测同一执行路径上的其他检查。重复此过程，直到没有进一步的安全检查报告为止。所有策略结束后，TM将当前API标记为完成，并继续下一个待测试的API。通过这种反馈驱动的测试，DYNAMO探索了几个调用方上下文（即第三方应用程序、特权应用程序等），以触发和检测安全检查
 
 作者举了一个例子来帮助理解，以AccessibilityManagerService的addClient API的简化版本为例
 
-![Fig.2](https://raw.githubusercontent.com/jygzyc/notes-images/main/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-2024-05-27-11-18-30.png)
+![note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-03.png](https://bucket.lilac.fun/2024/06/note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework-03.png)
 
 
 若要执行此API，调用方必须符合以下条件之一：  
