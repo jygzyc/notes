@@ -16,7 +16,7 @@ comments: true
 
 ## Kernel Tracing System 101
 
-之前听说过很多内核中的监控方案，包括 strace，ltrace，KProbes，JProbes、uprobe、eBPF、tracefs、systemtab 等等，到底他们之间的的关系是什么，分别都有什么用呢。以及他们后续能否被用来作为攻防的输入。根据这篇文章[^1]中的介绍，我们可以将其分为三个部分：
+之前听说过很多内核中的监控方案，包括 strace，ltrace，kprobes，jprobes、uprobe、eBPF、tracefs、systemtab 等等，到底他们之间的的关系是什么，分别都有什么用呢。以及他们后续能否被用来作为攻防的输入。根据这篇文章[^1]中的介绍，我们可以将其分为三个部分：
 
 - 数据源: 根据监控数据的来源划分，包括探针和断点两类
 - 采集机制: 根据内核提供给用户态的原始事件回调接口进行划分
@@ -35,7 +35,22 @@ comments: true
 
 ### Data source：KProbes
 
-KProbes 是 Linux 内核的一种调试机制，也可用于监视生产系统内的事件。简单来说，KProbes 可以实现动态内核的注入，基于中断的方法在任意指令中插入追踪代码，并且通过 pre_handler/post_handler/fault_handler 去接收回调。[^2]
+KProbes 是 Linux 内核的一种调试机制，也可用于监视生产系统内的事件。简单来说，KProbes 可以实现动态内核的注入，基于中断的方法在任意指令中插入追踪代码，并且通过 pre_handler（探测前执行）/post_handler（探测后执行）/fault_handler 去接收回调。[^2]
+
+在`<linux/kprobes.h>`中定义了KProbes的结构
+
+```c
+struct kprobe {
+    struct hlist_node hlist;                    /* Internal */
+    kprobe_opcode_t addr;                       /* Address of probe */
+    kprobe_pre_handler_t pre_handler;           /* Address of pre-handler */
+    kprobe_post_handler_t post_handler;         /* Address of post-handler */
+    kprobe_fault_handler_t fault_handler;       /* Address of fault handler */
+    kprobe_break_handler_t break_handler;       /* Internal */
+    kprobe_opcode_t opcode;                     /* Internal */        
+    kprobe_opcode_t insn[MAX_INSN_SIZE];        /* Internal */
+};
+```
 
 #### Example
 
@@ -69,7 +84,8 @@ static struct kprobe kp = {
 };
 
 /* kprobe pre_handler: called just before the probed instruction is executed */
-static int __kprobes handler_pre(struct kprobe *p, struct pt_regs *regs)
+// 定义 pre_handler
+static int __kprobes handler_pre(struct kprobe *p, struct pt_regs *regs) 
 {
 #ifdef CONFIG_X86
 	pr_info("<%s> p->addr = 0x%p, ip = %lx, flags = 0x%lx\n",
@@ -109,6 +125,7 @@ static int __kprobes handler_pre(struct kprobe *p, struct pt_regs *regs)
 }
 
 /* kprobe post_handler: called after the probed instruction is executed */
+// 定义 post_handler
 static void __kprobes handler_post(struct kprobe *p, struct pt_regs *regs,
 				unsigned long flags)
 {
@@ -152,7 +169,7 @@ static int __init kprobe_init(void)
 	kp.pre_handler = handler_pre;
 	kp.post_handler = handler_post;
 
-	ret = register_kprobe(&kp);
+	ret = register_kprobe(&kp);     // 注册 kprobes
 	if (ret < 0) {
 		pr_err("register_kprobe failed, returned %d\n", ret);
 		return ret;
@@ -163,7 +180,7 @@ static int __init kprobe_init(void)
 
 static void __exit kprobe_exit(void)
 {
-	unregister_kprobe(&kp);
+	unregister_kprobe(&kp);    // 注销 kprobes
 	pr_info("kprobe at %p unregistered\n", kp.addr);
 }
 
@@ -174,14 +191,47 @@ MODULE_LICENSE("GPL");
 
 上述的案例中，每当系统中进程调用`kernel_clone()`，就会触发`handler`，从而在`dmesg`中输出堆栈和寄存器的信息。同时也可以看出，为了兼容不同的系统架构，这里的模块案例做了不同的处理。
 
-
-
 #### 原理
+
+kprobe基于中断实现。当 kprobe 被注册后，内核会将目标指令进行拷贝并将目标指令的第一个字节替换为断点指令(比如 i386 和 x86_64 架构中的 `int 3`)，随后当CPU执行到对应地址时，中断会被触发从而执行流程会被重定向到关联的 `pre_handler` 函数；当单步执行完拷贝的指令后，内核会再次执行 `post_handler` (若存在)，从而实现指令级别的内核动态监控。也就是说，kprobe 不仅可以跟踪任意带有符号的内核函数，也可以跟踪函数中间的任意指令。
+
+### uprobe
+
+顾名思义，uprobe就是监控用户态函数/地址的探针，以一个例子作为说明
+
+#### Example
+
+```c
+//test.c
+#include <stdio.h>
+#include <stdlib.h>
+
+void foo()
+{
+    printf("foo() called\n");
+}
+int main()
+{
+    foo();
+    return 0;
+}
+``` 
+
+编译结束后，查看`foo`符号的地址，然后告诉内核监控该地址的调用
+
+```bash
+$ gcc test.c -o test
+$ readelf -s test | grep foo
+    28: 0000000000001149    26 FUNC    GLOBAL DEFAULT   16 foo
+
+```
+
 
 [^1]: [Linux tracing systems & how they fit together](https://jvns.ca/blog/2017/07/05/linux-tracing-systems/)
 [^2]: [Linux 内核监控在 Android 攻防中的应用](https://evilpan.com/2022/01/03/kernel-tracing/)
 [^3]: [An introduction to KProbes](https://lwn.net/Articles/132196/)
 [^4]: [Kernel Probes (Kprobes)](https://www.kernel.org/doc/html/latest/trace/kprobes.html)
+[^5]: [Linux tracing - kprobe, uprobe and tracepoint](https://terenceli.github.io/%E6%8A%80%E6%9C%AF/2020/08/05/tracing-basic)
   
 <script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
