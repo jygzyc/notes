@@ -195,7 +195,7 @@ MODULE_LICENSE("GPL");
 
 kprobe基于中断实现。当 kprobe 被注册后，内核会将目标指令进行拷贝并将目标指令的第一个字节替换为断点指令(比如 i386 和 x86_64 架构中的 `int 3`)，随后当CPU执行到对应地址时，中断会被触发从而执行流程会被重定向到关联的 `pre_handler` 函数；当单步执行完拷贝的指令后，内核会再次执行 `post_handler` (若存在)，从而实现指令级别的内核动态监控。也就是说，kprobe 不仅可以跟踪任意带有符号的内核函数，也可以跟踪函数中间的任意指令。
 
-### uprobe
+### uprobe[^5][^6]
 
 顾名思义，uprobe就是监控用户态函数/地址的探针，以一个例子作为说明
 
@@ -223,8 +223,39 @@ int main()
 $ gcc test.c -o test
 $ readelf -s test | grep foo
     28: 0000000000001149    26 FUNC    GLOBAL DEFAULT   16 foo
-
+# echo 'p /home/xxx/Temp/test:0x1149' > /sys/kernel/debug/tracing/u
+probe_events
+# echo 1 > /sys/kernel/debug/tracing/events/uprobes/p_test_0x1149/enable
+# echo 1 > /sys/kernel/debug/tracing/tracing_on
+$ ./test && ./test
+#  cat /sys/kernel/debug/tracing/trace
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 2/2   #P:24
+#
+#                                _-----=> irqs-off/BH-disabled
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| / _-=> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+            test-4182    [017] DNZff  4429.550406: p_test_0x1149: (0x5fc739ab0149)
+            test-4183    [017] DNZff  4429.551239: p_test_0x1149: (0x602ec9609149)
 ```
+
+监控结束之后，记得还要关闭监控
+
+```bash
+# echo 0 > /sys/kernel/debug/tracing/tracing_on
+# echo 0 > /sys/kernel/debug/tracing/events/uprobes/p_test_0x1149/enable
+# echo > /sys/kernel/debug/tracing/uprobe_events
+```
+
+#### 原理
+
+
 
 
 [^1]: [Linux tracing systems & how they fit together](https://jvns.ca/blog/2017/07/05/linux-tracing-systems/)
@@ -232,6 +263,7 @@ $ readelf -s test | grep foo
 [^3]: [An introduction to KProbes](https://lwn.net/Articles/132196/)
 [^4]: [Kernel Probes (Kprobes)](https://www.kernel.org/doc/html/latest/trace/kprobes.html)
 [^5]: [Linux tracing - kprobe, uprobe and tracepoint](https://terenceli.github.io/%E6%8A%80%E6%9C%AF/2020/08/05/tracing-basic)
+[^6]: [Linux uprobe: User-Level Dynamic Tracing](Linux uprobe: User-Level Dynamic Tracing)
   
 <script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
