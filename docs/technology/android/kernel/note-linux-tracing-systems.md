@@ -14,7 +14,7 @@ comments: true
 
 > 这篇文章主要参考了[Linux 内核监控在 Android 攻防中的应用](https://evilpan.com/2022/01/03/kernel-tracing/)，自用笔记
 
-## Kernel Tracing System 101
+## Kernel Tracing System 101[^2]
 
 之前听说过很多内核中的监控方案，包括 strace，ltrace，kprobes，jprobes、uprobe、eBPF、tracefs、systemtab 等等，到底他们之间的的关系是什么，分别都有什么用呢。以及他们后续能否被用来作为攻防的输入。根据这篇文章[^1]中的介绍，我们可以将其分为三个部分：
 
@@ -33,9 +33,9 @@ comments: true
 
 以上这些都是可能实现的，但是事实上追踪这些也是非常复杂的，下面就来一一进行说明。
 
-### Data source：KProbes
+### Data source：KProbes[^3][^4]
 
-KProbes 是 Linux 内核的一种调试机制，也可用于监视生产系统内的事件。简单来说，KProbes 可以实现动态内核的注入，基于中断的方法在任意指令中插入追踪代码，并且通过 pre_handler（探测前执行）/post_handler（探测后执行）/fault_handler 去接收回调。[^2]
+KProbes 是 Linux 内核的一种调试机制，也可用于监视生产系统内的事件。简单来说，KProbes 可以实现动态内核的注入，基于中断的方法在任意指令中插入追踪代码，并且通过 pre_handler（探测前执行）/post_handler（探测后执行）/fault_handler 去接收回调。
 
 在`<linux/kprobes.h>`中定义了KProbes的结构
 
@@ -195,7 +195,7 @@ MODULE_LICENSE("GPL");
 
 kprobe基于中断实现。当 kprobe 被注册后，内核会将目标指令进行拷贝并将目标指令的第一个字节替换为断点指令(比如 i386 和 x86_64 架构中的 `int 3`)，随后当CPU执行到对应地址时，中断会被触发从而执行流程会被重定向到关联的 `pre_handler` 函数；当单步执行完拷贝的指令后，内核会再次执行 `post_handler` (若存在)，从而实现指令级别的内核动态监控。也就是说，kprobe 不仅可以跟踪任意带有符号的内核函数，也可以跟踪函数中间的任意指令。
 
-### uprobe[^5][^6]
+### Data source：uprobe[^5][^6][^7]
 
 顾名思义，uprobe就是监控用户态函数/地址的探针，以一个例子作为说明
 
@@ -255,6 +255,24 @@ $ ./test && ./test
 
 #### 原理
 
+uprobes在[Linux 3.5](http://kernelnewbies.org/Linux_3.5#head-95fccbb746226f6b9dfa4d1a48801f63e11688de)版本被添加到内核中并在[Linux 3.14](http://kernelnewbies.org/Linux_3.14#head-ca18fd90b3cee1181d74251909e0dda6934b5add)进行更新。uprobe共有两种实现方式，分别为`debugfs`和`tracefs`，工作的流程如下（此处参考[源码](https://elixir.bootlin.com/linux/v6.9.5/source/kernel/trace/trace_uprobe.c)）
+
+将 uprobe 事件写入 `uprobe_events` ，调用链为  
+
+- [probes_write()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/probes_write)
+- [create_or_delete_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/create_or_delete_trace_uprobe）
+- [trace_uprobe_create()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/trace_uprobe_create)
+
+> （在旧版本的内核中可能为 `probes_write()->create_trace_uprobe()`）
+
+- [kern_path()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/kern_path)，打开目标ELF文件并获取文件inode  
+- [alloc_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/alloc_trace_uprobe)，分配一个trace_uprobe结构体并初始化  
+- [register_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/register_trace_uprobe)，注册trace_uprobe和probe_event ，将`trace_uprobe`添加到事件tracer中，并建立对应的 uprobe debugfs 目录，即上文示例中的 p_test_0x1149
+- 当已经注册了 uprobe 的 ELF 程序被执行时，可执行文件会被 mmap（uprobe_mmap()） 映射到进程的地址空间，同时内核会将该进程虚拟地址空间中对应的 uprobe 点替换成断点指令。当目标程序指向到对应的 uprobe 地址时，会触发断点，从而触发到 uprobe 的中断处理流程  [arch_uprobe_exception_notify](https://elixir.bootlin.com/linux/v6.9.5/C/ident/arch_uprobe_exception_notify)，进而在内核中打印对应的信息。
+
+与 kprobe 类似，我们可以在触发 uprobe 时候根据对应寄存器去提取当前执行的上下文信息，比如函数的调用参数等。使用 uprobe 的好处是我们可以获取许多对于内核态比较抽象的信息，比如 bash 中 readline 函数的返回、SSL_read/write 的明文信息等。
+
+### Data source：tracepoints[^5][^8][^9][^10]
 
 
 
@@ -263,7 +281,11 @@ $ ./test && ./test
 [^3]: [An introduction to KProbes](https://lwn.net/Articles/132196/)
 [^4]: [Kernel Probes (Kprobes)](https://www.kernel.org/doc/html/latest/trace/kprobes.html)
 [^5]: [Linux tracing - kprobe, uprobe and tracepoint](https://terenceli.github.io/%E6%8A%80%E6%9C%AF/2020/08/05/tracing-basic)
-[^6]: [Linux uprobe: User-Level Dynamic Tracing](Linux uprobe: User-Level Dynamic Tracing)
+[^6]: [Linux uprobe: User-Level Dynamic Tracing](https://www.brendangregg.com/blog/2015-06-28/linux-ftrace-uprobe.html)
+[^7]: [Uprobe-tracer: Uprobe-based Event Tracing](https://www.kernel.org/doc/html/latest/trace/uprobetracer.html)
+[^8]: [Using the TRACE_EVENT() macro (Part 1)](https://lwn.net/Articles/379903/)
+[^9]: [Using the Linux Kernel Tracepoints](https://www.kernel.org/doc/html/latest/trace/tracepoints.html)
+[^10]: [Taming Tracepoints in the Linux Kernel](https://blogs.oracle.com/linux/post/taming-tracepoints-in-the-linux-kernel)
   
 <script src="https://giscus.app/client.js"
     data-repo="jygzyc/notes"
