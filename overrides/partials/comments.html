@@ -1,7 +1,7 @@
 {% if page.meta.comments %}
     <h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
     <!-- Insert generated snippet here -->
-    {% if page.meta.number is defined and number(page.meta.number) %}
+    {% if page.meta.number is defined %}
         <script src="https://giscus.app/client.js"
             data-repo="jygzyc/notes"
             data-repo-id="R_kgDOJrOxMQ"
