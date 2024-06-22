@@ -3,7 +3,8 @@ title: 半小时学习Rust
 slug: technology/program/rust/discussion-8/
 number: 8
 url: https://github.com/jygzyc/notes/discussions/8
-date: 2024-04-19
+created: 2024-04-19
+updated: 2024-05-27
 authors: [jygzyc]
 categories: 
   - 0102-编程

@@ -3,7 +3,8 @@ title: 工作一二事
 slug: essay/fragments/discussion-19/
 number: 19
 url: https://github.com/jygzyc/notes/discussions/19
-date: 2024-06-20
+created: 2024-06-20
+updated: 2024-06-21
 authors: [jygzyc]
 categories: 
   - 0303-碎片
