@@ -5,7 +5,7 @@ slug: site-message/
 authors: [jygzyc]
 categories: 
   - 0002-留言
-comments: true
+comments: false
 ---
 
 搞一个留言板方便交流

@@ -7,7 +7,7 @@ authors: [jygzyc]
 categories: 
   - 0102-编程
 labels: ['010201-JavaScript']
-comments: true
+comments: false
 ---
 
 <!-- javascript_base -->

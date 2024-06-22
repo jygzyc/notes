@@ -7,7 +7,7 @@ authors: [jygzyc]
 categories: 
   - 0301-文章
 labels: []
-comments: true
+comments: false
 ---
 
 > 谨以此文献给我三年的战友，我信赖的朋友，我热爱的亲人，以及这片我生活了十八年的土地和在这座小城中努力生存的人们。今当远离，以后的日子，愿我们在深邃的星空中，留下自己灿烂的光辉。
