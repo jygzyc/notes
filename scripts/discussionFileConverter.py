@@ -271,7 +271,7 @@ def converter(discussions_data, nav_data, out_dir):
             with open(saved_filepath, "w") as md_file:
                 md_file.write(md_metadata)
                 md_file.write(discussion_body)
-                md_file.write(md_comment) 
+                # md_file.write(md_comment) 
 
 def _main():
     parser = argparse.ArgumentParser()
