@@ -183,7 +183,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
-                    f'comments: true\n'
+                    f'comments: false\n'
                     f'---\n\n')
     elif int(category_num_prefix) == 9:
         slug = "blog/discussion-{0}".format(discussion["number"])
@@ -198,7 +198,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: true\n'
+                    f'comments: false\n'
                     f'---\n\n')
     else:
         # common pages
@@ -212,7 +212,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: true\n'
+                    f'comments: false\n'
                     f'---\n\n')
     return metadata
 
