@@ -3,7 +3,8 @@ title: 甜点
 slug: life/cuisine/discussion-20/
 number: 20
 url: https://github.com/jygzyc/notes/discussions/20
-date: 2024-06-21
+created: 2024-06-21
+updated: 2024-06-21
 authors: [jygzyc]
 categories: 
   - 0201-饮食

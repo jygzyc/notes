@@ -3,7 +3,8 @@ title: Android源码编译
 slug: technology/android/rom/discussion-4/
 number: 4
 url: https://github.com/jygzyc/notes/discussions/4
-date: 2024-04-19
+created: 2024-04-19
+updated: 2024-05-27
 authors: [jygzyc]
 categories: 
   - 0101-Android

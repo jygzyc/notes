@@ -3,7 +3,8 @@ title: Android逆向中的字符串加密和反混淆
 slug: technology/android/reverse/discussion-12/
 number: 12
 url: https://github.com/jygzyc/notes/discussions/12
-date: 2024-05-27
+created: 2024-05-27
+updated: 2024-06-11
 authors: [jygzyc]
 categories: 
   - 0101-Android
