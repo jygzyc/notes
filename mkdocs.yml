@@ -120,7 +120,7 @@ plugins:
       locale: zh
       type: iso_date
       timezone: Asia/Shanghai
-      enable_creation_date: false
+      enable_creation_date: true
       exclude:
         - blog/*
         - index.md
