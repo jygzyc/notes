@@ -179,17 +179,19 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'url: {discussion["url"]}\n'
+                    f'number: {str(discussion["number"])}'
                     f'slug: {"{}/".format(md_name)}\n'
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
-                    f'comments: false\n'
+                    f'comments: true\n'
                     f'---\n\n')
     elif int(category_num_prefix) == 9:
         slug = "blog/discussion-{0}".format(discussion["number"])
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'slug: {slug}/\n'
+                    f'number: {str(discussion["number"])}'
                     f'url: {discussion["url"]}\n'
                     f'date:\n'
                     f'  created: {discussion["createdAt"][0:10]}\n'
@@ -198,7 +200,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: false\n'
+                    f'comments: true\n'
                     f'---\n\n')
     else:
         # common pages
@@ -206,13 +208,14 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'slug: {slug}/\n'
+                    f'number: {str(discussion["number"])}'
                     f'url: {discussion["url"]}\n'
                     f'date: {discussion["createdAt"][0:10]}\n'
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: false\n'
+                    f'comments: true\n'
                     f'---\n\n')
     return metadata
 
@@ -254,7 +257,7 @@ def converter(discussions_data, nav_data, out_dir):
                 md_filename = _md_filename_generator(discussion, MdType.PRESET)
             
             md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-            md_comment = _md_comment_generator(discussion=discussion)
+            # md_comment = _md_comment_generator(discussion=discussion)
             discussion_body = discussion["body"]
             saved_dir = Path(out_dir).joinpath(md_path)
             if saved_dir.exists():

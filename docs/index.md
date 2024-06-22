@@ -20,7 +20,8 @@ comments: false
 
 本站参考[维燕的知识花园](https://weiyan.cc/)，使用了`Mkdocs` + `Github Discussions`的方式，在原作者的基础上做了少许修改，减少了一部分处理不同页面中重复的步骤，重点的代码都有注释，可以用来部署其他站点
 
-`nav.json`中放了全站的router，使用`nav2pages.py`进行转化，这里的标签使用两位一个分类，逐步估计应该是够用了（不够用再改），对应了discussion的各级分类和标签，具体可以参考一下`discussionFileConverter.py`的代码
+- [x] 20230527：`nav.json`中放了全站的router，使用`nav2pages.py`进行转化，这里的标签使用两位一个分类，逐步估计应该是够用了（不够用再改），对应了discussion的各级分类和标签，具体可以参考一下`discussionFileConverter.py`的代码
+- [x] 20240609：使用[Picx4R2](https://github.com/jygzyc/Picx4R2)作为图床应用，修改了部分代码缺陷，调整了上传图片后的粘贴链接，解决了图床管理时点击图片无法放大查看的问题
 
 ## 联系
 
