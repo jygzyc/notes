@@ -2,10 +2,12 @@
     <h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
     <!-- Insert generated snippet here -->
     {% if page.meta.number is defined %}
+    <!-- page.meta.number is defined -->
         <script src="https://giscus.app/client.js"
             data-repo="jygzyc/notes"
             data-repo-id="R_kgDOJrOxMQ"
-            data-mapping="{{ page.meta.number|string }}"
+            data-mapping="number"
+            data-term="{{ page.meta.number|string }}"
             data-strict="0"
             data-reactions-enabled="1"
             data-emit-metadata="0"
@@ -17,6 +19,7 @@
             async>
         </script>
     {% else %}
+    <!-- page.meta.number is undefined -->
         <script src="https://giscus.app/client.js"
             data-repo="jygzyc/notes"
             data-repo-id="R_kgDOJrOxMQ"
