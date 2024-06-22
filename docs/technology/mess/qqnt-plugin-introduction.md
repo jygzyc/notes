@@ -1,13 +1,13 @@
 ---
 title: QQ NT插件使用
 slug: technology/mess/discussion-15/
-url: https://github.com/jygzyc/notes/discussions/15
+number: 15url: https://github.com/jygzyc/notes/discussions/15
 date: 2024-05-29
 authors: [jygzyc]
 categories: 
   - 0199-折腾
 labels: []
-comments: false
+comments: true
 ---
 
 <!-- qqnt_plugin_introduction -->
@@ -25,17 +25,3 @@ comments: false
 ## 效果图
 
 ![qqnt_plugin_introduction-01.png](https://bucket.lilac.fun/2024/06/qqnt_plugin_introduction-01.png)
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="15"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

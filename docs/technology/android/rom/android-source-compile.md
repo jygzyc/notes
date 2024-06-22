@@ -1,13 +1,13 @@
 ---
 title: Android源码编译
 slug: technology/android/rom/discussion-4/
-url: https://github.com/jygzyc/notes/discussions/4
+number: 4url: https://github.com/jygzyc/notes/discussions/4
 date: 2024-04-19
 authors: [jygzyc]
 categories: 
   - 0101-Android
 labels: ['010101-ROM定制']
-comments: false
+comments: true
 ---
 
 <!-- android_source_compile -->
@@ -128,18 +128,3 @@ brunch blueline
 
 - [Docker - 从入门到实践](https://yeasy.gitbook.io/docker_practice)
 - [Build LineageOS for Google Pixel 3](https://wiki.lineageos.org/devices/blueline/build)
-
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="4"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

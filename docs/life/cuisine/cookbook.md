@@ -1,13 +1,13 @@
 ---
 title: 家常菜菜谱
 slug: life/cuisine/discussion-6/
-url: https://github.com/jygzyc/notes/discussions/6
+number: 6url: https://github.com/jygzyc/notes/discussions/6
 date: 2024-04-19
 authors: [jygzyc]
 categories: 
   - 0201-饮食
 labels: []
-comments: false
+comments: true
 ---
 
 <!-- cookbook -->
@@ -123,17 +123,3 @@ comments: false
 ### 水果+酸奶
 
 主料：整颗水果+酸奶
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="6"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

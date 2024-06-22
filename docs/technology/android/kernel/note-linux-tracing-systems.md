@@ -1,13 +1,13 @@
 ---
 title: Linux内核监控与攻防应用笔记
 slug: technology/android/kernel/discussion-18/
-url: https://github.com/jygzyc/notes/discussions/18
+number: 18url: https://github.com/jygzyc/notes/discussions/18
 date: 2024-05-30
 authors: [jygzyc]
 categories: 
   - 0101-Android
 labels: ['010104-Kernel']
-comments: false
+comments: true
 ---
 
 <!-- note_linux_tracing_systems -->
@@ -286,17 +286,3 @@ uprobes在[Linux 3.5](http://kernelnewbies.org/Linux_3.5#head-95fccbb746226f6b9d
 [^8]: [Using the TRACE_EVENT() macro (Part 1)](https://lwn.net/Articles/379903/)
 [^9]: [Using the Linux Kernel Tracepoints](https://www.kernel.org/doc/html/latest/trace/tracepoints.html)
 [^10]: [Taming Tracepoints in the Linux Kernel](https://blogs.oracle.com/linux/post/taming-tracepoints-in-the-linux-kernel)
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="18"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

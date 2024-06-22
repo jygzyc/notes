@@ -1,13 +1,13 @@
 ---
 title: 沉潜于水下的人
 slug: essay/article/discussion-5/
-url: https://github.com/jygzyc/notes/discussions/5
+number: 5url: https://github.com/jygzyc/notes/discussions/5
 date: 2024-04-19
 authors: [jygzyc]
 categories: 
   - 0301-文章
 labels: []
-comments: false
+comments: true
 ---
 
 > 谨以此文献给我三年的战友，我信赖的朋友，我热爱的亲人，以及这片我生活了十八年的土地和在这座小城中努力生存的人们。今当远离，以后的日子，愿我们在深邃的星空中，留下自己灿烂的光辉。
@@ -110,17 +110,3 @@ comments: false
 我一直，都是沉潜于水下的人。
 
 于2016年8月29日
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="5"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

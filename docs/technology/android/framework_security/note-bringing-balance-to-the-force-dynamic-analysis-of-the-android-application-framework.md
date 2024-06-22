@@ -1,13 +1,13 @@
 ---
 title: Bringing Balance to the Force Dynamic Analysis of the Android Application Framework 笔记
 slug: technology/android/framework_security/discussion-10/
-url: https://github.com/jygzyc/notes/discussions/10
+number: 10url: https://github.com/jygzyc/notes/discussions/10
 date: 2024-05-21
 authors: [jygzyc]
 categories: 
   - 0101-Android
 labels: ['010102-Framework安全']
-comments: false
+comments: true
 ---
 
 <!-- note_bringing_balance_to_the_force_dynamic_analysis_of_the_android_application_framework -->
@@ -156,17 +156,3 @@ DYNAMO 是一种灰盒测试解决方案，分为两个阶段来构建 API 的�
 [^2]: [论文笔记:《Bringing Balance to the Force Dynamic Analysis of the Android Application Framework》](https://ashenone66.cn/2022/03/03/lun-wen-bi-ji-bringing-balance-to-the-force-dynamic-analysis-of-the-android-application-framework/)
 
 [^3]: [Github - abdawoud/Dynamo](https://github.com/abdawoud/Dynamo)
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="10"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

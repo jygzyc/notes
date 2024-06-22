@@ -1,13 +1,13 @@
 ---
 title: 工作一二事
 slug: essay/fragments/discussion-19/
-url: https://github.com/jygzyc/notes/discussions/19
+number: 19url: https://github.com/jygzyc/notes/discussions/19
 date: 2024-06-20
 authors: [jygzyc]
 categories: 
   - 0303-碎片
 labels: []
-comments: false
+comments: true
 ---
 
 <!-- work_events -->
@@ -72,18 +72,3 @@ b哥：要是再有点成果就好了，再多搞他 4 5 个成果
 小牛马：我们之后再努力
 之后，该项目默默结束了
 ```
-
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="19"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

@@ -1,13 +1,13 @@
 ---
 title: 半小时学习Rust
 slug: technology/program/rust/discussion-8/
-url: https://github.com/jygzyc/notes/discussions/8
+number: 8url: https://github.com/jygzyc/notes/discussions/8
 date: 2024-04-19
 authors: [jygzyc]
 categories: 
   - 0102-编程
 labels: ['010204-Rust']
-comments: false
+comments: true
 ---
 
 <!-- a-half-hour-to-learn-rust -->
@@ -1038,17 +1038,3 @@ fn print(x: &i32) {
 [^1]: [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust)
 [^2]: [Rust半小时教程](https://colobu.com/2020/03/05/A-half-hour-to-learn-Rust/)
 [^3]: [深入探索 Rust 中的 Panic 机制](https://juejin.cn/post/7314144983018782761)
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="8"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>

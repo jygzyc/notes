@@ -1,13 +1,13 @@
 ---
 title: docker使用记录
 slug: technology/tools/discussion-14/
-url: https://github.com/jygzyc/notes/discussions/14
+number: 14url: https://github.com/jygzyc/notes/discussions/14
 date: 2024-05-27
 authors: [jygzyc]
 categories: 
   - 0104-工具
 labels: []
-comments: false
+comments: true
 ---
 
 <!-- docker-note -->
@@ -101,17 +101,3 @@ docker builder prune
 
 [^1]: [Run the Docker daemon as a non-root user (Rootless mode)](https://docs.docker.com/engine/security/rootless/)
 [^2]: [Docker Build Cache 缓存清理 ](https://blog.51cto.com/u_1472521/5981360)
-  
-<script src="https://giscus.app/client.js"
-    data-repo="jygzyc/notes"
-    data-repo-id="R_kgDOJrOxMQ"
-    data-mapping="number"
-    data-term="14"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async>
-</script>
