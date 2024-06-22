@@ -1,7 +1,8 @@
 ---
 title: Bringing Balance to the Force Dynamic Analysis of the Android Application Framework 笔记
 slug: technology/android/framework_security/discussion-10/
-number: 10url: https://github.com/jygzyc/notes/discussions/10
+number: 10
+url: https://github.com/jygzyc/notes/discussions/10
 date: 2024-05-21
 authors: [jygzyc]
 categories: 

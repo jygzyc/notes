@@ -1,7 +1,8 @@
 ---
 title: 半小时学习Rust
 slug: technology/program/rust/discussion-8/
-number: 8url: https://github.com/jygzyc/notes/discussions/8
+number: 8
+url: https://github.com/jygzyc/notes/discussions/8
 date: 2024-04-19
 authors: [jygzyc]
 categories: 

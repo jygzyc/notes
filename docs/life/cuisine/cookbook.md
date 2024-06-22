@@ -1,7 +1,8 @@
 ---
 title: 家常菜菜谱
 slug: life/cuisine/discussion-6/
-number: 6url: https://github.com/jygzyc/notes/discussions/6
+number: 6
+url: https://github.com/jygzyc/notes/discussions/6
 date: 2024-04-19
 authors: [jygzyc]
 categories: 

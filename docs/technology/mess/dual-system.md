@@ -1,7 +1,8 @@
 ---
 title: 双系统配置合集
 slug: technology/mess/discussion-11/
-number: 11url: https://github.com/jygzyc/notes/discussions/11
+number: 11
+url: https://github.com/jygzyc/notes/discussions/11
 date: 2024-05-27
 authors: [jygzyc]
 categories: 

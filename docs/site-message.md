@@ -1,7 +1,8 @@
 ---
 title: 留言板
 url: https://github.com/jygzyc/notes/discussions/9
-number: 9slug: site-message/
+number: 9
+slug: site-message/
 authors: [jygzyc]
 categories: 
   - 0002-留言

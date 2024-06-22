@@ -1,7 +1,8 @@
 ---
 title: docker使用记录
 slug: technology/tools/discussion-14/
-number: 14url: https://github.com/jygzyc/notes/discussions/14
+number: 14
+url: https://github.com/jygzyc/notes/discussions/14
 date: 2024-05-27
 authors: [jygzyc]
 categories: 

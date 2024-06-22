@@ -1,7 +1,8 @@
 ---
 title: QQ NT插件使用
 slug: technology/mess/discussion-15/
-number: 15url: https://github.com/jygzyc/notes/discussions/15
+number: 15
+url: https://github.com/jygzyc/notes/discussions/15
 date: 2024-05-29
 authors: [jygzyc]
 categories: 

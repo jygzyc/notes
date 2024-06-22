@@ -1,7 +1,8 @@
 ---
 title: 沉潜于水下的人
 slug: essay/article/discussion-5/
-number: 5url: https://github.com/jygzyc/notes/discussions/5
+number: 5
+url: https://github.com/jygzyc/notes/discussions/5
 date: 2024-04-19
 authors: [jygzyc]
 categories: 

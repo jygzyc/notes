@@ -1,7 +1,8 @@
 ---
 title: 工作一二事
 slug: essay/fragments/discussion-19/
-number: 19url: https://github.com/jygzyc/notes/discussions/19
+number: 19
+url: https://github.com/jygzyc/notes/discussions/19
 date: 2024-06-20
 authors: [jygzyc]
 categories: 

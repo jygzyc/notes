@@ -1,7 +1,8 @@
 ---
 title: JavaScript基础
 slug: technology/program/js/discussion-7/
-number: 7url: https://github.com/jygzyc/notes/discussions/7
+number: 7
+url: https://github.com/jygzyc/notes/discussions/7
 date: 2024-04-19
 authors: [jygzyc]
 categories: 

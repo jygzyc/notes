@@ -1,7 +1,8 @@
 ---
 title: Linux内核监控与攻防应用笔记
 slug: technology/android/kernel/discussion-18/
-number: 18url: https://github.com/jygzyc/notes/discussions/18
+number: 18
+url: https://github.com/jygzyc/notes/discussions/18
 date: 2024-05-30
 authors: [jygzyc]
 categories: 
