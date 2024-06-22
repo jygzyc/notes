@@ -22,7 +22,7 @@ comments: false
 
 - [x] 20230527：`nav.json`中放了全站的router，使用`nav2pages.py`进行转化，这里的标签使用两位一个分类，逐步估计应该是够用了（不够用再改），对应了discussion的各级分类和标签，具体可以参考一下`discussionFileConverter.py`的代码
 - [x] 20240609：使用[Picx4R2](https://github.com/jygzyc/Picx4R2)作为图床应用，修改了部分代码缺陷，调整了上传图片后的粘贴链接，解决了图床管理时点击图片无法放大查看的问题
-- [x] 20240623：解决评论加载时顺序不正确的问题，现在生成源Markdown时不会增加giscus评论代码，而是在模板中进行判断，以`page.meta.number`为生成依据；解决文件创建与更新时间错误问题
+- [x] 20240623：解决评论加载时顺序不正确的问题，现在生成源Markdown时不会增加giscus评论代码，而是在模板中进行判断，以`page.meta.number`为生成依据；解决文件创建与更新时间错误问题——新增`page.meta.created`字段，新增`overrides/partials/source-file.html`文件解决创建时间错误
 
 ## 联系
 
