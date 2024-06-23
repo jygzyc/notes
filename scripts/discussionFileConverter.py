@@ -10,6 +10,16 @@ import json
 import re
 import os
 
+###################
+# Comment Config
+###################
+dismiss_comment = [5]
+
+def _is_comment_close(discussion:dict) -> str:
+    number = discussion["number"]
+    return "true" if number in dismiss_comment else "false"
+
+
 class FileException(Exception):
     def __init__(self, message):
         super.__init__(message)
@@ -186,7 +196,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'authors: [{discussion["author"]["login"]}]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
-                    f'comments: true\n'
+                    f'comments: {_is_comment_close(discussion)}\n'
                     f'---\n\n')
     elif int(category_num_prefix) == 9:
         slug = "blog/discussion-{0}".format(discussion["number"])
@@ -202,7 +212,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: true\n'
+                    f'comments: {_is_comment_close(discussion)}\n'
                     f'---\n\n')
     else:
         # common pages
@@ -218,28 +228,9 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
                     f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: true\n'
+                    f'comments: {_is_comment_close(discussion)}\n'
                     f'---\n\n')
     return metadata
-
-def _md_comment_generator(discussion:dict):
-    discussion_num = discussion["number"]
-    comment_js_data = (f'\n  \n'
-                    f'<script src="https://giscus.app/client.js"\n'
-                    f'    data-repo="jygzyc/notes"\n'
-                    f'    data-repo-id="R_kgDOJrOxMQ"\n'
-                    f'    data-mapping="number"\n'
-                    f'    data-term="{discussion_num}"\n'
-                    f'    data-reactions-enabled="1"\n'
-                    f'    data-emit-metadata="0"\n'
-                    f'    data-input-position="top"\n'
-                    f'    data-theme="preferred_color_scheme"\n'
-                    f'    data-lang="zh-CN"\n'
-                    f'    crossorigin="anonymous"\n'
-                    f'    async>\n'
-                    f'</script>\n')
-    return comment_js_data
-    
 
 
 def converter(discussions_data, nav_data, out_dir):
@@ -260,7 +251,6 @@ def converter(discussions_data, nav_data, out_dir):
                 md_filename = _md_filename_generator(discussion, MdType.PRESET)
             
             md_metadata = _md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-            # md_comment = _md_comment_generator(discussion=discussion)
             discussion_body = discussion["body"]
             saved_dir = Path(out_dir).joinpath(md_path)
             if saved_dir.exists():
@@ -274,7 +264,7 @@ def converter(discussions_data, nav_data, out_dir):
             with open(saved_filepath, "w") as md_file:
                 md_file.write(md_metadata)
                 md_file.write(discussion_body)
-                # md_file.write(md_comment) 
+
 
 def _main():
     parser = argparse.ArgumentParser()
