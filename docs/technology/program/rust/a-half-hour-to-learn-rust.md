@@ -9,7 +9,7 @@ authors: [jygzyc]
 categories: 
   - 0102-编程
 labels: ['010204-Rust']
-comments: true
+comments: false
 ---
 
 <!-- a-half-hour-to-learn-rust -->
