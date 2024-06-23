@@ -9,7 +9,7 @@ authors: [jygzyc]
 categories: 
   - 0101-Android
 labels: ['010104-Kernel']
-comments: false
+comments: true
 ---
 
 <!-- note_linux_tracing_systems -->
