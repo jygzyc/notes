@@ -13,11 +13,11 @@ import os
 ###################
 # Comment Config
 ###################
-dismiss_comment = [5]
+closed_comments_list = [5]
 
-def _is_comment_close(discussion:dict) -> str:
+def _is_comment_open(discussion:dict):
     number = discussion["number"]
-    return "true" if number in dismiss_comment else "false"
+    return "false" if number in closed_comments_list else "true"
 
 
 class FileException(Exception):
