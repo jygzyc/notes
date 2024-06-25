@@ -34,11 +34,6 @@ class ArgumentException(Exception):
         sys.exit(1)
 
 
-class MarkdownPathException(Exception):
-    def __init__(self, message):
-        super.__init__(message)
-
-
 @unique
 class MdType(Enum):
     """
@@ -168,7 +163,7 @@ def _md_directory_generator(discussion, nav):
                 if discussion['labels']['nodes'] else []
             )
             return nav[category_num[:2]][discussion_label[0]] if discussion_label != [] else nav[category_num[:2]][category]
-    except MarkdownPathException:
+    except Exception:
         return False
 
 def _md_meta_generator(discussion: dict, md_name, md_path):
