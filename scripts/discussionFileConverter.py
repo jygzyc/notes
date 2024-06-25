@@ -34,6 +34,11 @@ class ArgumentException(Exception):
         sys.exit(1)
 
 
+class MarkdownPathException(Exception):
+    def __init__(self, message):
+        super.__init__(message)
+
+
 @unique
 class MdType(Enum):
     """
@@ -149,19 +154,22 @@ def _md_directory_generator(discussion, nav):
     numerical prefixes and then looks up the corresponding directory path in the
     provided navigation dictionary.
     """
-    category_num, _ = discussion['category']['name'].split("-")
-    category = discussion['category']['name']
-    if int(category_num) < 100:
-        if int(category_num[:2]) == 0:
-            return "."
+    try:
+        category_num, _ = discussion['category']['name'].split("-")
+        category = discussion['category']['name']
+        if int(category_num) < 100:
+            if int(category_num[:2]) == 0:
+                return "."
+            else:
+                return nav[category]
         else:
-            return nav[category]
-    else:
-        discussion_label = (
-            [label['name'] for label in discussion['labels']['nodes']] 
-            if discussion['labels']['nodes'] else []
-        )
-        return nav[category_num[:2]][discussion_label[0]] if discussion_label != [] else nav[category_num[:2]][category]
+            discussion_label = (
+                [label['name'] for label in discussion['labels']['nodes']] 
+                if discussion['labels']['nodes'] else []
+            )
+            return nav[category_num[:2]][discussion_label[0]] if discussion_label != [] else nav[category_num[:2]][category]
+    except MarkdownPathException:
+        return False
 
 def _md_meta_generator(discussion: dict, md_name, md_path):
     """
@@ -241,9 +249,11 @@ def converter(discussions_data, nav_data, out_dir):
             if not discussion:
                 print("Null discussion!")
                 continue
-            
             md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
 
+            if not md_path:
+                print("[*] Path: {} skip processing".format(discussion['category']['name']))
+                continue
             category_num = discussion['category']['name'][:2]
             if int(category_num) == 0: # site pages
                 md_filename = _md_filename_generator(discussion, MdType.SPECIFIC)
