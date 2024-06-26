@@ -4,7 +4,7 @@ slug: technology/android/security/discussion-22/
 number: 22
 url: https://github.com/jygzyc/notes/discussions/22
 created: 2024-06-25
-updated: 2024-06-25
+updated: 2024-06-26
 authors: [jygzyc]
 categories: 
   - 0101-Android
@@ -24,7 +24,7 @@ Intent是Android程序中不同组件传递数据的一种方式，翻译为意�
 
 ## 背景知识
 
-### 
+### Activity相关
 
 让我们先来了解一下可能涉及到的函数接口
 
@@ -76,6 +76,10 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data){
 ```
 
 以上就是这几个函数的一个简单的实践。
+
+### Content Provider相关
+
+> TODO: 补全
 
 ## 风险一：Intent重定向漏洞[^1][^2][^3][^4][^5][^6][^7][^8]
 
