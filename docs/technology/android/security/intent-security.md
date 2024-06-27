@@ -4,7 +4,7 @@ slug: technology/android/security/discussion-22/
 number: 22
 url: https://github.com/jygzyc/notes/discussions/22
 created: 2024-06-25
-updated: 2024-06-26
+updated: 2024-06-27
 authors: [jygzyc]
 categories: 
   - 0101-Android
@@ -23,7 +23,7 @@ Intent是Android程序中不同组件传递数据的一种方式，翻译为意�
 - 隐式Intent：不指定组件名，而指定Intent的Action，Data或Category，当我们启动组件时，会去匹配`AndroidManifest.xml`相关组件的`intent-filter`，逐一匹配出满足属性的组件，当不止一个满足时，会弹出一个让我们选择启动哪个的对话框。**这种调用方式会间接导致很多问题**
 
 ## 背景知识
-
+  
 ### Activity相关
 
 让我们先来了解一下可能涉及到的函数接口
@@ -94,6 +94,21 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data){
 第一种情况为，三方应用利用`setResult`绕过原有的代码执行逻辑或者获取intent中携带的敏感数据。
 
 在上文中，我们能够看见`SecondActivity`中通过提取`FirstActivity`中发送的intent，通过进一步处理，再将结果返回，我们查看`SecondActivity`在`AndroidManifest.xml`中的定义
+
+```xml
+<activity
+    android:name=".SecondActivity"
+    android:exported="false" >
+    <intent-filter>
+        <action android:name="test.action" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+```
+
+发现intent-filter加入了特定的 action 和隐式 Intent 接收所必须的 `android.intent.category.DEFAULT` ，那么可以利用此处隐式发送 Intent， 造成 Intent 重定向。
+首先，我们需要在三方应用新建一个拥有相同的 intent-filter 的Activity，这样三方应用就能够接收到 `startActivityForResult` 发送的 Intent（此处会匹配所有导出的且 intent-filter 相同的组件，并由用户选择，由于`SecondActivity`为非导出组件，默认将会打开三方应用的Activity）。
+
 
 
 [^1]: [Activity 参考](https://developer.android.com/reference/android/app/Activity)
