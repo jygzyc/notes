@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2024-06-27
+updated: 2024-06-29
 authors: [jygzyc]
 categories: 
   - 0105-程序分析
@@ -113,9 +113,11 @@ public class MethodCall3AC{
 
 控制流分析（Control Flow Analysis, CFA） 通常是指构建 控制流图（Control Flow Graph，CFG） 的过程。CFG是我们进行静态分析的基础，控制流图中的结点可以是一个指令，也可以是一个基块（Basic Block）。
 
-构建基块的算法如下
+简单来讲，基块就是满足两点的最长的指令序列：第一，程序的控制流只能从首指令进入；第二，程序的控制流只能从尾指令流出。构建基块的算法如下
 
 ![note_static_analysis-006.png](https://bucket.lilac.fun/2024/06/note_static_analysis-006.png)
+
+
 
 ## 二、数据流分析与应用
 
