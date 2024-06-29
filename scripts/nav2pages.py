@@ -1,22 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from pathlib import Path
-import sys
 import argparse
 import json
-
-class FileException(Exception):
-    def __init__(self, message):
-        super.__init__(message)
-        print("File error: ", message)
-        sys.exit(1)
-
-
-class ArgumentException(Exception):
-    def __init__(self, message):
-        super.__init__(message)
-        print("Arguments error: ", message)
-        sys.exit(1)
 
 
 def converter(d, out_dir):
@@ -56,9 +42,8 @@ def _main():
     with open(nav_file_path, "r", encoding="utf-8") as f:
         nav_data = json.load(f)
     
-    # handle Exception
     if nav_data is None:
-        raise FileException("Navigation file null")
+        assert "Navigation file null"
     
     converter(nav_data, out_dir)
 

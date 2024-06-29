@@ -2,36 +2,40 @@
 
 from enum import Enum, unique
 from pathlib import Path
-from slugify import slugify
 import unittest
-import sys
 import argparse
 import json
 import re
 import os
 
-###################
-# Comment Config
-###################
+from slugify import slugify
+
+########################
+# Comment Configuration
+########################
 closed_comments_list = [5]
 
-def _is_comment_open(discussion:dict):
+def _is_comment_open(discussion: dict):
+    """
+    Check if comments are open for a given discussion.
+    
+    Parameters:
+    - discussion (dict): A dictionary representing the discussion object,
+                        which must include a 'number' key.
+    
+    Returns:
+    - str: "false" if the discussion number is in the closed_comments_list,
+           or "true" otherwise.
+    
+    Description:
+    This function determines whether comments should be open or closed for a
+    specific discussion based on its number. It checks if the discussion number
+    is present in the closed_comments_list. If it is, the function returns "false",
+    indicating that comments are closed. If not, it returns "true", indicating
+    that comments are open.
+    """
     number = discussion["number"]
     return "false" if number in closed_comments_list else "true"
-
-
-class FileException(Exception):
-    def __init__(self, message):
-        super.__init__(message)
-        print("File error: ", message)
-        sys.exit(1)
-
-
-class ArgumentException(Exception):
-    def __init__(self, message):
-        super.__init__(message)
-        print("Arguments error: ", message)
-        sys.exit(1)
 
 
 @unique
@@ -53,11 +57,11 @@ class TestConverterMethods(unittest.TestCase):
         with open("discussions", "r", encoding="utf-8") as f:
             self.discussions_data = eval(f.read())
         if not self.discussions_data:
-            raise FileException("Test: discussion_data error")
+            assert "discussion test data error"
         with open("nav.json", "r", encoding="utf-8") as f:
             self.nav_data = json.load(f)
         if not self.nav_data:
-            raise FileException("Test: nav_data error")
+            assert "nav_data test error"
 
     def test__md_filename_generator(self):
         if 'nodes' in self.discussions_data.keys():
@@ -66,9 +70,9 @@ class TestConverterMethods(unittest.TestCase):
                 if not discussion:
                     continue
                 discussion_title = discussion['title']
-                if discussion_title == "留言板": # site test
+                if discussion_title == "留言板":
                     self.assertEqual(_md_filename_generator(discussion, MdType.SPECIFIC), "site-message.md")
-                if discussion_title == "JavaScript基础": # common test
+                if discussion_title == "JavaScript基础":
                     self.assertEqual(_md_filename_generator(discussion, MdType.PRESET), "javascript-base.md")
 
     def test__md_directory_generator(self):
@@ -78,9 +82,9 @@ class TestConverterMethods(unittest.TestCase):
                 if not discussion:
                     continue
                 discussion_title = discussion['title']
-                if discussion_title == "留言板": # site test
+                if discussion_title == "留言板":
                     self.assertEqual(_md_directory_generator(discussion, self.nav_data), ".")
-                if discussion_title == "JavaScript基础": # common test
+                if discussion_title == "JavaScript基础":
                     self.assertEqual(_md_directory_generator(discussion, self.nav_data), "technology/program/js/") 
 
     def test__md_meta_generator(self):
@@ -90,11 +94,11 @@ class TestConverterMethods(unittest.TestCase):
                 if not discussion:
                     continue
                 discussion_title = discussion['title']
-                if discussion_title == "留言板": # site test
+                if discussion_title == "留言板":
                     print(_md_meta_generator(discussion, 
                                              _md_filename_generator(discussion, flag=MdType.SPECIFIC),
                                              _md_directory_generator(discussion, self.nav_data)))
-                if discussion_title == "JavaScript基础": # common test
+                if discussion_title == "JavaScript基础":
                     print(_md_meta_generator(discussion, 
                                              _md_filename_generator(discussion, flag=MdType.PRESET),
                                              _md_directory_generator(discussion, self.nav_data))) 
@@ -132,16 +136,16 @@ def _md_filename_generator(discussion, flag):
 
 def _md_directory_generator(discussion, nav):
     """
-    Generate a markdown directory path based on the discussion object.
+    Generate a markdown directory path based on navigation and discussion object.
     
     Parameters:
-    - discussion: A dictionary containing information about the discussion,
-                         including 'category' and 'labels'.
+    - discussion: A dictionary containing information about the github discussion.
     - nav: A json mapping numerical prefixes to their corresponding
                        directory paths.
     
     Returns:
-    - str or None: The generated markdown directory path if found, otherwise None.
+    - str or None or False: The generated markdown directory path if found, or return 
+                        None. When the exception occurs, return False.
     
     Description:
     This function determines the appropriate directory for a markdown file based on
@@ -171,10 +175,9 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
     Generate markdown metadata for a given discussion object.
     
     Parameters:
-    - discussion (dict): A dictionary representing a discussion object which includes
-                         details like 'title', 'url', etc.
-    - md_name
-    - md_path
+    - discussion: A dictionary containing information about the github discussion.
+    - md_name: Markdown file name generated by `_md_filename_generator()` function.
+    - md_path: Markdown file path generated by `_md_directory_generator()` function
     
     Returns:
     - str: A string of markdown formatted metadata.
@@ -187,8 +190,8 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
     category_num_prefix = discussion['category']['name'][:2]
     md_name, _ = os.path.splitext(os.path.basename(md_name)) #if md_name[-3:] == ".md" else md_name
     
-    # site and blog pages
     if int(category_num_prefix) == 0:
+        # generate site pages metadata
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
                     f'url: {discussion["url"]}\n'
@@ -202,6 +205,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'comments: {_is_comment_open(discussion)}\n'
                     f'---\n\n')
     elif int(category_num_prefix) == 9:
+        # generate blog pages metadata
         slug = "blog/discussion-{0}".format(discussion["number"])
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
@@ -218,7 +222,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'comments: {_is_comment_open(discussion)}\n'
                     f'---\n\n')
     else:
-        # common pages
+        # generate common pages metadata
         slug = Path(md_path).joinpath("discussion-{0}".format(discussion["number"]))
         metadata = (f'---\n'
                     f'title: {discussion["title"]}\n'
@@ -237,20 +241,24 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
 
 
 def converter(discussions_data, nav_data, out_dir):
-    # 处理所有的 discussions
+    # handle all discussions
     if 'nodes' in discussions_data.keys():
         discussions_list = discussions_data['nodes']
         for discussion in discussions_list:
             if not discussion:
                 print("Null discussion!")
                 continue
-            md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
 
+            # When the generation of the markdown file path fails, proceed to the next one.
+            md_path = _md_directory_generator(discussion=discussion, nav=nav_data)
             if not md_path:
                 print("[*] Path: {} skip processing".format(discussion['category']['name']))
                 continue
             category_num = discussion['category']['name'][:2]
-            if int(category_num) == 0: # site pages
+
+            # Only site pages use the label to generate the file name; the rest generate 
+            # the file name based on the first comment in the discussion content.
+            if int(category_num) == 0:
                 md_filename = _md_filename_generator(discussion, MdType.SPECIFIC)
             else:
                 md_filename = _md_filename_generator(discussion, MdType.PRESET)
@@ -290,7 +298,7 @@ def _main():
     
     # handle Exception
     if nav_data is None or discussions_data is None:
-        raise FileException("Navigation file or disscussions file null")
+        assert "Navigation file or disscussions file null"
     
     converter(discussions_data=discussions_data, nav_data=nav_data, out_dir=out_dir)
 
