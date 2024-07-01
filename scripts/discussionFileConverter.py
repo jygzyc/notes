@@ -215,6 +215,8 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'date:\n'
                     f'  created: {discussion["createdAt"][0:10]}\n'
                     f'  updated: {discussion["updatedAt"][0:10]}\n'
+                    f'created: {discussion["createdAt"][0:10]}\n'
+                    f'updated: {discussion["updatedAt"][0:10]}\n'
                     f'authors: [Ecool]\n'
                     f'categories: \n'
                     f'  - {discussion["category"]["name"]}\n'
