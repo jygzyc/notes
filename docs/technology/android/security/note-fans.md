@@ -1,10 +1,10 @@
 ---
-title: FANS: Fuzzing Android Native System Services via Automated Interface Analysis 笔记
+title: FANS：Fuzzing Android Native System Services via Automated Interface Analysis 笔记
 slug: technology/android/security/discussion-24/
 number: 24
 url: https://github.com/jygzyc/notes/discussions/24
 created: 2024-07-02
-updated: 2024-07-02
+updated: 2024-07-03
 authors: [jygzyc]
 categories: 
   - 0101-Android
