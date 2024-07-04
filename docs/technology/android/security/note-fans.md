@@ -4,7 +4,7 @@ slug: technology/android/security/discussion-24/
 number: 24
 url: https://github.com/jygzyc/notes/discussions/24
 created: 2024-07-02
-updated: 2024-07-03
+updated: 2024-07-04
 authors: [jygzyc]
 categories: 
   - 0101-Android
@@ -83,7 +83,7 @@ callLocal(data, reply, &ISurfaceComposerClient::createSurface);
 setSchedPolicy(data);
 ```
 
-- 条件语句：种类较多，包括`switch`和`if`语句等，下面展示了
+- 条件语句：形式较多，包括`switch`和`if`语句等，下面展示了`if`语句的一种情况
 
 ```c++
 int32_t isFdValid = data.readInt32();
@@ -92,6 +92,46 @@ if (isFdValid) {
     fd = data.readFileDescriptor();
 }
 ```
+
+- 循环语句：形式较多，例如`while`和`for`语句等，以下以`for`语句案例为例，我们将会记录`key`读取的次数，并将`key`，`fd`，`value`作为Loop Variables
+
+```c++
+const int size = data.readInt32();
+for(int index = 0; index < size; ++index){
+    ...
+    const String8 key(data.readString8());
+    if(key == String8("FileDescriptorKey")){
+        ...
+        int fd = data.readFileDescriptor();
+        ...
+    } else {
+        const String8 value(data.readString8());
+        ...
+    }
+}
+```
+
+- 返回语句：当一条路径返回错误代码时，其存在漏洞的概率就会减小，生成测试用例也会更少。以如下代码为例，生成时`numBytes`尽量不要大于`MAX_BINDER_TRANSACTION_SIZE`
+
+```c++
+const uint32_t numBytes = data.readInt32();
+if(numBytes > MAX_BINDER_TRANSACTION_SIZE){
+    reply->writeInt32(BAD_VALUE);
+    return DRM_NO_ERROR;
+}
+```
+
+#### Type Definition Extraction
+
+除了提取事务中的输入和输出变量，我们还提取类型定义。它有助于丰富变量语义，以便生成更好的输入。有三种类型需要分析:
+
+- Structure-like Definition：这种类型包括联合和结构
+- Enumeration Definition：提取所有给定的(常量)枚举值
+- Type Alias：`typedef`语句
+
+### 依赖推断器
+
+提取接口模型后，我们推断出两种依赖关系：（1）接口依赖关系。即如何识别并生成多级接口。它还暗示了一个接口如何被其他接口使用。 (2)变量依赖。事务中的变量之间存在依赖关系。以前的研究很少考虑这些依赖性
 
 
 
