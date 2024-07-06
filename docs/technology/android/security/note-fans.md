@@ -150,7 +150,7 @@ if(numBytes > MAX_BINDER_TRANSACTION_SIZE){
 
 根据变量对是否在同一个事务中，存在两种类型的变量依赖关系，即事务内依赖关系和事务间依赖关系
 
-- **事务内依赖**。在同一事务中，一个变量有时依赖于另一个变量。如[Input and Output Variable Extraction](#Input)一节所演示的，事务中的变量之间可能存在条件依赖、循环依赖和数组大小依赖。条件依赖是指一个变量的值决定另一个变量是否存在的情况。例如，条件语句示例代码中的`fd`条件性地依赖于`isFdValid`。循环依赖是指一个变量决定另一个变量被读取或写入的次数，如循环语句示例代码中的变量`size`和`key`。对于最后一个，当数组变量的大小由另一个变量指定。在生成这个数组变量时，应该指定大小。
+- **事务内依赖**。在同一事务中，一个变量有时依赖于另一个变量。如[Input and Output Variable Extraction](#input-and-output-variable-extraction)一节所演示的，事务中的变量之间可能存在条件依赖、循环依赖和数组大小依赖。条件依赖是指一个变量的值决定另一个变量是否存在的情况。例如，条件语句示例代码中的`fd`条件性地依赖于`isFdValid`。循环依赖是指一个变量决定另一个变量被读取或写入的次数，如循环语句示例代码中的变量`size`和`key`。对于最后一个，当数组变量的大小由另一个变量指定。在生成这个数组变量时，应该指定大小。
 
 - **事务间依赖**。一个变量有时依赖于不同事务中的另一个变量。换句话说，一个transaction中的输入可以通过另一个transaction中的输出来获得。我们提出下图中算法 1 来处理这种依赖性。
  ① 一个变量为输入，另一个为输出；② 这两个变量位于不同的事务中； ③ 输入变量的类型等于输出变量的类型；④ 要么输入变量类型是复杂的（不是原始类型），要么输入变量名和输出变量名相似。相似度度量算法可定制化处理
@@ -165,7 +165,7 @@ if(numBytes > MAX_BINDER_TRANSACTION_SIZE){
 
 ### 接口收集器
 
-Python实现[接口收集器](#接口收集器)与[Input and Output Variable Extraction](#Input)一节中提到的内容
+Python实现[接口收集器](#_3)与[Input and Output Variable Extraction](#input-and-output-variable-extraction)一节中提到的内容
 
 ### 接口模型提取器
 
