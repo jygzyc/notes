@@ -4,7 +4,7 @@ slug: technology/android/security/discussion-24/
 number: 24
 url: https://github.com/jygzyc/notes/discussions/24
 created: 2024-07-02
-updated: 2024-07-04
+updated: 2024-07-06
 authors: [jygzyc]
 categories: 
   - 0101-Android
@@ -129,16 +129,59 @@ if(numBytes > MAX_BINDER_TRANSACTION_SIZE){
 - Enumeration Definition：提取所有给定的(常量)枚举值
 - Type Alias：`typedef`语句
 
+![note_fans-003.png](https://bucket.lilac.fun/2024/07/note_fans-003.png)
+
 ### 依赖推断器
 
-提取接口模型后，我们推断出两种依赖关系：（1）接口依赖关系。即如何识别并生成多级接口。它还暗示了一个接口如何被其他接口使用。 (2)变量依赖。事务中的变量之间存在依赖关系。以前的研究很少考虑这些依赖性
+提取接口模型后，我们推断出两种依赖关系：
 
+1. 接口依赖。即如何识别并生成多级接口，这还暗示了一个接口如何被其他接口调用
+2. 变量依赖。事务中的变量之间存在依赖关系。以前的研究很少考虑这些依赖性
 
+#### Interface Dependency
+
+一般来说，接口之间有两种依赖关系，分别对应接口的生成和使用
+
+- **生成依赖**。如果一个接口可以通过另一个接口检索到，我们可以说这两个接口之间存在生成依赖性。我们可以直接从服务管理器获取Android原生系统服务接口，即顶级接口（服务对象）。关于多级接口，我们发现上级接口会调用`writeStrongBinder`来序列化一个深层接口到`reply`中。通过这种方式，我们可以轻松地收集所有接口的生成依赖性
+
+- **使用依赖**。如果一个接口被另一个接口使用，我们就说这两个接口之间存在使用依赖。我们发现，当接口A被另一个接口B使用时，B会调用`readStrongBinder`从数据包中反序列化A。因此，我们可以利用这种模式来推断使用依赖性
+
+#### Variable Dependency
+
+根据变量对是否在同一个事务中，存在两种类型的变量依赖关系，即事务内依赖关系和事务间依赖关系
+
+- **事务内依赖**。在同一事务中，一个变量有时依赖于另一个变量。如[Input and Output Variable Extraction](#Input)一节所演示的，事务中的变量之间可能存在条件依赖、循环依赖和数组大小依赖。条件依赖是指一个变量的值决定另一个变量是否存在的情况。例如，条件语句示例代码中的`fd`条件性地依赖于`isFdValid`。循环依赖是指一个变量决定另一个变量被读取或写入的次数，如循环语句示例代码中的变量`size`和`key`。对于最后一个，当数组变量的大小由另一个变量指定。在生成这个数组变量时，应该指定大小。
+
+- **事务间依赖**。一个变量有时依赖于不同事务中的另一个变量。换句话说，一个transaction中的输入可以通过另一个transaction中的输出来获得。我们提出下图中算法 1 来处理这种依赖性。
+ ① 一个变量为输入，另一个为输出；② 这两个变量位于不同的事务中； ③ 输入变量的类型等于输出变量的类型；④ 要么输入变量类型是复杂的（不是原始类型），要么输入变量名和输出变量名相似。相似度度量算法可定制化处理
+
+![note_fans-002.png](https://bucket.lilac.fun/2024/07/note_fans-002.png)
+
+### Fuzzer 引擎
+
+首先，fuzzer管理器会将fuzzer程序的二进制文件、接口模型和依赖同步到手机上，并在手机上启动fuzzer。然后Fuzzer将生成一个测试用例，即一个transaction及其相应的接口来模糊测试远程代码。同时，fuzzer管理器将定期同步手机上的崩溃日志。
 
 ## 实现
 
+### 接口收集器
 
+Python实现[接口收集器](#接口收集器)与[Input and Output Variable Extraction](#Input)一节中提到的内容
 
+### 接口模型提取器
+
+当我们从 AST 中提取接口模型时，我们首先将编译命令转换为 cc1 命令，同时链接 Clang 插件，该插件用于遍历 AST 并提取粗略的接口模型。我们对 AST 进行近似切片，只保留与输入和输出变量相关的语句，省略其他语句。最后，我们对粗略模型进行后处理，以便Fuzzer引擎可以轻松使用它。接口模型以JSON格式存储。
+
+### 依赖推断器
+
+如上文描述，输入原为上一步得到的JSON
+
+### Fuzzer 引擎
+
+实现了一个简单的Fuzzer管理器，以便在多部手机上运行fuzzer，并在主机和手机之间同步数据。我们构建了整个 AOSP，并启用了 ASan。模糊器在 C++ 中作为终端可执行文件实现。由于一些Android原生系统服务在接收 RPC 请求时会检查调用者的权限，因此模糊器是在root权限下执行的。为了加速执行，当不需要`reply`中的输出时，我们通过将`transact`的`flag`参数标记为 1 来进行异步RPC。当我们确实需要`reply`中的输出时，例如依赖推断，我们会进行同步调用。最后，为了分析触发的崩溃，我们使用Android内置的 logcat 工具进行日志记录。此外，我们还将记录位于 `/data/tombstones/` 的本机崩溃日志
+
+## 案例
+
+> TODO：说明出现的案例
 
 [^1]: [FANS: Fuzzing Android Native System Services via Automated Interface Analysis](https://www.usenix.org/conference/usenixsecurity20/presentation/liu)
 [^2]: [Github: FANS: Fuzzing Android Native System Services](https://github.com/iromise/fans)
