@@ -4,7 +4,7 @@ slug: technology/android/kernel/discussion-18/
 number: 18
 url: https://github.com/jygzyc/notes/discussions/18
 created: 2024-05-30
-updated: 2024-06-21
+updated: 2024-07-06
 authors: [jygzyc]
 categories: 
   - 0101-Android
@@ -262,15 +262,15 @@ uprobes在[Linux 3.5](http://kernelnewbies.org/Linux_3.5#head-95fccbb746226f6b9d
 将 uprobe 事件写入 `uprobe_events` ，调用链为  
 
 - [probes_write()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/probes_write)
-- [create_or_delete_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/create_or_delete_trace_uprobe）
+- [create_or_delete_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/create_or_delete_trace_uprobe)
 - [trace_uprobe_create()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/trace_uprobe_create)
 
 > （在旧版本的内核中可能为 `probes_write()->create_trace_uprobe()`）
 
 - [kern_path()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/kern_path)，打开目标ELF文件并获取文件inode  
-- [alloc_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/alloc_trace_uprobe)，分配一个trace_uprobe结构体并初始化  
-- [register_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/register_trace_uprobe)，注册trace_uprobe和probe_event ，将`trace_uprobe`添加到事件tracer中，并建立对应的 uprobe debugfs 目录，即上文示例中的 p_test_0x1149
-- 当已经注册了 uprobe 的 ELF 程序被执行时，可执行文件会被 mmap（uprobe_mmap()） 映射到进程的地址空间，同时内核会将该进程虚拟地址空间中对应的 uprobe 点替换成断点指令。当目标程序指向到对应的 uprobe 地址时，会触发断点，从而触发到 uprobe 的中断处理流程  [arch_uprobe_exception_notify](https://elixir.bootlin.com/linux/v6.9.5/C/ident/arch_uprobe_exception_notify)，进而在内核中打印对应的信息。
+- [alloc_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/alloc_trace_uprobe)，分配一个`trace_uprobe`结构体并初始化  
+- [register_trace_uprobe()](https://elixir.bootlin.com/linux/v6.9.5/C/ident/register_trace_uprobe)，注册`trace_uprobe`和`probe_event` ，将`trace_uprobe`添加到事件tracer中，并建立对应的 uprobe debugfs 目录，即上文示例中的 p_test_0x1149
+- 当已经注册了 uprobe 的 ELF 程序被执行时，可执行文件会被 `mmap`（`uprobe_mmap()`） 映射到进程的地址空间，同时内核会将该进程虚拟地址空间中对应的 uprobe 点替换成断点指令。当目标程序指向到对应的 uprobe 地址时，会触发断点，从而触发到 uprobe 的中断处理流程  [arch_uprobe_exception_notify](https://elixir.bootlin.com/linux/v6.9.5/C/ident/arch_uprobe_exception_notify)，进而在内核中打印对应的信息。
 
 与 kprobe 类似，我们可以在触发 uprobe 时候根据对应寄存器去提取当前执行的上下文信息，比如函数的调用参数等。使用 uprobe 的好处是我们可以获取许多对于内核态比较抽象的信息，比如 bash 中 readline 函数的返回、SSL_read/write 的明文信息等。
 
