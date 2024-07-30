@@ -4,7 +4,7 @@ slug: technology/program/rust/discussion-8/
 number: 8
 url: https://github.com/jygzyc/notes/discussions/8
 created: 2024-04-19
-updated: 2024-05-27
+updated: 2024-07-30
 authors: [jygzyc]
 categories: 
   - 0102-编程
@@ -13,11 +13,11 @@ comments: true
 ---
 
 <!-- a-half-hour-to-learn-rust -->
-> 个人笔记：为了理解rust，添加了一些tip
+> 个人笔记：按照个人的学习路线，进行了记录
 
 为了提高编程语言的流畅性，人们必须阅读大量编程语言的相关知识。但如果你不知道它的含义，你怎么能读这么多呢？
 在本文中，我不会专注于一两个概念，而是尝试尽可能多地浏览 Rust 片段，并解释它们包含的关键字和符号的含义。
-准备好了吗？冲！[^1] [^2] （根据情况更新笔记）
+准备好了吗？冲！[^1] [^2] [^3] [^4] （根据情况更新笔记）
 
 `let`引入了一个变量绑定：
 
@@ -32,22 +32,17 @@ x = 42; // 将 42 分配给“x”
 let x = 42;
 ```
 
-您可以使用`:`显式地指定变量的类型，这是类型注解：
+可以使用`:`显式地指定变量的类型
 
 ```rust
 let x: i32; // `i32` 是一个有符号的 32 位整数
 x = 42;
 // 有 i8、i16、i32、i64、i128 表示其他位数的有符号整数
 // 还有 u8、u16、u32、u64、u128 表示无符号整数
+let x: i32 = 42; // 这也可以写成一行
 ```
 
-这也可以写成一行：
-
-```rust
-let x: i32 = 42;
-```
-
-如果您声明一个变量并稍后对其进行初始化，在初始化之前编译器将阻止您使用它。
+如果您声明一个变量并稍后对其进行初始化，在初始化之前编译器将阻止您使用它，即禁止在初始化前调用
 
 ```rust
 let x;
@@ -63,13 +58,13 @@ x = 42;
 foobar(x); // `x` 的类型可以推断出来
 ```
 
-下划线`_`是一个特殊名称——或者更确切地说，是“缺乏名称”。`_`基本上意味着扔掉一些东西：
+下划线`_`是一个特殊名称——或者更确切地说，是“不需要名称”。`_`基本上意味着丢掉一些东西：
 
 ```rust
 // *什么也没做*，因为 42 是一个常数
 let _ = 42;
 
-// 这调用了 `get_thing` 但丢弃了它的结果
+// 这调用了 `get_thing` 但不需要返回结果
 let _ = get_thing();
 ```
 
@@ -1040,3 +1035,4 @@ fn print(x: &i32) {
 [^1]: [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust)
 [^2]: [Rust半小时教程](https://colobu.com/2020/03/05/A-half-hour-to-learn-Rust/)
 [^3]: [深入探索 Rust 中的 Panic 机制](https://juejin.cn/post/7314144983018782761)
+[^4]: [通过100个练习学习Rust](https://github.com/mainmatter/100-exercises-to-learn-rust)
