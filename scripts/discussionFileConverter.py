@@ -215,7 +215,7 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
                     f'  updated: {discussion["updatedAt"][0:10]}\n'
                     f'created: {discussion["createdAt"][0:10]}\n'
                     f'updated: {discussion["updatedAt"][0:10]}\n'
-                    f'authors: [Ecool]\n'
+                    f'authors: [ecool]\n'
                     f'categories: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
                     f'comments: {_is_comment_open(discussion)}\n'
                     f'---\n\n')
