@@ -6,8 +6,6 @@ slug: site-message/
 created: 2024-04-21
 updated: 2024-06-25
 authors: [jygzyc]
-categories: 
-  - 0002-留言
 comments: true
 ---
 
