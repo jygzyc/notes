@@ -8,7 +8,7 @@ date:
   updated: 2024-07-31
 created: 2024-07-02
 updated: 2024-07-31
-authors: [Ecool]
+authors: [ecool]
 categories: ['论文笔记']
 comments: true
 ---
