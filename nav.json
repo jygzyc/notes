@@ -8,6 +8,7 @@
         "010102-漏洞与安全": "technology/android/security/",
         "010103-逆向分析": "technology/android/reverse/",
         "010104-Kernel": "technology/android/kernel/",
+        "010105-TEE": "technology/android/tee/",
         "0102-编程": "technology/program/",
         "010201-JavaScript": "technology/program/js/",
         "010202-C": "technology/program/c/",
