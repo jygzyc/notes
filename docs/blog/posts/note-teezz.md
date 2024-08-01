@@ -1,5 +1,5 @@
 ---
-title: TEEzz: Fuzzing Trusted Applications on COTS Android Devices 笔记
+title: TEEzz：Fuzzing Trusted Applications on COTS Android Devices 笔记
 slug: blog/discussion-27/
 number: 27
 url: https://github.com/jygzyc/notes/discussions/27
