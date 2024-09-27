@@ -1,13 +1,13 @@
 ---
-title: GlobalConfusion: TrustZone Trusted Application 0-Days by Design 笔记
+title: GlobalConfusion—TrustZone Trusted Application 0-Days by Design 笔记
 slug: blog/discussion-30/
 number: 30
 url: https://github.com/jygzyc/notes/discussions/30
 date:
   created: 2024-09-24
-  updated: 2024-09-24
+  updated: 2024-09-27
 created: 2024-09-24
-updated: 2024-09-24
+updated: 2024-09-27
 authors: [ecool]
 categories: ['论文笔记']
 comments: true
