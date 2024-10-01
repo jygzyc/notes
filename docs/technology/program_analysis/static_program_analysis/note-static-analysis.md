@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2024-06-29
+updated: 2024-09-30
 authors: [jygzyc]
 categories: 
   - 0105-程序分析
@@ -26,7 +26,7 @@ comments: true
 
 由上可知不存在完美的程序分析，要么满足完全性（Soundness），要么满足正确性（Completeness）。Sound 的静态分析保证了完全性，妥协了正确性，会过近似（Overapproximate）程序的行为，因此会出现假阳性（False Positive）的现象，即误报问题。现实世界中，Sound的静态分析居多，因为误报可以被暴力排查，而Complete的静态分析存在漏报，很难排查。
 
-![note_static_analysis-001.jpg](https://bucket.lilac.fun/2024/06/note_static_analysis-001.jpg)
+![note_static_analysis-001.jpg](https://imgbed.lilac.fun/file/1727706057793_note_static_analysis-001.jpg)
 
 Static Analysis: ensure (or get close to) soundness, while making good trade-offs between analysis precision and analysis speed.
 
@@ -44,7 +44,7 @@ Static Analysis: ensure (or get close to) soundness, while making good trade-off
 
 接下来就可以设计转移方程（ Transfer functions），即在抽象值上的操作
 
-![note_static_analysis-002.png](https://bucket.lilac.fun/2024/06/note_static_analysis-002.png)
+![note_static_analysis-002.png](https://imgbed.lilac.fun/file/1727706059824_note_static_analysis-002.png)
 
 再看一个例子，体会一下 Sound 的，过近似的分析原则：
 
@@ -63,7 +63,7 @@ z = x + y;
 
 #### 编译器和静态分析器
 
-![note_static_analysis-003.jpg](https://bucket.lilac.fun/2024/06/note_static_analysis-003.jpg)
+![note_static_analysis-003.jpg](https://imgbed.lilac.fun/file/1727706053570_note_static_analysis-003.jpg)
 
 静态分析一般发生在 IR 层
 
@@ -75,7 +75,7 @@ do i = i + 1; while (a[i] < v);
 
 AST和三地址码 IR 如下
 
-![note_static_analysis-004.jpg](https://bucket.lilac.fun/2024/06/note_static_analysis-004.jpg)
+![note_static_analysis-004.jpg](https://imgbed.lilac.fun/file/1727706054572_note_static_analysis-004.jpg)
 
 | AST | IR |
 | --- | --- |
@@ -105,9 +105,11 @@ public class MethodCall3AC{
 }
 ```
 
-![note_static_analysis-005.png](https://bucket.lilac.fun/2024/06/note_static_analysis-005.png)
+![note_static_analysis-005.png](https://imgbed.lilac.fun/file/1727706062362_note_static_analysis-005.png)
 
 - 静态单赋值（Static Single Assignment，SSA） 是另一种IR的形式，它和3AC的区别是，在每次赋值的时候都会创建一个新的变量，也就是说，在SSA中，每个变量（包括原始变量和新创建的变量）都只有唯一的一次定义。
+
+![3ac-ssa.6fdd9b4d.png](https://imgbed.lilac.fun/file/1727706710617_3ac-ssa.6fdd9b4d.png)
 
 #### 控制流分析
 
@@ -115,7 +117,7 @@ public class MethodCall3AC{
 
 简单来讲，基块就是满足两点的最长的指令序列：第一，程序的控制流只能从首指令进入；第二，程序的控制流只能从尾指令流出。构建基块的算法如下
 
-![note_static_analysis-006.png](https://bucket.lilac.fun/2024/06/note_static_analysis-006.png)
+![note_static_analysis-006.png](https://imgbed.lilac.fun/file/1727706060341_note_static_analysis-006.png)
 
 
 
