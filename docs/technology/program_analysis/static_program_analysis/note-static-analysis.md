@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2024-09-30
+updated: 2024-10-02
 authors: [jygzyc]
 categories: 
   - 0105-程序分析
@@ -20,7 +20,7 @@ comments: true
 
 ### 1.1 概述
 
-- Definition 1.1:  **静态分析（Static Analysis）** 是指在实际运行程序 $P$ 之前，通过分析静态程序 $P$ 本身来推测程序的行为，并判断程序是否满足某些特定的 性质（Property） $Q$
+- Definition:  **静态分析（Static Analysis）** 是指在实际运行程序 $P$ 之前，通过分析静态程序 $P$ 本身来推测程序的行为，并判断程序是否满足某些特定的 性质（Property） $Q$
 
 > Rice定理（Rice Theorem）：对于使用 递归可枚举（Recursively Enumerable） 的语言描述的程序，其任何 非平凡（Non-trivial） 的性质都是无法完美确定的。
 
@@ -85,7 +85,7 @@ AST和三地址码 IR 如下
 | 缺少和程序控制流相关的信息 | 包含程序的控制流信息 |
 || 通常作为静态分析的基础 |
 
-- Definition 2.1: 我们将形如 $f(a_1, a_2, ..., a_n)$ 的指令称为 $n$ **地址码（N-Address Code）**，其中，每一个 $a_i$ 是一个地址，既可以通过 $a_i$ 传入数据，也可以通过 $a_i$ 传出数据， $f$ 是从地址到语句的一个映射，其返回值是某个语句 $s$ ， $s$ 中最多包含输入的 $n$ 个地址。这里，我们定义某编程语言 $L$ 的语句 $s$ 是 $L$ 的操作符、关键字和地址的组合。
+- Definition: 我们将形如 $f(a_1, a_2, ..., a_n)$ 的指令称为 $n$ **地址码（N-Address Code）**，其中，每一个 $a_i$ 是一个地址，既可以通过 $a_i$ 传入数据，也可以通过 $a_i$ 传出数据， $f$ 是从地址到语句的一个映射，其返回值是某个语句 $s$ ， $s$ 中最多包含输入的 $n$ 个地址。这里，我们定义某编程语言 $L$ 的语句 $s$ 是 $L$ 的操作符、关键字和地址的组合。
 
 - 3地址码（3-Address Code，3AC），每条 3AC 至多有三个地址。而一个「地址」可以是：**名称 Name**:，例如a, b；**常量 Constant**，例如 3；**编译器生成的临时变量 Compiler-generated Temporary**，例如 `t1`，`t2`
 
@@ -109,19 +109,56 @@ public class MethodCall3AC{
 
 - 静态单赋值（Static Single Assignment，SSA） 是另一种IR的形式，它和3AC的区别是，在每次赋值的时候都会创建一个新的变量，也就是说，在SSA中，每个变量（包括原始变量和新创建的变量）都只有唯一的一次定义。
 
-![3ac-ssa.6fdd9b4d.png](https://imgbed.lilac.fun/file/1727706710617_3ac-ssa.6fdd9b4d.png)
+![3ac-ssa.6fdd9b4d.png](https://imgbed.lilac.fun/file/1727706709933_3ac-ssa.6fdd9b4d.png)
 
 #### 控制流分析
 
+- 基块
+
 控制流分析（Control Flow Analysis, CFA） 通常是指构建 控制流图（Control Flow Graph，CFG） 的过程。CFG是我们进行静态分析的基础，控制流图中的结点可以是一个指令，也可以是一个基块（Basic Block）。
 
-简单来讲，基块就是满足两点的最长的指令序列：第一，程序的控制流只能从首指令进入；第二，程序的控制流只能从尾指令流出。构建基块的算法如下
+简单来讲，基块就是满足两点的最长的指令序列：**第一，程序的控制流只能从首指令进入；第二，程序的控制流只能从尾指令流出**。构建基块的算法如下
 
 ![note_static_analysis-006.png](https://imgbed.lilac.fun/file/1727706060341_note_static_analysis-006.png)
 
+1. 找到所有的leaders：程序的入口为leader；跳转的target为leader；跳转语句的后一条语句为leader
+2. 以leader为分割点取最大集
 
+![image.png](https://imgbed.lilac.fun/file/1727836792965_image.png)
+
+- 控制流图 CFG
+
+构建算法如下
+
+![image.png](https://imgbed.lilac.fun/file/1727837214461_image.png)
+
+1. 对所有最后一条语句不是跳转的basic block与其相邻的basic block相连
+2. 对有最后一条语句是有条件跳转的basic block，与其相邻的basic block和其跳转的basic block相连
+3. 对于最后一条语句是无条件跳转的basic block，直接将其于跳转的basic block相连
+
+此外，对于控制流图来说还有两个概念Entry 和 Exit
+
+1. Entry即程序的入口，通常是第一个语句，一般来说只有一个
+2. Exit则是程序的出口，通常是return之类的语句，可能会有多个
 
 ## 二、数据流分析与应用
+
+### 数据流分析——应用
+
+#### 数据流分析初步
+
+- Definition: 数据流分析（Data Flow Analysis, DFA） 是指分析“数据在程序中是怎样流动的”。具体来讲，其
+分析的对象是基于抽象（概述中提到）的应用特定型数据（Application-Specific Data） ；分析的行为是数据的“流动（Flow）”，分析的方式是 安全近似（Safe-Approximation），即根据安全性需求选择过近似（Over-Approximation）还是欠近似（Under-Approximation）；分析的基础是控制流图（Control Flow Graph, CFG），CFG是程序 $P$ 的表示方法；
+
+数据流动的场景有两个：
+
+1. Transfer function：在CFG的点（Node）内流动，即Basic block内部的数据流；
+2. Control-flow handling：在CFG的边（Edge）上流动，即由基块间控制流触发的数据流。
+
+- 输入输出状态
+
+![image.png](https://imgbed.lilac.fun/file/1727839255347_image.png)
+
 
 ## 三、指针分析与应用
 
