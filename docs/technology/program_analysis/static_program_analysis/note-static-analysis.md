@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2024-10-02
+updated: 2024-10-06
 authors: [jygzyc]
 categories: 
   - 0105-程序分析
@@ -157,7 +157,23 @@ public class MethodCall3AC{
 
 - 输入输出状态
 
-![image.png](https://imgbed.lilac.fun/file/1727839255347_image.png)
+![输入输出状态](https://imgbed.lilac.fun/file/1727839255347_image.png)
+
+现在，我们能够定义，数据流分析就是要寻找一种解决方案（即 $f_{pp}->D$ ），对于程序 $P$ 中的所有语句 $s$ ，这种解决方案能够满足 $IN[s]$ 和 $OUT[s]$ 所需要满足的**安全近似导向型约束（Safe-Approximation-Oriented Constraints, SAOC）**，SAOC主要有两种：
+
+- 基于语句语意（Sematics of Statements）的约束，即由状态转移方程产生的约束； 
+- 基于控制流（Flow of Control）的约束，即上述输入输出状态所产生的约束。
+
+![image.png](https://imgbed.lilac.fun/file/1728198413528_image.png)
+
+#### 定义可达性分析
+
+- 当前阶段假设程序中不存在method call
+- 当前阶段假设程序中不存在aliaes，别名
+
+- Definition: 我们称在程序点 $p$ 处的一个定义 $d$ **到达（Reach）** 了程序点 $q$ ，如果存在一条从 $p$ 到 $q$ 的“路径”（控制流），在这条路径上，定义 $d$ 未被 覆盖（Kill） 。称分析每个程序点处能够到达的定义的过程为 **定义可达性分析（Reaching Definition Analysis） **
+
+从上面的定义中我们可以看出，“定义可达性”其实描述了一个定义可能的**最长的**生存期（Lifetime），因为如果存在只要一条路径，我们就认为可达，这是一个可能性分析（May Analysis），采用的是过近似（Over-Approximation）的原则。
 
 
 ## 三、指针分析与应用
