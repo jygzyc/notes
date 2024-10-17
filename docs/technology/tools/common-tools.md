@@ -4,7 +4,7 @@ slug: technology/tools/discussion-31/
 number: 31
 url: https://github.com/jygzyc/notes/discussions/31
 created: 2024-09-29
-updated: 2024-09-29
+updated: 2024-10-16
 authors: [jygzyc]
 categories: 
   - 0104-工具
@@ -27,4 +27,5 @@ comments: true
 
 - 思维导图：[思绪思维导图。一个简单&强大的 Web 思维导图](https://github.com/wanglin2/mind-map)
 - 截图：[PixPin](https://pixpinapp.com/)
+- 流程图：[draw.io](https://www.drawio.com/)
 - QuickRun：[PowerToys](https://github.com/microsoft/PowerToys)
