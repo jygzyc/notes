@@ -25,6 +25,7 @@ comments: false
 - [x] 20240623：解决评论加载时顺序不正确的问题，现在生成源Markdown时不会增加giscus评论代码，而是在模板中进行判断，以`page.meta.number`为生成依据；解决文件创建与更新时间错误问题——新增`page.meta.created`字段，新增`overrides/partials/source-file.html`文件解决创建时间错误
 - [x] 20240624：`discussionFileConverter.py`中新增评论关闭列表，指定列表内`number`号文章将关闭评论
 - [x] 20240630: 更新`discussionFileConverter.py`，`nav2pages.py`中部分代码和注释，方便维护
+- [x] 20241121: 更新图床为[CloudFlare-ImgBed](https://github.com/MarSeventh/CloudFlare-ImgBed)，后续使用Telegram作为图床Base
 
 ## 联系
 

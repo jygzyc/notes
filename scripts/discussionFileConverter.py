@@ -190,51 +190,52 @@ def _md_meta_generator(discussion: dict, md_name, md_path):
     category_num_prefix = discussion['category']['name'][:2]
     md_name, _ = os.path.splitext(os.path.basename(md_name)) #if md_name[-3:] == ".md" else md_name
     
-    if int(category_num_prefix) == 0:
-        # generate site pages metadata
-        metadata = (f'---\n'
-                    f'title: {discussion["title"]}\n'
-                    f'url: {discussion["url"]}\n'
-                    f'number: {str(discussion["number"])}\n'
-                    f'slug: {"{}/".format(md_name)}\n'
-                    f'created: {discussion["createdAt"][0:10]}\n'
-                    f'updated: {discussion["updatedAt"][0:10]}\n'
-                    f'authors: [{discussion["author"]["login"]}]\n'
-                    f'comments: {_is_comment_open(discussion)}\n'
-                    f'---\n\n')
-    elif int(category_num_prefix) == 9:
-        # generate blog pages metadata
-        slug = "blog/discussion-{0}".format(discussion["number"])
-        metadata = (f'---\n'
-                    f'title: {discussion["title"]}\n'
-                    f'slug: {slug}/\n'
-                    f'number: {str(discussion["number"])}\n'
-                    f'url: {discussion["url"]}\n'
-                    f'date:\n'
-                    f'  created: {discussion["createdAt"][0:10]}\n'
-                    f'  updated: {discussion["updatedAt"][0:10]}\n'
-                    f'created: {discussion["createdAt"][0:10]}\n'
-                    f'updated: {discussion["updatedAt"][0:10]}\n'
-                    f'authors: [ecool]\n'
-                    f'categories: {[label["name"] for label in discussion.get("labels", {}).get("nodes", []) if "name" in label]}\n'
-                    f'comments: {_is_comment_open(discussion)}\n'
-                    f'---\n\n')
-    else:
-        # generate common pages metadata
-        slug = Path(md_path).joinpath("discussion-{0}".format(discussion["number"]))
-        metadata = (f'---\n'
-                    f'title: {discussion["title"]}\n'
-                    f'slug: {slug}/\n'
-                    f'number: {str(discussion["number"])}\n'
-                    f'url: {discussion["url"]}\n'
-                    f'created: {discussion["createdAt"][0:10]}\n'
-                    f'updated: {discussion["updatedAt"][0:10]}\n'
-                    f'authors: [{discussion["author"]["login"]}]\n'
-                    f'categories: \n'
-                    f'  - {discussion["category"]["name"]}\n'
-                    f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
-                    f'comments: {_is_comment_open(discussion)}\n'
-                    f'---\n\n')
+    match int(category_num_prefix):
+        case 0:
+            # generate site pages metadata
+            metadata = (f'---\n'
+                        f'title: {discussion["title"]}\n'
+                        f'url: {discussion["url"]}\n'
+                        f'number: {str(discussion["number"])}\n'
+                        f'slug: {"{}/".format(md_name)}\n'
+                        f'created: {discussion["createdAt"][0:10]}\n'
+                        f'updated: {discussion["updatedAt"][0:10]}\n'
+                        f'authors: [{discussion["author"]["login"]}]\n'
+                        f'comments: {_is_comment_open(discussion)}\n'
+                        f'---\n\n')
+        case 9:
+            # generate blog pages metadata
+            slug = "blog/discussion-{0}".format(discussion["number"])
+            metadata = (f'---\n'
+                        f'title: {discussion["title"]}\n'
+                        f'slug: {slug}/\n'
+                        f'number: {str(discussion["number"])}\n'
+                        f'url: {discussion["url"]}\n'
+                        f'date:\n'
+                        f'  created: {discussion["createdAt"][0:10]}\n'
+                        f'  updated: {discussion["updatedAt"][0:10]}\n'
+                        f'created: {discussion["createdAt"][0:10]}\n'
+                        f'updated: {discussion["updatedAt"][0:10]}\n'
+                        f'authors: [ecool]\n'
+                        f'categories: {[label["name"] for label in discussion.get("labels", {}).get("nodes", []) if "name" in label]}\n'
+                        f'comments: {_is_comment_open(discussion)}\n'
+                        f'---\n\n')
+        case _:
+            # generate common pages metadata
+            slug = Path(md_path).joinpath("discussion-{0}".format(discussion["number"]))
+            metadata = (f'---\n'
+                        f'title: {discussion["title"]}\n'
+                        f'slug: {slug}/\n'
+                        f'number: {str(discussion["number"])}\n'
+                        f'url: {discussion["url"]}\n'
+                        f'created: {discussion["createdAt"][0:10]}\n'
+                        f'updated: {discussion["updatedAt"][0:10]}\n'
+                        f'authors: [{discussion["author"]["login"]}]\n'
+                        f'categories: \n'
+                        f'  - {discussion["category"]["name"]}\n'
+                        f'labels: {[label["name"] for label in discussion["labels"]["nodes"]] if discussion["labels"]["nodes"] else []}\n'
+                        f'comments: {_is_comment_open(discussion)}\n'
+                        f'---\n\n')
     return metadata
 
 
