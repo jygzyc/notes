@@ -2,8 +2,6 @@
 title: 留言板
 number: 9
 url: https://github.com/jygzyc/notes/discussions/9
-created: 2024-04-21
-updated: 2025-01-08
 authors: [jygzyc]
 template: home.html
 draft: false

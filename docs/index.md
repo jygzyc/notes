@@ -2,8 +2,6 @@
 title: 主页
 number: 21
 url: https://github.com/jygzyc/notes/discussions/21
-created: 2024-06-25
-updated: 2025-01-21
 authors: [jygzyc]
 template: home.html
 draft: false
