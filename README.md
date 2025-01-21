@@ -1,3 +1,3 @@
 # note.lilac.fun
 
-Personal notes deployed by github pages
+个人博客站点
