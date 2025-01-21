@@ -1,6 +1,6 @@
 ---
 title: 主页
-slug: index./
+slug: index/
 number: 21
 url: https://github.com/jygzyc/notes/discussions/21
 created: 2024-06-25
