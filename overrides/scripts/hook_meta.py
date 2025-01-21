@@ -91,7 +91,17 @@ def on_files(files, config, **__):
     # meta slug collision check
     slug_collision = SlugCollision()
 
-    # First load the ulrs
+
+    for file in files:
+        if file.is_documentation_page():
+            is_draft = _load_meta(file).get("draft")
+            log.info(f"Processing '{file.abs_src_path}'...")
+            if is_draft == "true":
+                log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
+                files.remove(file)
+                continue
+
+    # First load the urls
     for file in files:
         if file.is_documentation_page():
             slug_collision.file_urls[file.url] = file.abs_src_path
@@ -102,12 +112,6 @@ def on_files(files, config, **__):
             continue
 
         slug = _load_meta(file).get("slug")
-        is_draft = _load_meta(file).get("draft")
-        log.info(f"Processing '{file.name}'...")
-        if is_draft == "true":
-            log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
-            files.remove(file)
-            continue
 
         if not slug_collision.is_valid(slug):
             continue
