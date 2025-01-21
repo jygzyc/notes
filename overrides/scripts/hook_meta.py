@@ -92,11 +92,9 @@ def on_files(files, config, **__):
     slug_collision = SlugCollision()
 
     # First load the urls
-    for file in files:
-        if file.is_documentation_page():
-            slug_collision.file_urls[file.url] = file.abs_src_path
+    for file in files.documentation_pages():
+        slug_collision.file_urls[file.url] = file.abs_src_path
 
-    remove_files = []
     for file in files.documentation_pages():
         is_draft = _load_meta(file).get("draft")
         if is_draft == True:
@@ -105,10 +103,7 @@ def on_files(files, config, **__):
             continue
 
     # Second process the meta
-    for file in files:
-        if not file.is_documentation_page():
-            continue
-
+    for file in files.documentation_pages():
         slug = _load_meta(file).get("slug")
 
         if not slug_collision.is_valid(slug):

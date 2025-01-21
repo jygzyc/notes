@@ -69,50 +69,56 @@ class DiscussionConverter:
         self.bi_map.create_pages_files(out_dir=self.out_dir)
 
     def nav_converter(self, discussion):
-        discussion_category_name = discussion['category']['name']
-        discussion_category_description = discussion['category']['description']
-        if self._is_category_blog_or_site(discussion_category_description):
-            return
-        
-        # use preprecess-discussion_category_description as BiMap value
-        bi_map_value = self._path_preprocess(discussion_category_description)
-        self.bi_map.put(discussion_category_name, bi_map_value)
+        try:
+            discussion_category_name = discussion['category']['name']
+            discussion_category_description = discussion['category']['description']
+            if self._is_category_blog_or_site(discussion_category_description):
+                return
+            
+            # use preprecess-discussion_category_description as BiMap value
+            bi_map_value = self._path_preprocess(discussion_category_description)
+            self.bi_map.put(discussion_category_name, bi_map_value)
 
-        for node in discussion['labels']['nodes']:
-            label_name = node['name']
-            label_description = node['description']
-            if self._is_label_draft(label_description) or \
-                self._is_label_locked(label_description) or \
-                self._is_blog_posts(label_description):
-                continue
-            if label_description.find(discussion_category_description) != -1:
-                # use preprecess-label_description as BiMap value
-                bi_map_value = self._path_preprocess(label_description)
-                self.bi_map.put(label_name, bi_map_value)
-                break
+            for node in discussion['labels']['nodes']:
+                label_name = node['name']
+                label_description = node['description']
+                if self._is_label_draft(label_description) or \
+                    self._is_label_locked(label_description) or \
+                    self._is_blog_posts(label_description):
+                    continue
+                if label_description.find(discussion_category_description) != -1:
+                    # use preprecess-label_description as BiMap value
+                    bi_map_value = self._path_preprocess(label_description)
+                    self.bi_map.put(label_name, bi_map_value)
+                    break
+        except Exception as e:
+            raise e
 
     def file_converter(self, discussion):
-        # When the generation of the markdown file path fails, proceed to the next one.
-        md_path = self.md_directory_path_generator(discussion=discussion)
-        if not md_path:
-            print("[*] Path: {} skip processing".format(discussion['category']['name']))
-            return 
+        try:
+            # When the generation of the markdown file path fails, proceed to the next one.
+            md_path = self.md_directory_path_generator(discussion=discussion)
+            if not md_path:
+                print("[*] Path: {} skip processing".format(discussion['category']['name']))
+                return 
 
-        md_filename = self.md_filename_generator(discussion=discussion)
-        md_metadata = self.md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
-        discussion_body = discussion["body"]
-        saved_dir = Path(self.out_dir).joinpath(md_path)
-        if saved_dir.exists():
-            for i in saved_dir.glob(md_filename):
-                i.unlink()
-        else:
-            Path(saved_dir).mkdir(parents=True, exist_ok=True)
+            md_filename = self.md_filename_generator(discussion=discussion)
+            md_metadata = self.md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
+            discussion_body = discussion["body"]
+            saved_dir = Path(self.out_dir).joinpath(md_path)
+            if saved_dir.exists():
+                for i in saved_dir.glob(md_filename):
+                    i.unlink()
+            else:
+                Path(saved_dir).mkdir(parents=True, exist_ok=True)
 
-        saved_filepath = Path(saved_dir).joinpath(md_filename)
-        print("[*] Path: {}".format(saved_filepath))
-        with open(saved_filepath, "w") as md_file:
-            md_file.write(md_metadata)
-            md_file.write(discussion_body)
+            saved_filepath = Path(saved_dir).joinpath(md_filename)
+            print("[*] Path: {}".format(saved_filepath))
+            with open(saved_filepath, "w") as md_file:
+                md_file.write(md_metadata)
+                md_file.write(discussion_body)
+        except Exception as e:
+            raise e
 
     def md_filename_generator(self, discussion: dict):
         """
@@ -282,7 +288,7 @@ class DiscussionConverter:
 
         match md_path:
             case ".":
-                slug = md_name[:-2]
+                slug = md_name[:-3]
                 metadata = (f'---\n'
                             f'title: {discussion["title"]}\n'
                             f'slug: {slug}/\n'
