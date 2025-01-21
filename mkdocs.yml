@@ -11,6 +11,7 @@ theme:
   language: zh
   custom_dir: overrides
   favicon: assets/favicon.ico
+  logo: assets/favicon.png
   palette: 
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -21,7 +22,8 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
+      accent: indigo
+      primary: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -125,6 +127,7 @@ plugins:
       exclude:
         - blog/*
         - index.md
+        - message_board.md
   - search:
       lang:
         - en
@@ -143,3 +146,15 @@ plugins:
       archive: true
       categories: true
 
+extra:
+  analytics:
+    provider: google
+    property: G-YJZYQKZXND
+
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jygzyc
+      name: Ecool on GitHub
+    - icon: fontawesome/brands/bilibili
+      link: https://space.bilibili.com/36193083
+      name: Ecool on Bilibili
