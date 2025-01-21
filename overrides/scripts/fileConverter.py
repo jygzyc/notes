@@ -291,7 +291,6 @@ class DiscussionConverter:
                 slug = md_name[:-3]
                 metadata = (f'---\n'
                             f'title: {discussion["title"]}\n'
-                            f'slug: {slug}/\n'
                             f'number: {str(discussion["number"])}\n'
                             f'url: {discussion["url"]}\n'
                             f'created: {discussion["createdAt"][0:10]}\n'
