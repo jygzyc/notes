@@ -6,7 +6,8 @@ url: https://github.com/jygzyc/notes/discussions/9
 created: 2024-04-21
 updated: 2025-01-08
 authors: [jygzyc]
-template: home.htmldraft: true
+template: home.html
+draft: true
 comments: true
 ---
 
