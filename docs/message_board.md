@@ -1,6 +1,5 @@
 ---
 title: 留言板
-slug: message_board/
 number: 9
 url: https://github.com/jygzyc/notes/discussions/9
 created: 2024-04-21
