@@ -96,10 +96,11 @@ def on_files(files, config, **__):
         if file.is_documentation_page():
             is_draft = _load_meta(file).get("draft")
             log.info(f"Processing '{file.abs_src_path}' with 'draft' tag: {is_draft}")
-            # if is_draft == "true":
-            #     log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
-            #     files.remove(file)
-            #     continue
+            if is_draft == "True":
+                log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
+                remove_files.append(file)
+                continue
+    files.remove(i for i in remove_files)
 
     # First load the urls
     for file in files:

@@ -265,12 +265,12 @@ class DiscussionConverter:
         3. 返回 YAML 格式的元数据字符串。
         """
         is_comment_open = "true"
-        is_draft = "true"
+        is_draft = "false"
         label_list = []
 
         for node in discussion['labels']['nodes']:
             label_name = node['name']
-            label_description = node['description']
+            label_description = node['description'].strip()
             if self._is_label_draft(label_description):
                 is_draft = "true"
                 continue
