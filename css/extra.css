@@ -32,8 +32,16 @@
 
 /* Font Settings */
 .md-typeset{font-size:.75rem;}
-.md-typeset h1{font-weight: 500; font-size: x-large;}
-.md-typeset h2{font-weight: 600; font-size: large;}
+.md-typeset h1{
+    font-weight: 550; 
+    font-size: x-large;
+}
+.md-typeset h2{
+    font-weight: 650; 
+    font-size: x-large;
+    opacity: 0.8;
+}
+
 nav.md-nav.md-nav--secondary a.md-nav__link{white-space:normal;}
 
 /* Change admonition type */
