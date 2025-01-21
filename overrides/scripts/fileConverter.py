@@ -288,13 +288,10 @@ class DiscussionConverter:
 
         match md_path:
             case ".":
-                slug = md_name[:-3]
                 metadata = (f'---\n'
                             f'title: {discussion["title"]}\n'
                             f'number: {str(discussion["number"])}\n'
                             f'url: {discussion["url"]}\n'
-                            f'created: {discussion["createdAt"][0:10]}\n'
-                            f'updated: {discussion["updatedAt"][0:10]}\n'
                             f'authors: [{discussion["author"]["login"]}]\n'
                             f'template: home.html\n'
                             f'draft: {is_draft}\n'
