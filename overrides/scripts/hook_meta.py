@@ -102,9 +102,9 @@ def on_files(files, config, **__):
             continue
 
         slug = _load_meta(file).get("slug")
-
-        isDraft = _load_meta(file).get("draft")
-        if isDraft == "true":
+        is_draft = _load_meta(file).get("draft")
+        log.info(f"Processing '{file.name}'...")
+        if is_draft == "true":
             log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
             files.remove(file)
             continue

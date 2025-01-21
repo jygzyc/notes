@@ -291,7 +291,7 @@ class DiscussionConverter:
                             f'created: {discussion["createdAt"][0:10]}\n'
                             f'updated: {discussion["updatedAt"][0:10]}\n'
                             f'authors: [{discussion["author"]["login"]}]\n'
-                            f'template: home.html'
+                            f'template: home.html\n'
                             f'draft: {is_draft}\n'
                             f'comments: {is_comment_open}\n'
                             f'---\n\n')
