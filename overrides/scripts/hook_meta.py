@@ -91,15 +91,15 @@ def on_files(files, config, **__):
     # meta slug collision check
     slug_collision = SlugCollision()
 
-
+    remove_files = []
     for file in files:
         if file.is_documentation_page():
             is_draft = _load_meta(file).get("draft")
-            log.info(f"Processing '{file.abs_src_path}'...")
-            if is_draft == "true":
-                log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
-                files.remove(file)
-                continue
+            log.info(f"Processing '{file.abs_src_path}' with 'draft' tag: {is_draft}")
+            # if is_draft == "true":
+            #     log.info(f"Remove '{file.src_path}' due to 'draft' tag in meta data")
+            #     files.remove(file)
+            #     continue
 
     # First load the urls
     for file in files:
