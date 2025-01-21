@@ -27,16 +27,13 @@ jobs:
           python-version: '3.13'
     
       - name: Install requirements
-        run: pip install requests python-slugify pytz
+        run: pip install requests python-slugify pytz toml
 
       - name: Get all discussions
-        run: python scripts/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_NOTE_ACCESS_TOKEN }} -o discussions
-      
-      - name: Generate pages navigation
-        run: python scripts/nav2pages.py -n nav.json -o docs
+        run: python overrides/scripts/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_NOTE_ACCESS_TOKEN }} -o discussions
 
       - name: Generate markdown posts
-        run: python scripts/discussionFileConverter.py -i discussions -o docs -n nav.json
+        run: python overrides/scripts/fileConverter.py -i discussions -o docs 
     
       - name: Commit files
         run: |

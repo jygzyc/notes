@@ -1,9 +1,10 @@
 nav:
   - 主页: index.md
-  - 留言板: site-message.md
-  - 生活: life
-  - 随笔: essay
-  - 技术: technology
+  - 留言板: message_board.md
   - 博客: blog
+  - 生活: life
+  - 随笔: ramblings
+  - 技术: technology
+
 
 collapse_single_pages: true
