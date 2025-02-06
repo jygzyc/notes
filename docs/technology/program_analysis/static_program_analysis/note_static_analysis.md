@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-02-05
+updated: 2025-02-06
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
@@ -18,7 +18,7 @@ comments: true
 
 ## 一、程序的表示
 
-### 1.1 概述
+### 1 概述
 
 - Definition:  **静态分析（Static Analysis）** 是指在实际运行程序 $P$ 之前，通过分析静态程序 $P$ 本身来推测程序的行为，并判断程序是否满足某些特定的 性质（Property） $Q$
 
@@ -59,7 +59,7 @@ z = x + y;
 
 我们会发现，在进入 2-5 行的条件语句的时候， $y$ 的值可能为 $10$ ，也可能为 $-1$ ，于是，我们最终会认为y的抽象值为 $\top$ ，最终 $z$ 的抽象值也就为 $\top$ ，这样，我们的分析就是尽可能全面的，虽然它并不精确。
 
-### 1.2 中间表示
+### 2 中间表示
 
 #### 编译器和静态分析器
 
@@ -143,7 +143,7 @@ public class MethodCall3AC{
 
 ## 二、数据流分析与应用
 
-### 数据流分析——应用
+### 3 数据流分析——应用
 
 #### 数据流分析初步
 
@@ -156,6 +156,8 @@ public class MethodCall3AC{
 2. Control-flow handling：在CFG的边（Edge）上流动，即由基块间控制流触发的数据流。
 
 - 输入输出状态
+
+下图中是常见的几种程序上下文状态，在每个具体的数据流分析中，我们最终会为每一个程序点关联一个数据流值，这个数据流值表征了在这个程序点能够观察到的所有可能的程序状态
 
 ![输入输出状态](https://imgbed.lilac.fun/file/1727839255347_image.png)
 
@@ -171,9 +173,17 @@ public class MethodCall3AC{
 - 当前阶段假设程序中不存在method call
 - 当前阶段假设程序中不存在aliaes，别名
 
-- Definition: 我们称在程序点 $p$ 处的一个定义 $d$ **到达（Reach）** 了程序点 $q$ ，如果存在一条从 $p$ 到 $q$ 的“路径”（控制流），在这条路径上，定义 $d$ 未被 覆盖（Kill） 。称分析每个程序点处能够到达的定义的过程为 **定义可达性分析（Reaching Definition Analysis） **
+![image.png](https://imgbed.lilac.fun/file/1738838797849_image.png)
 
-从上面的定义中我们可以看出，“定义可达性”其实描述了一个定义可能的**最长的**生存期（Lifetime），因为如果存在只要一条路径，我们就认为可达，这是一个可能性分析（May Analysis），采用的是过近似（Over-Approximation）的原则。
+- Definition: 我们称在程序点 $p$ 处的一个定义 $d$ **到达（Reach）** 了程序点 $q$ ，如果存在一条从 $p$ 到 $q$ 的“路径”（控制流），在这条路径上，定义 $d$ 未被 覆盖（Kill） 。称分析每个程序点处能够到达的定义的过程为 **定义可达性分析（Reaching Definition Analysis）**
+
+定义可达性分析用来检测程序中是否存在未定义的变量。例如，我们在程序入口为各个变量引入一个伪定义（dummy definition）。如果程序中存在某个使用变量 $v$ 的程序点 $p$ ，且 $v$ 的伪定义能够到达程序点 $p$ ，那么我们就可以分析出变量 $v$ 可能在定义之前被使用，也就是可能程序存在变量未定义的错误（实际程序执行的时候，只有唯一的一条控制流会被真实的执行，而这条控制流并不一定刚好是我们用于得到定义可达结论的那一条）。同时，当执行到程序出口时，该变量定值依然为dummy，则可以认为该变量未被定义。
+
+从上述的定义中，能够看出这是一个可能性分析（May Analysis），采用的是过近似（Over-Approximation）的原则，且属于前向（forward）分析
+
+具体算法如下
+
+![image.png](https://imgbed.lilac.fun/file/1738838966866_image.png)
 
 
 ## 三、指针分析与应用
