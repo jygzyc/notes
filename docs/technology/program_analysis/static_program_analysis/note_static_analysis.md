@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-01-21
+updated: 2025-02-05
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
@@ -159,7 +159,7 @@ public class MethodCall3AC{
 
 ![输入输出状态](https://imgbed.lilac.fun/file/1727839255347_image.png)
 
-现在，我们能够定义，数据流分析就是要寻找一种解决方案（即 $f_{pp}->D$ ），对于程序 $P$ 中的所有语句 $s$ ，这种解决方案能够满足 $IN[s]$ 和 $OUT[s]$ 所需要满足的**安全近似导向型约束（Safe-Approximation-Oriented Constraints, SAOC）**，SAOC主要有两种：
+现在，我们能够定义，数据流分析就是要寻找一种解决方案（即 $f_{pp}->D$ ），对于程序 $P$ 中的所有语句 $s$ ，这种解决方案能够满足 $IN[s]$ 和 $OUT[s]$ 所需要满足的 **安全近似导向型约束（Safe-Approximation-Oriented Constraints, SAOC）**，SAOC主要有两种：
 
 - 基于语句语意（Sematics of Statements）的约束，即由状态转移方程产生的约束； 
 - 基于控制流（Flow of Control）的约束，即上述输入输出状态所产生的约束。
