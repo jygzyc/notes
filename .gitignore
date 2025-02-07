@@ -1,6 +1,7 @@
 ## mkdocs
 site/
-github_test_token.txt
+github_test_token
+test_discussions
 test/
 backup/
 

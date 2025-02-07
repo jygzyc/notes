@@ -66,9 +66,11 @@ class TestQueryDiscussions(unittest.TestCase):
     def setUp(self):
         self.gh_test_repo = "jygzyc/notes"
         self.gh_test_token = "ghp_xxxxxx"
-        self.test_out_file = "discussions"
+        self.test_out_file = "test_discussions"
 
     def test_query_discussions(self):
+        with open("github_test_token", "r") as f:
+            self.gh_test_token = f.read().strip()
         gh_owner = self.gh_test_repo.split("/")[0]
         gh_repo_name = self.gh_test_repo.split("/")[-1]
         headers = {
@@ -94,8 +96,6 @@ class TestQueryDiscussions(unittest.TestCase):
         with open(self.test_out_file, "w", encoding='utf-8') as f:
             f.write(str(discussions_with_timestamp))
         self.assertTrue(os.path.exists(self.test_out_file))
-
-
 
 def main():
     parser = argparse.ArgumentParser()

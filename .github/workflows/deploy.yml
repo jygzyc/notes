@@ -27,11 +27,15 @@ jobs:
           python-version: '3.13'
     
       - name: Install requirements
-        run: pip install requests python-slugify pytz toml
+        run: pip install -r overrides/scripts/requirements.txt
 
-      - name: Get all discussions
-        run: python overrides/scripts/queryDiscussions.py -r jygzyc/notes -t ${{ secrets.PERSONAL_NOTE_ACCESS_TOKEN }} -o discussions
-
+      - name: Query existing discussions
+        run: |
+          python overrides/scripts/queryDiscussions.py \
+            -r jygzyc/notes \
+            -t ${{ secrets.PERSONAL_NOTE_ACCESS_TOKEN }} \
+            -o discussions
+      
       - name: Generate markdown posts
         run: python overrides/scripts/fileConverter.py -i discussions -o docs 
     
