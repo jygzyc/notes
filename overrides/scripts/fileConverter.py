@@ -106,16 +106,6 @@ class DiscussionConverter:
                 return 
 
             md_filename = self.md_filename_generator(discussion=discussion)
-            # 删除所有包含相同number的旧文件
-            current_number = discussion["number"]
-            for old_file in Path(self.out_dir).rglob("*.md"):
-                if old_file.is_file():
-                    with open(old_file, "r") as f:
-                        header = "".join([next(f) for _ in range(10)]) # 只读前10行
-                        if f'number: {current_number}\n' in header:  # 通过number识别文件
-                            old_file.unlink()
-                            print(f"[*] Deleted old file by number: {old_file}")
-
             md_metadata = self.md_meta_generator(discussion=discussion, md_name=md_filename, md_path=md_path)
             discussion_body = discussion["body"]
             saved_dir = Path(self.out_dir).joinpath(md_path)
