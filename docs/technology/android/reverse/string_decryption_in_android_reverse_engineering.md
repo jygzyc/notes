@@ -4,7 +4,7 @@ slug: technology/android/reverse/discussion-12/
 number: 12
 url: https://github.com/jygzyc/notes/discussions/12
 created: 2024-05-27
-updated: 2025-01-05
+updated: 2025-02-07
 authors: [jygzyc]
 categories: [Android专栏]
 labels: ['Android 逆向']
@@ -22,7 +22,7 @@ comments: true
 
 以某网站上的著名项目`StringFog`为例，这是一款自动对dex/aar/jar文件中的字符串进行加密Android插件工具，其工作如下所示
 
-![string_decryption_in_android_reverse_engineering_01.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_01.png)
+![string_decryption_in_android_reverse_engineering_01.png](https://imgbed.lilac.fun/file/1738949808508_string_decryption_in_android_reverse_engineering_01.png)
 
 `StringFog`实现的原理实际上非常简单，就是在字节码层面进行替换，但是却能给逆向分析增加较大的时间成本，并且，除了`StringFog`，市面上也存在很多自定义加密字符串的方案，这类方案往往和混淆结合在一起，就如同逆向时的鸡肋一般，让安全研究人员食之无味，弃之可惜。
 
@@ -30,11 +30,11 @@ comments: true
 
 通过`jadx`加载某dex文件时，会发现文件中存在很多的加密字符串，这样的加密很影响分析的效率，那么我们怎么去除它呢？在最新版本的`jadx`中，开发者引入了一个全新的功能——`jadx-script`。通过`jadx-script`，我们能够在`jadx`中执行kotlin script，而相关的例子，也放在`jadx-plugins/jadx-script/examples/scripts`中，下面会介绍到。
 
-![string_decryption_in_android_reverse_engineering_02.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_02.png)
+![string_decryption_in_android_reverse_engineering_02.png](https://imgbed.lilac.fun/file/1738949808772_string_decryption_in_android_reverse_engineering_02.png)
 
 跟踪这个解密的函数，能看到解密的逻辑并不复杂，完全能够直接复现，那么我们期望的效果，肯定是在静态分析时直接看到解密后的结果，下面我们就来看看怎么达到这个效果。事实上，我们可以编写一个算法还原的脚本并交给最新的`jadx`去执行
 
-![string_decryption_in_android_reverse_engineering_03.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_03.png)
+![string_decryption_in_android_reverse_engineering_03.png](https://imgbed.lilac.fun/file/1738949805985_string_decryption_in_android_reverse_engineering_03.png)
 
 ```kotlin
 /**
@@ -101,11 +101,11 @@ fun decode(str: String): String {
 
 上面的代码中，已经复现了解密的算法，接下来就是加载脚本了，在GUI中选择`replace_method_call.jadx.kts`，打开
 
-![string_decryption_in_android_reverse_engineering_04.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_04.png)
+![string_decryption_in_android_reverse_engineering_04.png](https://imgbed.lilac.fun/file/1738949805848_string_decryption_in_android_reverse_engineering_04.png)
 
 执行脚本，会遍历每一个方法节点，当签名相符时，会替换为解密后的结果
 
-![string_decryption_in_android_reverse_engineering_05.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_05.png)
+![string_decryption_in_android_reverse_engineering_05.png](https://imgbed.lilac.fun/file/1738949807292_string_decryption_in_android_reverse_engineering_05.png)
 
 这样的话，我们就可以继续正常逆向分析了
 
@@ -120,7 +120,7 @@ fun decode(str: String): String {
 
 我们可以根据各自的特性选择主动调用的工具，这里先看一个`Demo`案例，以`androidx.core.utils.CommenUtils$Companion.a`函数为例
 
-![string_decryption_in_android_reverse_engineering_06.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_06.png)
+![string_decryption_in_android_reverse_engineering_06.png](https://imgbed.lilac.fun/file/1738949804728_string_decryption_in_android_reverse_engineering_06.png)
 
 通过上图，我们能明显看到关键字符串均采用了加密，那么看一下加密函数`C3632qz.b`的实现
 
@@ -275,21 +275,21 @@ if __name__ == "__main__":
 
 开启Frida，启动PC端server，执行脚本，能够看到大部分内容已经被解密了
 
-![string_decryption_in_android_reverse_engineering_08.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_08.png)
+![string_decryption_in_android_reverse_engineering_08.png](https://imgbed.lilac.fun/file/1738949807680_string_decryption_in_android_reverse_engineering_08.png)
 
 但是此时还需要注意一下`CornerTreatment.b("237A88EB")`，这看上去也是一个解密，跟进去看看
 
-![string_decryption_in_android_reverse_engineering_09.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_09.png)
+![string_decryption_in_android_reverse_engineering_09.png](https://imgbed.lilac.fun/file/1738949801468_string_decryption_in_android_reverse_engineering_09.png)
 
 果不其然，这里也是一层加密，事实上，这个Demo中也存在着很多这种嵌套解密
 
-![string_decryption_in_android_reverse_engineering_10.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_10.png)
+![string_decryption_in_android_reverse_engineering_10.png](https://imgbed.lilac.fun/file/1738949803544_string_decryption_in_android_reverse_engineering_10.png)
 
 虽然多了一层解密，但是我们依然可以如法炮制，再上一个解密的插件，这样问题就解决了，双层嵌套解密也能被干掉
 
-![string_decryption_in_android_reverse_engineering_11.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_11.png)
+![string_decryption_in_android_reverse_engineering_11.png](https://imgbed.lilac.fun/file/1738949806466_string_decryption_in_android_reverse_engineering_11.png)
 
-![string_decryption_in_android_reverse_engineering_12.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_12.png)
+![string_decryption_in_android_reverse_engineering_12.png](https://imgbed.lilac.fun/file/1738949804337_string_decryption_in_android_reverse_engineering_12.png)
 
 当字符串的混淆消失之后，我们也能够更好地分析应用的行为，也可以将patch后的项目导出用于静态检测。
 
