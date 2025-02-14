@@ -1,6 +1,6 @@
 {% extends "header.html" %}
 
-{%% block scripts %%}
+{%% block script %%}
     {{ super() }}
     <script>
         // 消除控制台打印
@@ -32,7 +32,7 @@
 
             setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
 
-            setTimeout(console.warn.bind(console, "%c ⚡ Powered by Ecool %c 你正在访问 小妖精 的博客.", "color:white; background-color:#f0ad4e", ""));
+            setTimeout(console.warn.bind(console, "%c ⚡ Powered by Mkdocs %c 你正在访问 Ecool 的博客.", "color:white; background-color:#f0ad4e", ""));
             setTimeout(console.warn.bind(console, "%c ❶ Blog: %c https://note.lilac.fun", "color:white; background-color:#ff7aa4", ""));
             setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
 
