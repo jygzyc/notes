@@ -4,7 +4,7 @@ slug: technology/android/reverse/discussion-12/
 number: 12
 url: https://github.com/jygzyc/notes/discussions/12
 created: 2024-05-27
-updated: 2025-02-07
+updated: 2025-02-14
 authors: [jygzyc]
 categories: [Android专栏]
 labels: ['Android 逆向']
@@ -124,7 +124,7 @@ fun decode(str: String): String {
 
 通过上图，我们能明显看到关键字符串均采用了加密，那么看一下加密函数`C3632qz.b`的实现
 
-![string_decryption_in_android_reverse_engineering_07.png](https://bucket.lilac.fun/2024/06/string_decryption_in_android_reverse_engineering_07.png)
+![string_decryption_in_android_reverse_engineering_07.png](https://imgbed.lilac.fun/file/1738949806748_string_decryption_in_android_reverse_engineering_07.png)
 
 发现这里实际上是Base64的解密，当然，我们可以在脚本中实现Base64的解密算法，不过这里也可以采用另一种方式解决，那就是直接hook `C3632qz.b`函数，进而主动调用返回结果，具体怎么操作呢？上代码
 
