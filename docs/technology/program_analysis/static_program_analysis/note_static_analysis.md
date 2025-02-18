@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-02-11
+updated: 2025-02-17
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
@@ -252,10 +252,60 @@ fig
 
 #### 可用表达式分析
 
+- Definition：我们称一个表达式（Expression）`x op y`在程序点 $p$ 处是 **可用的（Avaliable）** ，如果：**所有** 的从程序入口到程序点 $p$ 的路径都 **必须** 经过 `x op y` 表达式的评估（Evaluation），并且在最后一次 `x op y` 的评估之后，没有 $x$ 或者 $y$ 的重定义（Redefinition）。对于程序中每个程序点处的可用表达式的分析，我们称之为 **可用表达式分析（Avaliable Expression Analysis）**
 
+在这个问题中，考虑程序中所有表达式的集合，即 $E = \{e_1, e_2, ..., e_n\}$ ，其中 $e_i$ 是程序中的表达式。那么，每个程序点处的抽象程序状态，也就是数据流值，则为 $E$ 的一个子集，整个分析的定义域 $D = 2^E$ 。之后我们只需要建立 $f_{PP\to D}$ 即可
 
+这里说一个表达式是可用的，指的是这个表达是的值肯定已经被计算过了，可以直接复用之前的结果，没必要再算一遍，也就是说，这个表达式 **不需要忙碌于计算** 。我们考虑一个简单的场景。
+
+```bash
+if a - b > c then
+    c = a - b;
+```
+
+```bash
+d = a - b;
+if d > c then
+  c = d
+```
+
+上面两个例子功能性上是等价的，但是在 Example 01 中， `a - b` 被重复计算了两次，而 Example 02 中， `a - b` 只被计算了一次，因此 Example 02 的效率是更高的。在 Example 01 的第2行， `a - b` 就是一个可用表达式，在之前肯定已经被计算过，因此我么可以对程序进行优化，通过一个变量或者是寄存器储存之前的计算结果，从而在之后不需要进行重复的计算。
+
+可用表达式的相关信息还可以被用来检测全局的公共子表达式（Global Common Subexpression）。
+
+从定义中不难看出，可用表达式分析是一种必然性分析。因为在上述表达式优化的应用场景中，我们可以不优化每一个表达式，但不可以优化错误（也就是说一旦决定优化某个表达式，这个表达式就必须必然是可用表达式）。
+
+算法的具体内容如下：
+
+fig
+
+下面用一个例子说明这个算法：
+
+fig
+
+#### 总结
+
+||定义可达性分析|活跃变量分析|可用表达式分析|
+|:-:|:-:|:-:|:-:|
+|定义域|定义集的幂集|变量集的幂集|表达式集的幂集|
+|方向|正向分析|逆向分析|正向分析|
+|估计|过近似|过近似|欠近似|
+|边界| $OUT[ENTRY]=\emptyset$ | $IN[EXIT]=\emptyset$ | $OUT[ENTRY]=\emptyset$ |
+|初始化| $OUT[B] = \emptyset$ | $IN[B]=\emptyset$ | $OUT[B] = U$|
+|状态转移| $OUT[B] = gen_B \cup (IN[B] - kill_B)$ | $IN[B] = use_B \cup (OUT[B] - def_B)$ | $OUT[B] = gen_B \cup (IN[B] - kill_B)$|
+|交汇| $IN[B] = \bigcup\limits_{P \in pre(B)} OUT[P]$ | $OUT[B] = \bigcup\limits_{S \in suc(B)} IN[S]$ | $IN[B] = \bigcap\limits_{P \in pre(B)} OUT[P]$ |
+
+数据流分析的基本过程
+
+1. 问题描述：定义要研究的问题，从而确定分析顺序（正向还是逆向）和估计方式（过近似还是欠近似）；
+2. 数据抽象：确定抽象数据状态集（也就是数据流值集），从而确定定义域；
+3. 约束分析：考虑语意约束，确定状态转移方程；考虑控制流约束，确定交汇操作符的含义；
+4. 算法设计：根据上述分析设计算法，我们目前只学了迭代算法，还可以有其他的算法设计；
+5. 算法分析：分析算法的正确性和复杂度。
 
 ## 三、指针分析与应用
+
+
 
 ## 四、技术拓展
 
