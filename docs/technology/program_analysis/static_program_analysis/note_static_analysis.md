@@ -4,11 +4,11 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-02-17
+updated: 2025-02-20
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
-draft: true
+draft: false
 comments: true
 ---
 
@@ -245,8 +245,9 @@ $gen_B$ 和 $kill_B$ 是不变的，因为程序P本身是不改变的（至少�
 
 ![note_static_analysis-019.png](https://imgbed.lilac.fun/file/1739211015858_note_static_analysis-019.png)
 
-fig
-fig
+![note_static_analysis-020.png](https://imgbed.lilac.fun/file/1740028550121_note_static_analysis-020.png)
+
+![note_static_analysis-021.png](https://imgbed.lilac.fun/file/1740028756232_note_static_analysis-021.png)
 
 结果输出后，举例来说，$IN[B2]$ 的值为1001001，即此时x，p，k变量还是live的。
 
@@ -277,11 +278,15 @@ if d > c then
 
 算法的具体内容如下：
 
-fig
+![note_static_analysis-022.png](https://imgbed.lilac.fun/file/1740028789389_note_static_analysis-022.png)
 
 下面用一个例子说明这个算法：
 
-fig
+![note_static_analysis-023.png](https://imgbed.lilac.fun/file/1740028929446_note_static_analysis-023.png)
+
+![note_static_analysis-024.png](https://imgbed.lilac.fun/file/1740028930391_note_static_analysis-024.png)
+
+![note_static_analysis-025.png](https://imgbed.lilac.fun/file/1740028930830_note_static_analysis-025.png)
 
 #### 总结
 
@@ -302,6 +307,10 @@ fig
 3. 约束分析：考虑语意约束，确定状态转移方程；考虑控制流约束，确定交汇操作符的含义；
 4. 算法设计：根据上述分析设计算法，我们目前只学了迭代算法，还可以有其他的算法设计；
 5. 算法分析：分析算法的正确性和复杂度。
+
+### 4 数据流分析——基础
+
+
 
 ## 三、指针分析与应用
 
