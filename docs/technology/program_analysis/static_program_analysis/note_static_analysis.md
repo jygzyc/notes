@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-02-26
+updated: 2025-02-28
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
@@ -314,7 +314,7 @@ if d > c then
 
 下面我们从另一个视角来审视一下迭代算法。
 
-- 给定一个具有k个结点的程序流程图CFG，对于CFG中的每个结点 $n$ ，迭代算法的每一次迭代都会更新 $OUT[n]$ ；
+- 给定一个具有 k 个结点的程序流程图CFG，对于CFG中的每个结点 $n$ ，迭代算法的每一次迭代都会更新 $OUT[n]$ ；
 
 - 设数据流分析的定义域 为 $V$ ，我们可以定义一个 $k$ 元组（k-tuple）来表示每次迭代后的分析值：
 
@@ -336,7 +336,7 @@ $$
 | 第i次迭代 | $(v_1^i, v_2^i, ..., v_k^i) = X_i = F(X_{i - 1})$ |
 | 第i+1次迭代 | $(v_1^i, v_2^i, ..., v_k^i) = X_{i + 1} = F(X_i) = X_i$ |
 
-其中， $v_i^j$ 表示第i个结点第j次迭代后的数据流值。
+其中， $v_i^j$ 表示第 i 个结点第 j 次迭代后的数据流值。
 
 算法终止的时候，我们发现 $X_{i + 1} = F(X_i) = X_i$ ，因此 $X_i$ 是函数 $F$ 的一个**不动点（Fixed Point）**，故而我们称算法到达了一个不动点。
 
@@ -344,6 +344,68 @@ $$
 
 - Partial Order 偏序
 
+我们定义**偏序集（Poset）**为 $(P, \preceq)$ ，其中 $\preceq$ 为一个**二元关系（Binary Relation）**，这个二元关系在 $P$ 上定义了 **偏序（Partial Ordering）** 关系，并且 $\preceq$ 具有如下性质：
+
+1. **自反性（Reflexivity）** ： $\forall x\in P, x \preceq x$ ；
+
+2. **反对称性（Antisymmetry）** ： $\forall x, y\in P, x \preceq y \wedge y \preceq x \Rightarrow x = y$ ；
+
+3. **传递性（Transitivity）** ： $\forall x, y, z \in P, x \preceq y \wedge y \preceq z \Rightarrow x \preceq z$ 。
+
+- 格
+
+考虑偏序集 $(P, \preceq)$ ，如果 $\forall a, b\in P$ ， $a\vee b$ 和 $a \wedge b$ 都存在，则我们称 $(P, \preceq)$ 为 **格（Lattice）** 。
+
+简单理解，格是每对元素都存在最小上界和最大下界的偏序集。比如说 $(Z, \le)$ 是格，其中 $\vee = \max, \wedge = \min$ ； $(2^S, \subseteq)$ 也是格，其中 $\vee = \cup, \wedge = \cap$ 。
+
+考虑偏序集 $(P, \preceq)$ ，如果 $\forall S \subseteq P$ ， $\vee S$ 和 $\wedge S$ 都存在，则我们称 $(P, \preceq)$ 为 **全格（Complete Lattice）** 。简单理解，全格的所有子集都有最小上界和最大下界。由于 $(Z, \le)$ ，子集 $Z_{+}$ 没有最小上界，因此它不是全格；与之不同的， $(2^S, \subseteq)$ 就是一个全格。
+
+每一个全格 $(P, \preceq)$ 都有一个 **序最大（Greatest）** 的元素 $\top = \vee P$ 称作 **顶部（Top）** ，和一个 **序最小（Least）** 的元素 $\bot = \wedge P$ 称作 **底部（Bottom）** 。
+
+每一个**有限格（Finite Lattice）** $(P, \preceq)$ （ $P$ 是有限集）都是一个全格。
+
+考虑偏序集 $L_1 = (P_1, \preceq_1), L_2 = (P_2, \preceq_2), ..., L_n = (P_n, \preceq_n)$ ，其中 $L_i = (P_i, \preceq_i), i = 1, 2, ..., n$ 的LUB运算为 $\vee_i$ ，GLB运算为 $\wedge_i$ ，定义 **积格（Product ）** 为 $L^n = (P, \preceq)$ ，满足：
+
+-  $P = P_1 \times P_2 \times ...\times P_n$
+-  $(x_1, x_2, ..., x_n) \preceq (y_1, y_2, ..., y_n) \Leftrightarrow (x_1 \preceq y_1) \wedge (x_2 \preceq y_2) \wedge ... \wedge (x_n \preceq y_n)$
+-  $(x_1, x_2, ..., x_n) \wedge (y_1, y_2, ..., y_n) = (x_1 \wedge y_1, x_2 \wedge y_2, ..., x_n \wedge y_n)$
+-  $(x_1, x_2, ..., x_n) \vee (y_1, y_2, ..., y_n) = (x_1 \vee y_1, x_2 \vee y_2, ..., x_n\vee y_n)$
+
+积格是格。
+
+全格的积格还是全格。
+
+- 不动点
+
+我们称一个函数 $f_{L\to L}$ （ $L$ 是格）是 **单调的（Monotonic）** ，具有 **单调性（Monotonicity）** ，如果 $\forall x, y\in L, x\preceq y \Rightarrow f(x) \preceq f(y)$ 。
+
+考虑一个全格 $(L, \preceq)$ ，如果 $f_{L\to L}$ 是单调的且 $L$ 是有限集，那么 **序最小的不动点（Least Fixed Point）** 可以通过如下的迭代序列找到：
+
+$$
+f(\bot), f(f(\bot)), ..., f^{h + 1}(\bot)
+$$
+
+**序最大的不动点（Greatest Fixed Point）** 可以通过如下的迭代序列找到：
+
+$$
+f(\top), f(f(\top)), ..., f^{h + 1}(\top)
+$$
+
+其中， $h$ 是 $L$ 的高度。
+
+#### 基于格的数据流分析框架
+
+一个**数据流分析框架(Data Flow Analysis Framework)** $(D, L, F)$ 由以下3个部分组成：
+
+- $D$ （Direction）：数据流的方向——正向或者逆向；
+
+- $L$ （Lattice）：一个包含值集 $V$ 的域（即 $V$ 的幂集）的格以及一个交汇操作符（Meet Operator）或者联合操作符（Joint Operator）；
+
+- $F$ （Function Family）：一个从 $V$ 到 $V$ 的转移函数族（Transfer Function Family）。
+
+![note_static_analysis-026.png](https://imgbed.lilac.fun/file/1740672903681_note_static_analysis-026.png)
+
+那么，对于整个CFG来说，数据流分析可以被视为在所有结点的格的积格上面迭代地应用转移函数和交汇/联合操作的过程
 
 
 
