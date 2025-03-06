@@ -4,7 +4,7 @@ slug: technology/program_analysis/static_program_analysis/discussion-23/
 number: 23
 url: https://github.com/jygzyc/notes/discussions/23
 created: 2024-06-26
-updated: 2025-02-28
+updated: 2025-03-04
 authors: [jygzyc]
 categories: [程序分析]
 labels: ['静态程序分析']
@@ -35,12 +35,12 @@ Static Analysis: ensure (or get close to) soundness, while making good trade-off
 过近似上文已经提到过了，这里说明一下抽象，即将具体值转化为符号值。例如将如下表左侧具体值转化为右侧抽象符号
 
 | 具体值 | 抽象值 |
-| :---: | :---: | 
+| :---: | :---: |
 | v = 1000 | + |
 | v = -1 | - |
-| v = 0 | 0 | 
-| v = x ? 1 : -1 | （丅）unknown | 
-| v = w / 0 | （丄）undefined | 
+| v = 0 | 0 |
+| v = x ? 1 : -1 | （丅）unknown |
+| v = w / 0 | （丄）undefined |
 
 接下来就可以设计转移方程（ Transfer functions），即在抽象值上的操作
 
@@ -162,7 +162,7 @@ public class MethodCall3AC{
 
 现在，我们能够定义，数据流分析就是要寻找一种解决方案（即 $f_{pp}->D$ ），对于程序 $P$ 中的所有语句 $s$ ，这种解决方案能够满足 $IN[s]$ 和 $OUT[s]$ 所需要满足的 **安全近似导向型约束（Safe-Approximation-Oriented Constraints, SAOC）**，SAOC主要有两种：
 
-- 基于语句语意（Sematics of Statements）的约束，即由状态转移方程产生的约束； 
+- 基于语句语意（Sematics of Statements）的约束，即由状态转移方程产生的约束；
 - 基于控制流（Flow of Control）的约束，即上述输入输出状态所产生的约束。
 
 ![note_static_analysis-010.png](https://imgbed.lilac.fun/file/1738949202011_note_static_analysis-010.png)
@@ -179,7 +179,6 @@ public class MethodCall3AC{
 定义可达性分析用来检测程序中是否存在未定义的变量。例如，我们在程序入口为各个变量引入一个伪定义（dummy definition）。如果程序中存在某个使用变量 $v$ 的程序点 $p$ ，且 $v$ 的伪定义能够到达程序点 $p$ ，那么我们就可以分析出变量 $v$ 可能在定义之前被使用，也就是可能程序存在变量未定义的错误（实际程序执行的时候，只有唯一的一条控制流会被真实的执行，而这条控制流并不一定刚好是我们用于得到定义可达结论的那一条）。同时，当执行到程序出口时，该变量定值依然为dummy，则可以认为该变量未被定义。
 
 从上述的定义中，能够看出这是一个可能性分析（May Analysis），采用的是过近似（Over-Approximation）的原则，且属于前向（forward）分析
-
 
 在看这个算法之前，我们定义语句 `D: v = x op y` 生成了关于变量 `v` 的一个新定义 `D` ，并且覆盖了程序中其他地方对于变量 `v` 的定义，不过并不会影响后续其他的定义再来覆盖这里的定义。赋值语句只是定义的一种形式而已，定义也可以有别的形式，比如说引用参数。
 
@@ -366,10 +365,10 @@ $$
 
 考虑偏序集 $L_1 = (P_1, \preceq_1), L_2 = (P_2, \preceq_2), ..., L_n = (P_n, \preceq_n)$ ，其中 $L_i = (P_i, \preceq_i), i = 1, 2, ..., n$ 的LUB运算为 $\vee_i$ ，GLB运算为 $\wedge_i$ ，定义 **积格（Product ）** 为 $L^n = (P, \preceq)$ ，满足：
 
--  $P = P_1 \times P_2 \times ...\times P_n$
--  $(x_1, x_2, ..., x_n) \preceq (y_1, y_2, ..., y_n) \Leftrightarrow (x_1 \preceq y_1) \wedge (x_2 \preceq y_2) \wedge ... \wedge (x_n \preceq y_n)$
--  $(x_1, x_2, ..., x_n) \wedge (y_1, y_2, ..., y_n) = (x_1 \wedge y_1, x_2 \wedge y_2, ..., x_n \wedge y_n)$
--  $(x_1, x_2, ..., x_n) \vee (y_1, y_2, ..., y_n) = (x_1 \vee y_1, x_2 \vee y_2, ..., x_n\vee y_n)$
+- $P = P_1 \times P_2 \times ...\times P_n$
+- $(x_1, x_2, ..., x_n) \preceq (y_1, y_2, ..., y_n) \Leftrightarrow (x_1 \preceq y_1) \wedge (x_2 \preceq y_2) \wedge ... \wedge (x_n \preceq y_n)$
+- $(x_1, x_2, ..., x_n) \wedge (y_1, y_2, ..., y_n) = (x_1 \wedge y_1, x_2 \wedge y_2, ..., x_n \wedge y_n)$
+- $(x_1, x_2, ..., x_n) \vee (y_1, y_2, ..., y_n) = (x_1 \vee y_1, x_2 \vee y_2, ..., x_n\vee y_n)$
 
 积格是格。
 
@@ -411,7 +410,7 @@ $$
 
 ## 三、指针分析与应用
 
-
+> TODO
 
 ## 四、技术拓展
 
