@@ -5,9 +5,9 @@ number: 33
 url: https://github.com/jygzyc/notes/discussions/33
 date:
   created: 2024-12-20
-  updated: 2025-01-22
+  updated: 2025-03-07
 created: 2024-12-20
-updated: 2025-01-22
+updated: 2025-03-07
 authors: [ecool]
 categories: ['安全技术']
 draft: true
@@ -18,13 +18,11 @@ comments: true
 
 ## Rust语言简介
 
-## Rust语言简介与安全性概述
-
 ### Rust语言简介
 
-Rust 是由 Mozilla 主导开发的高性能编译型编程语言，遵循"安全、并发、实用"的设计原则。在过去几年中，Rust编程语言以其独特的安全保障特性和高效的性能，成为了众多开发者和大型科技公司的新宠。许多大厂开始纷纷在自己的项目中引入Rust，比如Cloudflare的pingora，Android中的Binder等等。[^1] [^2] [^3]
+Rust 是由 Mozilla 主导开发的高性能编译型编程语言，遵循"安全、并发、实用"的设计原则。在过去几年中， Rust 编程语言以其独特的安全保障特性和高效的性能，成为了众多开发者和大型科技公司的新宠。许多大厂开始纷纷在自己的项目中引入 Rust ，比如 Cloudflare 的 pingora ， Android 中的 Binder 等等。[^1] [^2] [^3]
 
-下面我们举一个例子来看看Rust程序
+下面我们举一个例子来看看 Rust 程序
 
 ```
 
@@ -33,26 +31,126 @@ Rust 是由 Mozilla 主导开发的高性能编译型编程语言，遵循"安�
 ### Rust语言语法介绍
 
 
-### Rust安全性概述
 
-之所以人们对Rust那么充满兴趣，除了其强大的语法规则之外，Rust提供了一系列的安全保障机制也让人非常感兴趣，其主要集中在以下几个方面：[^4]
+## Rust语言安全性概述
 
-- 内存安全：Rust通过使用所有权系统和检查器等机制，解决了内存安全问题。它在编译时进行严格的借用规则检查，确保不会出现数据竞争、空指针解引用和缓冲区溢出等常见的内存错误。
+之所以人们对 Rust 那么充满兴趣，除了其强大的语法规则之外， Rust 提供了一系列的安全保障机制也让人非常感兴趣，其主要集中在以下几个方面：[^4]
 
-- 线程安全：Rust的并发模型使得编写线程安全的代码变得更加容易。它通过所有权和借用的机制，确保在编译时避免了数据竞争和并发问题，从而减少了运行时错误的潜在风险。
+- 内存安全： Rust 通过使用所有权系统和检查器等机制，解决了内存安全问题。它在编译时进行严格的借用规则检查，确保不会出现数据竞争、空指针解引用和缓冲区溢出等常见的内存错误。
+
+- 线程安全： Rust 的并发模型使得编写线程安全的代码变得更加容易。它通过所有权和借用的机制，确保在编译时避免了数据竞争和并发问题，从而减少了运行时错误的潜在风险。
 
 - 抽象层安全检测：Rust提供了强大的抽象能力，使得开发者能够编写更加安全和可维护的代码。通过诸如模式匹配、类型系统、trait和泛型等特性，Rust鼓励使用安全抽象来减少错误和提高代码的可读性。
 
 Rust强大的编译器管会接管很多工作，从而尽可能的减少各种内存错误的诞生。
 
+在具体分析安全措施前，让我们先看一下 Rust 语言的 MIR（Mid-level Intermediate Representation，中级中间表示），这是 Rust 编译器在编译过程中使用的一种中间表示形式。它介于高级抽象语法（HIR，High-level IR）和底层机器码（如 LLVM IR）之间，专门用于实现 Rust 的语义分析和优化，这和后面要讲的借用检查、生命周期验证和其他安全性相关的分析都是有关系的。
+
+### MIR
+
+以一个简单的函数为例，看一下源码与 MIR 之间的联系，使用`rustc --emit mir -o output.mir your_file.rs`能够将对应的Rust源码。
+
+- 案例1：加法函数 
+
+```rs
+fn add(a: i32, b: i32) -> i32 {
+    let c = a + b;
+    if c > 0 {
+        c
+    } else {
+        -c
+    }
+}
+```
+
+```rs
+// 函数: add，下面是概念简化版本，实际情况更复杂
+bb0: { // 基本块 0: 函数入口
+    _3 = _1 + _2;          // _1 是 a, _2 是 b, _3 是 c（临时变量）
+    _4 = _3 > 0;           // 检查 c > 0，_4 是布尔结果
+    switchInt(_4) -> [true: bb1, false: bb2]; // 根据条件跳转
+}
+
+bb1: { // 基本块 1: c > 0 的分支
+    _0 = _3;               // 返回值 _0 赋值为 c
+    return;                // 返回
+}
+
+bb2: { // 基本块 2: c <= 0 的分支
+    _0 = -_3;              // 返回值 _0 赋值为 -c
+    return;                // 返回
+}
+```
+
+- 案例2：简单的引用加法
+
+```rs
+fn foo(x: &i32) -> i32 {
+    *x + 1
+}
+```
+
+```rs
+// 函数：foo，下面是真实情况生成的 MIR
+fn foo(_1: &i32) -> i32 {
+    debug x => _1;
+    let mut _0: i32;
+    let mut _2: i32;
+    let mut _3: (i32, bool);
+
+    bb0: {
+        _2 = (*_1);
+        _3 = CheckedAdd(_2, const 1_i32);
+        assert(!move (_3.1: bool), "attempt to compute `{} + {}`, which would overflow", move _2, const 1_i32) -> [success: bb1, unwind continue];
+    }
+
+    bb1: {
+        _0 = move (_3.0: i32);
+        return;
+    }
+}
+```
+
+能看到， MIR 是基于 Basic Block 生成的，类似于 CFG 的形式，同时会去除很多高级语法糖，例如`for`循环会被展开成`while`循环，这样能够更专注于表达程序的语义，便于分析和优化。简单来说，MIR是 Rust 编译器内部用来“理解”和“加工”代码的一个桥梁。
+
+### 所有权系统（Ownership System）
+
+Rust 编译器通过所有权系统跟踪每个值的所有者，确保在值被移动后原变量不可再用。编译器在类型检查阶段标记移动操作，并禁止后续使用已移动的变量。与 C++ 的 RAII 不同，Rust 的所有权规则是强制性的，任何违反规则的代码都会被拒绝。
+
+我们在`compiler/rustc_borrowck/src/lib.rs`能找到所有权检查的核心函数`do_mir_borrowck`,该函数通过分析 MIR，检查代码是否满足 Rust 的借用规则（例如不可变借用和可变借用的互斥性、生命周期的有效性等），并生成诊断信息或错误，函数的签名如下：
+
+```rs
+fn do_mir_borrowck<'tcx>(
+    tcx: TyCtxt<'tcx>,
+    input_body: &Body<'tcx>,
+    input_promoted: &IndexSlice<Promoted, Body<'tcx>>,
+    consumer_options: Option<ConsumerOptions>,
+) -> (BorrowCheckResult<'tcx>, Option<Box<BodyWithBorrowckFacts<'tcx>>>)
+```
+
+下面分析一下这个函数是如何实现所有权检查的
+
+```rs
+let mut local_names = IndexVec::from_elem(None, &input_body.local_decls);
+for var_debug_info in &input_body.var_debug_info {
+    if let VarDebugInfoContents::Place(place) = var_debug_info.value {
+        if let Some(local) = place.as_local() {
+            if let Some(prev_name) = local_names[local] && var_debug_info.name != prev_name {
+                span_bug!(...); // 报告调试信息中的命名冲突
+            }
+            local_names[local] = Some(var_debug_info.name);
+        }
+    }
+}
+```
 
 ## Rust语言安全性分析
 
-// TODO
+
 
 ## Rust应用安全性分析
 
-### Rust语言逆向101
+## Rust语言逆向分析
 
 
 
