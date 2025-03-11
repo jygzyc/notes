@@ -5,9 +5,9 @@ number: 33
 url: https://github.com/jygzyc/notes/discussions/33
 date:
   created: 2024-12-20
-  updated: 2025-03-07
+  updated: 2025-03-10
 created: 2024-12-20
-updated: 2025-03-07
+updated: 2025-03-10
 authors: [ecool]
 categories: ['安全技术']
 draft: true
@@ -117,6 +117,10 @@ fn foo(_1: &i32) -> i32 {
 
 Rust 编译器通过所有权系统跟踪每个值的所有者，确保在值被移动后原变量不可再用。编译器在类型检查阶段标记移动操作，并禁止后续使用已移动的变量。与 C++ 的 RAII 不同，Rust 的所有权规则是强制性的，任何违反规则的代码都会被拒绝。
 
+下面分别通过源码解析，实际案例两个方面来说明这项检查带来的效果
+
+#### 源码解析
+
 我们在`compiler/rustc_borrowck/src/lib.rs`能找到所有权检查的核心函数`do_mir_borrowck`,该函数通过分析 MIR，检查代码是否满足 Rust 的借用规则（例如不可变借用和可变借用的互斥性、生命周期的有效性等），并生成诊断信息或错误，函数的签名如下：
 
 ```rs
@@ -128,7 +132,13 @@ fn do_mir_borrowck<'tcx>(
 ) -> (BorrowCheckResult<'tcx>, Option<Box<BodyWithBorrowckFacts<'tcx>>>)
 ```
 
-下面分析一下这个函数是如何实现所有权检查的
+下面分析一下这个函数是如何实现所有权检查的，这里对关键代码进行说明
+
+1. 初始化上下文
+
+- 创建`BorrowckInferCtxt`推理上下文
+- 处理`tainted_by_errors`标记，用于错误传播
+- 收集局部变量调试信息到`local_names`，检测命名冲突
 
 ```rs
 let mut local_names = IndexVec::from_elem(None, &input_body.local_decls);
@@ -143,6 +153,72 @@ for var_debug_info in &input_body.var_debug_info {
     }
 }
 ```
+
+上述代码从 `var_debug_info` 中提取局部变量的名称，用于后续的错误报告和诊断。如果发现同一个局部变量有多个不同的名字，则触发编译器 bug（span_bug）
+
+2. MIR预处理
+
+- 克隆输入MIR主体和promoted表达式
+- 用`replace_regions_in_mir`替换区域为推理变量
+- 为`NLL`（非词法生命周期）分析做准备
+
+```rs
+let mut body_owned = input_body.clone();
+let mut promoted = input_promoted.to_owned();
+let free_regions = nll::replace_regions_in_mir(&infcx, &mut body_owned, &mut promoted);
+let body = &body_owned; // no further changes
+```
+
+调用 `replace_regions_in_mir`，将 MIR 中的所有区域（region，例如生命周期）替换为新的推理变量。这是非词法生命周期（NLL，Non-Lexical Lifetimes）的基础步骤。
+
+3. 数据流分析
+
+- 构建`MoveData`跟踪值的移动路径
+- 使用`MaybeInitializedPlaces`分析可能初始化位置
+- 创建`BorrowSet`记录所有借用操作
+
+```rs
+let location_table = PoloniusLocationTable::new(body);
+let move_data = MoveData::gather_moves(body, tcx, |_| true);
+let flow_inits = MaybeInitializedPlaces::new(tcx, body, &move_data)
+    .iterate_to_fixpoint(tcx, body, Some("borrowck"))
+    .into_results_cursor(body);
+let locals_are_invalidated_at_exit = tcx.hir_body_owner_kind(def).is_fn_or_closure();
+let borrow_set = BorrowSet::build(tcx, body, locals_are_invalidated_at_exit, &move_data);
+```
+
+4. 计算非词法生命周期（NLL）
+
+```rs
+let nll::NllOutput { regioncx, opaque_type_values, polonius_input, polonius_output, opt_closure_req, nll_errors, polonius_diagnostics } =
+    nll::compute_regions(&infcx, free_regions, body, &promoted, &location_table, flow_inits, &move_data, &borrow_set, consumer_options);
+```
+
+#### 实际案例
+
+- 案例1：借用编译
+
+```rs
+fn main() {
+    let mut s = String::from("hello");
+    let r1 = &s; // 不可变借用
+    let r2 = &mut s; // 可变借用
+    // println!("{}, {}", r1, r2); // 编译错误
+}
+```
+
+```sh
+#实际报错
+error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+  --> src/main.rs:20:14
+   |
+19 |     let r1 = &s; // 不可变借用
+   |              -- immutable borrow occurs here
+here
+```
+
+
+
 
 ## Rust语言安全性分析
 
