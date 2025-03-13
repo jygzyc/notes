@@ -5,9 +5,9 @@ number: 33
 url: https://github.com/jygzyc/notes/discussions/33
 date:
   created: 2024-12-20
-  updated: 2025-03-10
+  updated: 2025-03-11
 created: 2024-12-20
-updated: 2025-03-10
+updated: 2025-03-11
 authors: [ecool]
 categories: ['安全技术']
 draft: true
@@ -44,7 +44,15 @@ Rust 是由 Mozilla 主导开发的高性能编译型编程语言，遵循"安�
 
 Rust强大的编译器管会接管很多工作，从而尽可能的减少各种内存错误的诞生。
 
-在具体分析安全措施前，让我们先看一下 Rust 语言的 MIR（Mid-level Intermediate Representation，中级中间表示），这是 Rust 编译器在编译过程中使用的一种中间表示形式。它介于高级抽象语法（HIR，High-level IR）和底层机器码（如 LLVM IR）之间，专门用于实现 Rust 的语义分析和优化，这和后面要讲的借用检查、生命周期验证和其他安全性相关的分析都是有关系的。
+### 所有权系统（Ownership System）
+
+Rust 编译器通过所有权系统跟踪每个值的所有者，确保在值被移动后原变量不可再用。编译器在类型检查阶段标记移动操作，并禁止后续使用已移动的变量。与 C++ 的 RAII 不同，Rust 的所有权规则是强制性的，任何违反规则的代码都会被拒绝。
+
+
+
+### Rust源码解析
+
+在具体分析Rust编译器代码前，让我们先看一下 Rust 语言的 MIR（Mid-level Intermediate Representation，中级中间表示），这是 Rust 编译器在编译过程中使用的一种中间表示形式。它介于高级抽象语法（HIR，High-level IR）和底层机器码（如 LLVM IR）之间，专门用于实现 Rust 的语义分析和优化，这和后面要讲的借用检查、生命周期验证和其他安全性相关的分析都是有关系的。
 
 ### MIR
 
@@ -113,15 +121,11 @@ fn foo(_1: &i32) -> i32 {
 
 能看到， MIR 是基于 Basic Block 生成的，类似于 CFG 的形式，同时会去除很多高级语法糖，例如`for`循环会被展开成`while`循环，这样能够更专注于表达程序的语义，便于分析和优化。简单来说，MIR是 Rust 编译器内部用来“理解”和“加工”代码的一个桥梁。
 
-### 所有权系统（Ownership System）
 
-Rust 编译器通过所有权系统跟踪每个值的所有者，确保在值被移动后原变量不可再用。编译器在类型检查阶段标记移动操作，并禁止后续使用已移动的变量。与 C++ 的 RAII 不同，Rust 的所有权规则是强制性的，任何违反规则的代码都会被拒绝。
-
-下面分别通过源码解析，实际案例两个方面来说明这项检查带来的效果
 
 #### 源码解析
 
-我们在`compiler/rustc_borrowck/src/lib.rs`能找到所有权检查的核心函数`do_mir_borrowck`,该函数通过分析 MIR，检查代码是否满足 Rust 的借用规则（例如不可变借用和可变借用的互斥性、生命周期的有效性等），并生成诊断信息或错误，函数的签名如下：
+我们在`compiler/rustc_borrowck/src/lib.rs`能找到检查的核心函数`do_mir_borrowck`,该函数通过分析 MIR，检查代码是否满足 Rust 的借用规则（例如不可变借用和可变借用的互斥性、生命周期的有效性等），并生成诊断信息或错误，函数的签名如下：
 
 ```rs
 fn do_mir_borrowck<'tcx>(
@@ -132,7 +136,7 @@ fn do_mir_borrowck<'tcx>(
 ) -> (BorrowCheckResult<'tcx>, Option<Box<BodyWithBorrowckFacts<'tcx>>>)
 ```
 
-下面分析一下这个函数是如何实现所有权检查的，这里对关键代码进行说明
+下面分析一下这个函数是如何实现检查的，这里对关键代码进行说明
 
 1. 初始化上下文
 
@@ -194,16 +198,54 @@ let nll::NllOutput { regioncx, opaque_type_values, polonius_input, polonius_outp
     nll::compute_regions(&infcx, free_regions, body, &promoted, &location_table, flow_inits, &move_data, &borrow_set, consumer_options);
 ```
 
+这里解释一下NLL，NLL（Non-Lexical Lifetimes，非词法生命周期） 是 Rust 编译器中的一个重要特性，目的是通过更精确的变量生命周期分析，放宽原有基于词法作用域（lexical scope）的借用检查规则，使 Rust 的内存安全检查更灵活，举个例子说明
+
+```rs
+fn main() {
+    let mut x = 5;
+    let y = &mut x; // y 的生命周期开始
+    // ... 使用 y
+    // 即使 y 不再被使用，其生命周期仍持续到代码块结束
+} // y 的生命周期在此处结束
+```
+
+即使引用在代码块中间已不再使用，其生命周期仍延续到作用域结束，这其中可能导致不必要的借用冲突，NLL允许译器基于代码的实际控制流（而非词法作用域）判断引用的生命周期，如下所示
+
+```rs
+fn main() {
+    let mut x = 5;
+    let y = &mut x;  // y 的借用开始
+    *y += 1;         // 最后一次使用 y
+    let z = &mut x;  // NLL 允许此处借用：y 已不再使用
+}
+```
+
+再举一个例子，NLL会识别单次循环中`item`的生命周期仅在单次循环内，允许安全借用
+
+```rs
+let mut data = vec![1, 2, 3];
+for i in 0..data.len() {
+    let item = &mut data[i]; // 旧版本会报错：多次可变借用
+    *item += 1;
+}
+```
+
+5. 
+
+
+
+
+
 #### 实际案例
 
-- 案例1：借用编译
+- 借用检查 案例1：编译器检测到 `r1` 和 `r2` 冲突，报错防止数据竞争
 
 ```rs
 fn main() {
     let mut s = String::from("hello");
     let r1 = &s; // 不可变借用
     let r2 = &mut s; // 可变借用
-    // println!("{}, {}", r1, r2); // 编译错误
+    println!("{}, {}", r1, r2); // 编译错误
 }
 ```
 
@@ -217,7 +259,31 @@ error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immuta
 here
 ```
 
+- 借用检查 案例2：编译器发现 `v` 在 `r` 借用期间被修改，禁止使用 `r`，避免因容器重新分配内存导致的悬垂引用
 
+```rs
+fn main() {
+    let mut v = vec![1, 2, 3];
+    let r = &v[0];
+    v.push(4); // 修改v
+    println!("{}", r); // 编译错误
+}
+```
+
+```sh
+#实际报错
+error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable
+  --> src/main.rs:20:5
+   |
+19 |     let r = &v[0];
+   |              - immutable borrow occurs here
+20 |     v.push(4); // 修改v
+   |     ^^^^^^^^^ mutable borrow occurs here
+21 |     println!("{}", r); // 编译错误
+   |                    - immutable borrow later used here
+```
+
+- 
 
 
 ## Rust语言安全性分析
