@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from pathlib import Path
+import shutil
 import unittest
 import argparse
 import re
@@ -334,6 +335,8 @@ class DiscussionConverter:
                             f'---\n\n')
         return metadata
     
+    def _old_path_cleaner(self, path: Path):
+        shutil.rmtree(path)
 
     def _path_preprocess(self, path):
         if path.strip() == ".":
