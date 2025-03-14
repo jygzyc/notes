@@ -9,7 +9,7 @@ import os
 
 from slugify import slugify
 
-author = "ecool"
+author = "yves"
 
 class BiMap:
     def __init__(self):
