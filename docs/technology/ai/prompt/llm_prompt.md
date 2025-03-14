@@ -1,10 +1,10 @@
 ---
-title: Prompt个人笔记
+title: 提示工程个人笔记
 slug: technology/ai/prompt/discussion-37/
 number: 37
 url: https://github.com/jygzyc/notes/discussions/37
 created: 2025-03-12
-updated: 2025-03-12
+updated: 2025-03-13
 authors: [jygzyc]
 categories: [人工智能]
 labels: ['Prompt相关']
