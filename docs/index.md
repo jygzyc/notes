@@ -43,5 +43,3 @@ comments: false
 感谢[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)，让我认识了一个非常简洁和好看的博客主题，并能够很快在社区解决部署时出现的问题。
 
 感谢[维燕的知识花园](https://weiyan.cc/)，让我学习了如何使用 Github discussions 建立博客站点。
-
-
