@@ -12,7 +12,7 @@ comments: false
 
 本站点基于[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)进行部署，一部分文章来源于之前的博客。
 
-可以通过[note.yves.me](https://note.yves.me/)可以访问本站点，基于[Github Pages](https://blog.yvesz.me)，国内访问会有一定的延迟。
+可以通过[note.yvesz.me](https://note.yvesz.me/)可以访问本站点，基于[Github Pages](https://blog.yvesz.me)，国内访问会有一定的延迟。
 
 ## 记录
 
