@@ -1,7 +1,4 @@
 # -*- coding:utf-8 -*-
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
 class DiscussionGraphql:
 
     @staticmethod
@@ -11,7 +8,7 @@ class DiscussionGraphql:
     ) -> str:
         query = f"""
         query{{
-            repository(owner: {gh_owner}, name: {gh_repo_name}){{
+            repository(owner: "{gh_owner}", name: "{gh_repo_name}"){{
                 discussionCategories(first: 25){{
                     nodes {{
                         id
@@ -35,10 +32,10 @@ class DiscussionGraphql:
         mutation {{
             updateDiscussion(
                 input: {{
-                    discussionId: {discussionId}, 
+                    discussionId: "{discussionId}", 
                     body: {body}, 
-                    title: {title},
-                    categoryId: {categoryId}
+                    title: "{title}",
+                    categoryId: "{categoryId}"
                 }}) 
             {{
                 discussion {{

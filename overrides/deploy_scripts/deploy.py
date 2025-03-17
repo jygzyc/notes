@@ -30,6 +30,7 @@ def main():
             for md_file in out_dir.rglob("*.md"):
                 discussion_request.update_discussion(md_file)
             Path("discussions").unlink()
+            Path(out_dir).joinpath("local.lock").unlink()
         else:
             discussion_converter.sync_remote()
     except Exception as e:

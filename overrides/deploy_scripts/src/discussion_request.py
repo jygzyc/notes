@@ -1,6 +1,8 @@
 import requests
-import re
+import json
 from mkdocs.utils import meta 
+from mkdocs.structure.files import Files
+from mkdocs.structure.files import File
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -57,32 +59,26 @@ class DiscussionRequest:
         try:
             with open(markdown_path, encoding="utf-8-sig", errors="strict") as f:
                 source = f.read()
-            _, file_meta = meta.get_data(source)
-            content = markdown_path.read_text(encoding='utf-8')
-            metadata_match = re.match(r'^---\s*(.*?)\s*---\s*', content, re.DOTALL) 
-            if metadata_match:
-                discussion_number = file_meta.get("number")
-                body = content.split('---')[2]
-                discussion_id = ""
-                category_id = ""
-                discussion_nodes = self.discussions_data.get("data", {}).get("repository", {}).get("discussion", {}).get("nodes", [])
-                for item in discussion_nodes:
-                    if item["number"] == int(discussion_number):
-                        discussion_id = item["id"]
-                        category_id = item["category"]["id"]
-                        break
-                
-                query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
-                                                            body=body,
-                                                            title=file_meta.get("title"),
-                                                            categoryId=category_id)
-                results = self._request(query)
-                return results
+            file_content, file_meta = meta.get_data(source)
+            escased_body = json.dumps(file_content, ensure_ascii=False, indent=None)
+            discussion_number = file_meta.get("number")
+            discussion_id = ""
+            category_id = ""
+            discussion_nodes = self.discussions_data.get("nodes", [])
+            for item in discussion_nodes:
+                if item["number"] == int(discussion_number):
+                    discussion_id = item["id"]
+                    category_id = item["category"]["id"]
+                    break
+            
+            query = DiscussionGraphql.update_discussion(discussionId={discussion_id},
+                                                        body=escased_body,
+                                                        title=file_meta.get("title"),
+                                                        categoryId={category_id})
+            results = self._request(query)
+            print(f"[*] Update discussion {discussion_number} successfully!")
+            return results
 
-        except ValueError:
-            raise ValueError(f"Invalid discussion number: {discussion_number}")
-        except AttributeError:
-            raise AttributeError("discussions_data structure is not as expected")
         except Exception as e:
             raise e
         finally:

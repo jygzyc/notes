@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from src.file_converter import DiscussionConverter
+from ..src.file_converter import DiscussionConverter
 
 class TestConverterMethods(unittest.TestCase):
 
