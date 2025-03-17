@@ -112,8 +112,8 @@ extra_css:
   - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
 
 hooks:
-  - overrides/scripts/hook_copyright.py
-  - overrides/scripts/hook_meta.py
+  - overrides/deploy_scripts/hook_copyright.py
+  - overrides/deploy_scripts/hook_meta.py
 
 # Plugins
 plugins: 

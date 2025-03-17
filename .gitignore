@@ -2,8 +2,10 @@
 site/
 github_test_token
 test_discussions
+test_config.json
 test/
 backup/
+*.bak
 
 
 ## python
@@ -11,6 +13,7 @@ backup/
 __pycache__/
 *.py[cod]
 *$py.class
+.venv/
 
 
 ## vscode

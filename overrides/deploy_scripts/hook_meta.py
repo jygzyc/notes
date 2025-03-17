@@ -15,7 +15,7 @@ Current limitations:
 - `use_directory_urls` was always True during testing, the hook will not handle False 
 
 Created: 2024
-Last Modified: Ecool
+Last Modified: Yves
 Description:
 Added functionality to skip files with a 'draft' tag in the meta during generation.
 """

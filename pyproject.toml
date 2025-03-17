@@ -1,0 +1,19 @@
+[project]
+name = "noteblog"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jieba>=0.42.1",
+    "mkdocs>=1.6.1",
+    "mkdocs-awesome-pages-plugin>=2.10.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.4.4",
+    "mkdocs-glightbox>=0.4.0",
+    "mkdocs-material>=9.6.8",
+    "mkdocs-minify-plugin>=0.8.0",
+    "mkdocs-redirects>=1.2.2",
+    "python-slugify>=8.0.4",
+    "pytz>=2025.1",
+    "requests>=2.32.3",
+]

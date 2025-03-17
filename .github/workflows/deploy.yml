@@ -27,17 +27,14 @@ jobs:
           python-version: '3.13'
     
       - name: Install requirements
-        run: pip install -r overrides/scripts/requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Query existing discussions
+      - name: Convert markdown posts or github discussions
         run: |
-          python overrides/scripts/queryDiscussions.py \
+          python overrides/deploy_scripts/deploy.py \
             -r jygzyc/notes \
             -t ${{ secrets.PERSONAL_NOTE_ACCESS_TOKEN }} \
-            -o discussions
-      
-      - name: Generate markdown posts
-        run: python overrides/scripts/fileConverter.py -i discussions -o docs 
+            -o docs
     
       - name: Commit files
         run: |
@@ -60,6 +57,5 @@ jobs:
           restore-keys: |
             mkdocs-material-
 
-      - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force
 

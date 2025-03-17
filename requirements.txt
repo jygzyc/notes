@@ -6,3 +6,6 @@ mkdocs-minify-plugin
 jieba 
 mkdocs-redirects
 mkdocs-awesome-pages-plugin
+requests
+python-slugify
+pytz
