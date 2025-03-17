@@ -71,12 +71,16 @@ class DiscussionRequest:
                     category_id = item["category"]["id"]
                     break
             
-            query = DiscussionGraphql.update_discussion(discussionId={discussion_id},
+            query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
                                                         body=escased_body,
                                                         title=file_meta.get("title"),
-                                                        categoryId={category_id})
+                                                        categoryId=category_id)
+            # with open("test_query", "w") as f:
+                # f.write(str(query))
             results = self._request(query)
-            print(f"[*] Update discussion {discussion_number} successfully!")
+            # print(f"[D] result: {str(results)}")
+
+            print(f"[*] Update discussion {str(markdown_path)} successfully!")
             return results
 
         except Exception as e:
