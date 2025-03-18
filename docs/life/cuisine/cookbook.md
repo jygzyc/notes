@@ -4,7 +4,7 @@ slug: life/cuisine/discussion-6/
 number: 6
 url: https://github.com/jygzyc/notes/discussions/6
 created: 2024-04-19
-updated: 2025-01-21
+updated: 2025-03-17
 authors: [jygzyc]
 categories: [饮食]
 labels: []

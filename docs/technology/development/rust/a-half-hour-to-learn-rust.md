@@ -4,7 +4,7 @@ slug: technology/development/rust/discussion-8/
 number: 8
 url: https://github.com/jygzyc/notes/discussions/8
 created: 2024-04-19
-updated: 2025-01-21
+updated: 2025-03-17
 authors: [jygzyc]
 categories: [开发专栏]
 labels: ['Rust相关']
