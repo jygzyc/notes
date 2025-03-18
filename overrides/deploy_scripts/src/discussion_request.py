@@ -72,7 +72,7 @@ class DiscussionRequest:
                     category_id = item["category"]["id"]
                     original_body = item["body"]
                     break
-            if original_body != escased_body:
+            if json.dump(original_body, ensure_ascii=False, indent=None) != escased_body:
                 query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
                                                             body=escased_body,
                                                             title=file_meta.get("title"),
