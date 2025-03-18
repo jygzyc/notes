@@ -33,6 +33,7 @@ comments: false
 - [x] 20240630: 更新`discussionFileConverter.py`，`nav2pages.py`中部分代码和注释，方便维护
 - [x] 20241121: 更新图床为[CloudFlare-ImgBed](https://github.com/MarSeventh/CloudFlare-ImgBed)，~~后续使用Telegram作为图床Base~~，使用Cloudflare作为图床
 - [x] 20250314：更新域名
+- [x] 20250318：重构生成代码，支持本地提交和远程discussion同步，增加部分测试代码
 
 ## 联系
 

@@ -57,6 +57,7 @@ class DiscussionRequest:
     
     def update_discussion(self, markdown_path: Path) -> any:
         try:
+            results = ""
             with open(markdown_path, encoding="utf-8-sig", errors="strict") as f:
                 source = f.read()
             file_content, file_meta = meta.get_data(source)
@@ -69,20 +70,16 @@ class DiscussionRequest:
                 if item["number"] == int(discussion_number):
                     discussion_id = item["id"]
                     category_id = item["category"]["id"]
+                    original_body = item["body"]
                     break
-            
-            query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
-                                                        body=escased_body,
-                                                        title=file_meta.get("title"),
-                                                        categoryId=category_id)
-            # with open("test_query", "w") as f:
-                # f.write(str(query))
-            results = self._request(query)
-            # print(f"[D] result: {str(results)}")
-
-            print(f"[*] Update discussion {str(markdown_path)} successfully!")
+            if original_body != escased_body:
+                query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
+                                                            body=escased_body,
+                                                            title=file_meta.get("title"),
+                                                            categoryId=category_id)
+                results = self._request(query)
+                print(f"[*] Update discussion {str(markdown_path)} successfully!")
             return results
-
         except Exception as e:
             raise e
         finally:

@@ -21,7 +21,7 @@ def main():
         # Step 1: Get all discussions
         discussion_request = DiscussionRequest(gh_repo, gh_token)
         discussions_data = discussion_request.discussions_data
-        with open("discussions" , "w", encoding='utf-8') as f:
+        with open(".discussions" , "w", encoding='utf-8') as f:
             f.write(str(discussions_data))
 
         # Step 2: Confirm whether it is a local update
@@ -29,7 +29,7 @@ def main():
         if discussion_converter.local_lock:
             for md_file in out_dir.rglob("*.md"):
                 discussion_request.update_discussion(md_file)
-            Path("discussions").unlink()
+            # Path("discussions").unlink()
             Path(out_dir).joinpath("local.lock").unlink()
         else:
             discussion_converter.sync_remote()
