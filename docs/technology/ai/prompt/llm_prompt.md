@@ -4,7 +4,7 @@ slug: technology/ai/prompt/discussion-37/
 number: 37
 url: https://github.com/jygzyc/notes/discussions/37
 created: 2025-03-12
-updated: 2025-03-17
+updated: 2025-03-23
 authors: [jygzyc]
 categories: [人工智能]
 labels: ['Prompt相关']
