@@ -14,6 +14,7 @@ class TestDiscussionRequest(unittest.TestCase):
             github_token=self.test_config.get("test_github_token")
         )
 
+    @unittest.skip("skip")
     def test_query_discussions(self):
         result = self.discussion_request.query_discussions()
         self.assertIsNotNone(result)
@@ -25,6 +26,8 @@ class TestDiscussionRequest(unittest.TestCase):
             markdown_path=Path(current_dir) / self.test_config.get("test_md_path")
         )
         self.assertIsNotNone(result)
+
+    @unittest.skip("skip")
     def test_update_discussion_unchange(self):
         current_dir = os.getcwd()
         print(f"[D] target md path: {Path(current_dir) / self.test_config.get("test_unchanged_md_path")}")

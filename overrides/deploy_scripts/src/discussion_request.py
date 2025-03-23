@@ -57,7 +57,7 @@ class DiscussionRequest:
     
     def update_discussion(self, markdown_path: Path) -> any:
         try:
-            results = ""
+            results = None
             with open(markdown_path, encoding="utf-8-sig", errors="strict") as f:
                 source = f.read()
             file_content, file_meta = meta.get_data(source)
@@ -72,7 +72,7 @@ class DiscussionRequest:
                     category_id = item["category"]["id"]
                     original_body = item["body"]
                     break
-            if json.dump(original_body, ensure_ascii=False, indent=None) != escased_body:
+            if json.dumps(original_body, ensure_ascii=False, indent=None) != escased_body:
                 query = DiscussionGraphql.update_discussion(discussionId=discussion_id,
                                                             body=escased_body,
                                                             title=file_meta.get("title"),
@@ -82,6 +82,4 @@ class DiscussionRequest:
             return results
         except Exception as e:
             raise e
-        finally:
-            return None
 
