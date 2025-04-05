@@ -117,7 +117,7 @@ hooks:
 
 # Plugins
 plugins: 
-  - awesome-pages:
+  - awesome-nav:
       strict: false
   - git-revision-date-localized:
       locale: zh

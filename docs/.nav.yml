@@ -6,4 +6,4 @@ nav:
   - 技术: technology
 
 
-collapse_single_pages: true
+flatten_single_child_sections: true
