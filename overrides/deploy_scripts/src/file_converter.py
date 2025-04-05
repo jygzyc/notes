@@ -20,7 +20,7 @@ class NavPagesConverter(BiMap):
             file_path = directory / ".nav.yml"
             directory.mkdir(parents=True, exist_ok=True)
             with open(file_path, 'w') as file:
-                file.write(f"title: {key}\n")
+                file.write(f'title: "{key}"\n')
 
 class DiscussionConverter:
 

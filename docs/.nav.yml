@@ -1,9 +1,8 @@
 nav:
   - 主页: index.md
   - 留言板: message_board.md
-  - 博客: blog
+  - 博客: blog/posts
   - 生活: life
   - 技术: technology
-
 
 flatten_single_child_sections: true
