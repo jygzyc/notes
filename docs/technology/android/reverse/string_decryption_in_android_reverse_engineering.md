@@ -4,7 +4,7 @@ slug: technology/android/reverse/discussion-12/
 number: 12
 url: https://github.com/jygzyc/notes/discussions/12
 created: 2024-05-27
-updated: 2025-12-12
+updated: 2025-12-15
 authors: [jygzyc]
 categories: [Android专栏]
 labels: ['Android 逆向']
